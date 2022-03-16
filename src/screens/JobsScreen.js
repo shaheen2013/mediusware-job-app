@@ -1,19 +1,25 @@
 import React from 'react';
-
-import {Text, View,styleSheet} from 'react-native';
-import LeftIcon from '../../assets/svgIcon/LeftIcon';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Text, View, StyleSheet} from 'react-native';
 import Logo from "../../assets/svgIcon/Logo";
+import HeaderTitle from "../components/HeaderTitle";
+
 const JobsScreen = () => {
     return (
-        <View>
-            <Text style={{fontSize:24,paddingVertical:6,fontFamily:'Montserrat_800ExtraBold'}}>This is Job Screen</Text>
-            <LeftIcon width={40} height={40}/>
-            <Logo width={115} height={32}/>
-        </View>
+        <SafeAreaView>
+            <View style={styles.container}>
+                <HeaderTitle/>
+            </View>
+        </SafeAreaView>
     );
 };
 
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 16,
+    }
+})
 export default JobsScreen;
 
 
-//fontSize:24,paddingVertical:6,fontFamily:'Montserrat_800ExtraBold'
+//fontFamily:'Montserrat_800ExtraBold'
