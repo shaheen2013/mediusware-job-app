@@ -4,11 +4,12 @@ import {Text, View, StyleSheet} from 'react-native';
 import Logo from "../../assets/svgIcon/Logo";
 import HeaderTitle from "../components/HeaderTitle";
 
-const JobsScreen = () => {
+const JobsScreen = ({navigation}) => {
     return (
         <SafeAreaView>
             <View style={styles.container}>
-                <HeaderTitle/>
+                <HeaderTitle navigation={navigation}/>
+                <Text>This is Jobs screen</Text>
             </View>
         </SafeAreaView>
     );

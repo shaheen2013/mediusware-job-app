@@ -7,7 +7,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {Typography, Colors, Spacings} from 'react-native-ui-lib';
 import Logo from "./assets/svgIcon/Logo";
 import JobsScreen from "./src/screens/JobsScreen";
-
+import LoginScreen from "./src/screens/LoginScreen";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
     useFonts,
     Montserrat_200ExtraLight,
@@ -18,8 +19,8 @@ import {
     Montserrat_700Bold,
     Montserrat_800ExtraBold,
 } from '@expo-google-fonts/montserrat';
+import DrawerNavigation from "./src/navigations/DrawerNavigation";
 
-const Stack = createNativeStackNavigator();
 
 const navTheme = {
     ...DefaultTheme, colors: {
@@ -31,10 +32,11 @@ Colors.loadColors({
     pink: '#FF69B4',
     gold: '#FFD700',
     iconBg: '#F3F7FB',
+    iconBg2:'#FFF'
 });
 
 Typography.loadTypographies({
-    h1: {fontSize: 58, fontWeight: '300', lineHeight: 80},
+    h3: {fontSize: 20, fontWeight: '500' },
     h2: {fontSize: 46, fontWeight: '300', lineHeight: 64},
 });
 
@@ -59,14 +61,16 @@ export default function App() {
         return (
             <SafeAreaProvider>
                 <NavigationContainer theme={navTheme}>
-                    <Stack.Navigator screenOptions={{
+                    <DrawerNavigation/>
+                    {/*<Stack.Navigator screenOptions={{
                         headerShown: false,
                     }}>
                         <Stack.Screen name="Jobs" component={JobsScreen}/>
-                    </Stack.Navigator>
+                        <Stack.Screen name="Login" component={LoginScreen}/>
+                    </Stack.Navigator>*/}
+
                 </NavigationContainer>
             </SafeAreaProvider>
-
 
         );
     }

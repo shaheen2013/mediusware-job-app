@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Feather} from '@expo/vector-icons';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {Typography, Colors, Spacings} from 'react-native-ui-lib';
 import Logo from "../../assets/svgIcon/Logo";
 
 
-const HeaderTitle = () => {
+const HeaderTitle = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.openDrawer()}>
                 <View style={styles.iconStyle}>
                     <Feather name="menu" size={24} color="black"/>
                 </View>
@@ -18,7 +18,6 @@ const HeaderTitle = () => {
                 <Logo height="115" width="32"/>
             </View>
         </View>
-
     );
 };
 
@@ -28,9 +27,9 @@ const styles = StyleSheet.create({
         position: "relative"
     },
     iconStyle: {
-        backgroundColor: Colors.iconBg,
+        backgroundColor: '#F3F7FB',
         padding: 10,
-        borderRadius: 12
+        borderRadius:12,
     },
     logoStyle:{
         position: "absolute",
