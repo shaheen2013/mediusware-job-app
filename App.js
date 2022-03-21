@@ -29,13 +29,24 @@ const navTheme = {
 };
 
 Colors.loadColors({
-    pink: '#FF69B4',
-    gold: '#FFD700',
     iconBg: '#F3F7FB',
-    iconBg2:'#FFF'
+    iconBg2:'#FFF',
+    primaryTextColor: '#004D8C',
+    headerTextColor: '#2B2B2B',
+    lightBtnTextColor:'#3378B1',
+    loginTextColor: '#4D4D4D',
+    bgPrimaryBtnText:'#0060AF',
+    white:'#FFF',
+    primaryBtnTextColor:'#FFF',
+    borderColor:'#E9E9E9',
+
 });
 
 Typography.loadTypographies({
+    headerText:{fontSize:24,fontFamily: 'Montserrat_500Medium'},
+    loginText:{fontSize: 14,fontFamily: 'Montserrat_400Regular'},
+    primaryText:{fontSize: 14,fontFamily: 'Montserrat_400Regular'},
+    primaryBtnText:{fontSize: 14,fontFamily: 'Montserrat_600SemiBold'},
     h3: {fontSize: 20, fontWeight: '500' },
     h2: {fontSize: 46, fontWeight: '300', lineHeight: 64},
 });

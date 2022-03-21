@@ -1,8 +1,8 @@
 import React from 'react';
-
 import {Text, View,TextInput,TouchableOpacity} from 'react-native';
 //import {TextField} from 'react-native-ui-lib';
 import {StyleSheet} from "react-native";
+import { Feather } from '@expo/vector-icons';
 
 const InputField = ({title,placeholderText}) => {
     return (
@@ -10,7 +10,7 @@ const InputField = ({title,placeholderText}) => {
             <Text style={styles.contentTextStyle}>{title}</Text>
             <TextInput style={styles.textInputStyle}  placeholder={placeholderText}>
             </TextInput>
-
+            <Feather name="eye" size={24} color="black" style={{alignSelf: 'center', marginRight: 10}}/>
         </View>
 
     );
