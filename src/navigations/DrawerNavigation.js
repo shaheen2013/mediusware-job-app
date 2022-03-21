@@ -17,7 +17,7 @@ const DrawerNavigation = () => {
             initialRouteName="Jobs"
             drawerContent={(props) => <CustomDrawerContent {...props} />}>
             <Drawer.Screen name="Jobs" component={JobsScreen}/>
-            <Drawer.Screen name="Login" component={StackNavigation}/>
+            <Drawer.Screen name="StackNavigation" component={StackNavigation}/>
         </Drawer.Navigator>
     );
 };

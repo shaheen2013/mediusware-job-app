@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text,TouchableOpacity,Colors} from 'react-native-ui-lib';
 import LoginImg from "../../assets/svgIcon/LoginImg";
 import CommonHeader from "../components/CommonHeader";
-import InputFields from "../components/InputFields";
+import InputField from "../components/InputField";
 import PrimaryBtn from "../components/PrimaryBtn";
 
 const LoginScreen = ({navigation, route}) => {
@@ -15,11 +15,11 @@ const LoginScreen = ({navigation, route}) => {
                 <LoginImg/>
                 <Text headerText headerTextColor marginT-20>Hello,{'\n'}
                     Good to see you again!</Text>
-                <Text loginText loginTextColor marginB-20 marginT-8>Log in to get going with our recruitment process!</Text>
-                <InputFields  title={'Email Address'} placeholderText={'email@email.com'}/>
-                <InputFields isIcon={true} title={'Password'} placeholderText={'Input Password'}/>
+                <Text primaryText loginTextColor marginB-20 marginT-8>Log in to get going with our recruitment process!</Text>
+                <InputField title={'Email Address'} placeholderText={'email@email.com'}/>
+                <InputField isIcon={true} title={'Password'} placeholderText={'Input Password'}/>
                 <TouchableOpacity onPress={()=> navigation.navigate('ForgotPassword')}>
-                    <Text primaryTextColor style={{alignSelf:'flex-end'}}>Forgot Password?</Text>
+                    <Text primaryTextColor primaryText style={{alignSelf:'flex-end'}}>Forgot Password?</Text>
                 </TouchableOpacity>
                <TouchableOpacity marginT-40>
                    <PrimaryBtn title={'Login'}/>

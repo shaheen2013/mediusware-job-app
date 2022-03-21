@@ -44,9 +44,9 @@ Colors.loadColors({
 
 Typography.loadTypographies({
     headerText:{fontSize:24,fontFamily: 'Montserrat_500Medium'},
-    loginText:{fontSize: 14,fontFamily: 'Montserrat_400Regular'},
     primaryText:{fontSize: 14,fontFamily: 'Montserrat_400Regular'},
     primaryBtnText:{fontSize: 14,fontFamily: 'Montserrat_600SemiBold'},
+    screenTitle:{fontSize:16,fontFamily:'Montserrat_600SemiBold'},
     h3: {fontSize: 20, fontWeight: '500' },
     h2: {fontSize: 46, fontWeight: '300', lineHeight: 64},
 });
@@ -73,13 +73,6 @@ export default function App() {
             <SafeAreaProvider>
                 <NavigationContainer theme={navTheme}>
                     <DrawerNavigation/>
-                    {/*<Stack.Navigator screenOptions={{
-                        headerShown: false,
-                    }}>
-                        <Stack.Screen name="Jobs" component={JobsScreen}/>
-                        <Stack.Screen name="Login" component={LoginScreen}/>
-                    </Stack.Navigator>*/}
-
                 </NavigationContainer>
             </SafeAreaProvider>
 

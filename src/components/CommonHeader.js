@@ -1,8 +1,7 @@
 import React from 'react';
 import { CommonActions } from '@react-navigation/native';
-import {Text, View} from 'react-native';
 import LeftArrowIcon from "../../assets/svgIcon/LeftArrowIcon";
-import {TouchableOpacity} from "react-native-ui-lib";
+import {TouchableOpacity,View,Text} from "react-native-ui-lib";
 
 const CommonHeader = ({name,navigation}) => {
     return (
@@ -11,10 +10,9 @@ const CommonHeader = ({name,navigation}) => {
                 <TouchableOpacity onPress={()=>navigation.dispatch(CommonActions.goBack())}>
                     <LeftArrowIcon/>
                 </TouchableOpacity>
-
             </View>
             <View style={{position:'absolute',left:'15%',marginTop:10}}>
-                <Text style={{fontSize:16,fontFamily:'Montserrat_600SemiBold'}}>{name}</Text>
+                <Text screenTitle>{name}</Text>
             </View>
 
         </View>
