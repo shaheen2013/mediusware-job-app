@@ -14,7 +14,6 @@ const CommonHeader = ({name,navigation}) => {
             <View style={{position:'absolute',left:'15%',marginTop:10}}>
                 <Text screenTitle>{name}</Text>
             </View>
-
         </View>
     );
 };
