@@ -1,14 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import AppLoading from 'expo-app-loading';
-import {DefaultTheme,NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Typography, Colors, Spacings} from 'react-native-ui-lib';
 import Logo from "./assets/svgIcon/Logo";
 import JobsScreen from "./src/screens/JobsScreen";
 import LoginScreen from "./src/screens/LoginScreen";
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
     useFonts,
     Montserrat_200ExtraLight,
@@ -29,56 +28,55 @@ const navTheme = {
 };
 
 Colors.loadColors({
-    white:'#FFFFFF',
-    gray:'#4D4D4D',
-    lightGray:'#949494',
-    deepGray:'#2B2B2B',
-    borderColor:'#E9E9E9',
-    blue:'#0060AF',
-    lightBlue:'#3378B1',
-    deepBlue:'#004D8C',
-    bgColor:'#F3F7FB',
-    lightColor:'#D9E7F3',
+    white: '#FFFFFF',
+    gray: '#4D4D4D',
+    lightGray: '#949494',
+    deepGray: '#2B2B2B',
+    borderColor: '#E9E9E9',
+    blue: '#0060AF',
+    lightBlue: '#3378B1',
+    deepBlue: '#004D8C',
+    bgColor: '#F3F7FB',
+    lightColor: '#D9E7F3',
 
     // will be removed....
     iconBg: '#F3F7FB',
     primaryTextColor: '#004D8C',
     headerTextColor: '#2B2B2B',
-    lightBtnTextColor:'#3378B1',
+    lightBtnTextColor: '#3378B1',
     regularTextColor: '#4D4D4D',
-    primaryColor:'#0060AF',
-    primaryBtnTextColor:'#FFF',
+    primaryColor: '#0060AF',
+    primaryBtnTextColor: '#FFF',
 
 
 });
 
 Typography.loadTypographies({
-    h1:{fontSize:48,fontFamily: 'Montserrat_400Regular'},
-    h2:{fontSize:34,fontFamily: 'Montserrat_400Regular'},
-    h3:{fontSize:24,fontFamily: 'Montserrat_400Regular'},
-    h4:{fontSize:20,fontFamily: 'Montserrat_500Medium'},
-    subtitle1:{fontSize:16,fontFamily: 'Montserrat_600SemiBold'},
-    subtitle2:{fontSize:16,fontFamily: 'Montserrat_400Regular'},
-    subtitle3:{fontSize:14,fontFamily: 'Montserrat_500Medium'},
-    text:{fontSize:14,fontFamily: 'Montserrat_400Regular'},
-    small_text:{fontSize:12,fontFamily: 'Montserrat_500Medium'},
-    caption:{fontSize:12,fontFamily: 'Montserrat_400Regular'},
-    overline:{fontSize:10,fontFamily: 'Montserrat_400Regular'},
+    h1: {fontSize: 48, fontFamily: 'Montserrat_400Regular'},
+    h2: {fontSize: 34, fontFamily: 'Montserrat_400Regular'},
+    h3: {fontSize: 24, fontFamily: 'Montserrat_400Regular'},
+    h4: {fontSize: 20, fontFamily: 'Montserrat_500Medium'},
+    subtitle1: {fontSize: 16, fontFamily: 'Montserrat_600SemiBold'},
+    subtitle2: {fontSize: 16, fontFamily: 'Montserrat_400Regular'},
+    subtitle3: {fontSize: 14, fontFamily: 'Montserrat_500Medium'},
+    text: {fontSize: 14, fontFamily: 'Montserrat_400Regular'},
+    small_text: {fontSize: 12, fontFamily: 'Montserrat_500Medium'},
+    caption: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
+    overline: {fontSize: 10, fontFamily: 'Montserrat_400Regular'},
 
     // will be removed .....
-    headerText:{fontSize:24,fontFamily: 'Montserrat_500Medium'},
-    subTitleText:{fontSize:16,fontFamily: 'Montserrat_500Medium'},
-    primaryText:{fontSize: 14,fontFamily: 'Montserrat_400Regular'},
-    primaryBtnText:{fontSize: 14,fontFamily: 'Montserrat_600SemiBold'},
-    regularText:{fontSize:12,fontFamily: 'Montserrat_400Regular'},
-    screenTitle:{fontSize:16,fontFamily:'Montserrat_600SemiBold'},
+    headerText: {fontSize: 24, fontFamily: 'Montserrat_500Medium'},
+    subTitleText: {fontSize: 16, fontFamily: 'Montserrat_500Medium'},
+    primaryText: {fontSize: 14, fontFamily: 'Montserrat_400Regular'},
+    primaryBtnText: {fontSize: 14, fontFamily: 'Montserrat_600SemiBold'},
+    regularText: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
+    screenTitle: {fontSize: 16, fontFamily: 'Montserrat_600SemiBold'},
 
 
 });
 
-Spacings.loadSpacings({
+Spacings.loadSpacings({});
 
-});
 
 export default function App() {
 
@@ -93,7 +91,7 @@ export default function App() {
     });
     if (!fontsLoaded) {
         return <AppLoading/>;
-    }else{
+    } else {
         return (
             <SafeAreaProvider>
                 <NavigationContainer theme={navTheme}>

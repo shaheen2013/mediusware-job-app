@@ -6,12 +6,13 @@ import InputField from "../components/formComponents/InputField";
 import PasswordImg from "../../assets/svgIcon/PasswordImg";
 import PrimaryBtn from "../components/buttons/PrimaryBtn";
 import SecondaryBtn from "../components/buttons/SecondaryBtn";
+import {StatusBar} from "react-native";
 
 const ForgotPasswordScreen = ({navigation,route}) => {
     return (
         <SafeAreaView>
             <CommonHeader name={'Forgot Password'} navigation={navigation}/>
-            <View paddingH-16>
+            <View paddingH-16 marginT-20>
                 <PasswordImg/>
                 <Text headerText headerTextColor marginT-20>Forgot password?</Text>
                 <Text primaryText regularTextColor marginB-20 marginT-8>Log in to get going with our recruitment process!</Text>

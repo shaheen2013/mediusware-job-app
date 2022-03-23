@@ -5,13 +5,14 @@ import LoginImg from "../../assets/svgIcon/LoginImg";
 import CommonHeader from "../components/CommonHeader";
 import InputField from "../components/formComponents/InputField";
 import PrimaryBtn from "../components/buttons/PrimaryBtn";
+import {StatusBar} from "react-native";
 
 const LoginScreen = ({navigation, route}) => {
     const isIcon = false;
     return (
         <SafeAreaView>
             <CommonHeader name={route.name} navigation={navigation}/>
-            <View paddingH-16>
+            <View paddingH-16 marginT-20>
                 <LoginImg/>
                 <Text headerText headerTextColor marginT-20>Hello,{'\n'}
                     Good to see you again!</Text>

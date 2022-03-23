@@ -11,7 +11,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
     const isIcon = false;
     return (<SafeAreaView>
         <CommonHeader name={'Reset Password'} navigation={navigation}/>
-        <View paddingH-16>
+        <View paddingH-16 marginT-20>
             <LoginImg/>
             <Text headerText headerTextColor marginT-20>Reset Your Password</Text>
             <Text primaryText regularTextColor marginB-20 marginT-8>We've send you an email with OTP code,

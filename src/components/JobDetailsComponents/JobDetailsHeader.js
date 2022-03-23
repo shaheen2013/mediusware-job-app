@@ -2,25 +2,24 @@ import React from 'react';
 import {CommonActions} from '@react-navigation/native';
 import {TouchableOpacity, View, Text, Colors} from "react-native-ui-lib";
 import {StyleSheet} from 'react-native'
-import LeftArrowIcon from "../../assets/svgIcon/LeftArrowIcon";
+import WhiteLeftArrowIcon from "../../../assets/svgIcon/WhiteLeftArrowIcon";
 
 
-const CommonHeader = ({name, navigation}) => {
+const JobDetailsHeader = ({name, navigation}) => {
     return (
         <View row paddingV-16
-              style={styles.headerStyle}>
+              style={{position: 'relative', backgroundColor: Colors.blue}}>
             <View paddingH-16>
                 <TouchableOpacity onPress={() => navigation.dispatch(CommonActions.goBack())}>
-                    <LeftArrowIcon/>
+                    <WhiteLeftArrowIcon/>
                 </TouchableOpacity>
             </View>
             <View style={{position: 'absolute', left: '15%', marginTop: 10}}>
-                <Text subtitle1>{name}</Text>
+                <Text subtitle1 style={{color: Colors.white}}>{name}</Text>
             </View>
         </View>
     );
 };
-
 const styles = StyleSheet.create({
     headerStyle: {
         position: 'relative',
@@ -33,4 +32,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CommonHeader;
+export default JobDetailsHeader;

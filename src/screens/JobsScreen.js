@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {FlatList, StyleSheet} from 'react-native';
-import {Text, View, TouchableOpacity} from 'react-native-ui-lib';
+import {FlatList, StatusBar, StyleSheet} from 'react-native';
+import {Text, View, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import Logo from "../../assets/svgIcon/Logo";
 import HeaderTitle from "../components/HeaderTitle";
 import SearchField from "../components/formComponents/SearchField";
@@ -37,8 +37,10 @@ const jobs = [{
 },]
 
 const JobsScreen = ({navigation}) => {
+    console.log(navigation);
     return (
         <SafeAreaView style={{flex: 1}}>
+
             <View paddingH-16 flex-1>
                 <HeaderTitle navigation={navigation}/>
                 <Text marginT-20 marginB-6 caption gray>Hey, Good Morning!</Text>
@@ -61,9 +63,8 @@ const JobsScreen = ({navigation}) => {
                     keyExtractor={item => item.id}
                     renderItem={({item}) => {
                         return <JobCard
-                            title={item.title}
-                            salary={item.salary}
-                            experience={item.experience}
+                            job={item}
+                            navigation={navigation}
                         />
                     }}/>
 
