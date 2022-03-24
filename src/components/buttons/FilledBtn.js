@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, Colors, View} from "react-native-ui-lib";
 
-const PrimaryBtn = ({title}) => {
+const FilledBtn = ({title}) => {
     return (
         <View
             style={{
@@ -15,4 +15,4 @@ const PrimaryBtn = ({title}) => {
         </View>);
 };
 
-export default PrimaryBtn;
+export default FilledBtn;

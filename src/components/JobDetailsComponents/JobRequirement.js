@@ -5,13 +5,13 @@ import {FlatList} from "react-native";
 import JobCard from "../JobCard";
 import JobResponsibilityBulletPoint from "./JobResponsiblityBulletPoint";
 
-const JobResponsibility = ({points, title, value}) => {
+const JobRequirement = ({points}) => {
     return (
         <View paddingH-16>
-            <Text subtitle1 deepGray marginB-16>{title}:</Text>
+            <Text subtitle1 deepGray marginB-16>Job Requirement</Text>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                listKey={value}
+                listKey="req-event"
                 data={points}
                 keyExtractor={item => item.id}
                 renderItem={({item}) => {
@@ -22,4 +22,4 @@ const JobResponsibility = ({points, title, value}) => {
     );
 };
 
-export default JobResponsibility;
+export default JobRequirement;

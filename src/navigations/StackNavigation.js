@@ -6,6 +6,8 @@ import LoginScreen from "../screens/LoginScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import JobDetailsScreen from "../screens/JobDetailsScreen";
+import ApplyScreen from "../screens/ApplyScreen";
+import ApplicantInformationScreen from "../screens/ApplicantInformationScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -16,10 +18,12 @@ const StackNavigation = () => {
             }}
             initialRouteName="Login"
         >
-            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Login" component={LoginScreen}/>
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
             <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
             <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
+            <Stack.Screen name="Apply" component={ApplyScreen} />
+            <Stack.Screen name="ApplicantInformation" component={ApplicantInformationScreen} />
         </Stack.Navigator>
     );
 };

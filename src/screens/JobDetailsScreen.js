@@ -14,6 +14,9 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {SimpleLineIcons} from '@expo/vector-icons';
 import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
 import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
+import JobResponsibilityBulletPoint from "../components/JobDetailsComponents/JobResponsiblityBulletPoint";
+import VirtualizedView from "../components/VirtualizedView";
+import FilledBtn from "../components/buttons/FilledBtn";
 
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -21,28 +24,37 @@ function FocusAwareStatusBar(props) {
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
 
-const responsiblities = [
-    {id: '101', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
-    {id: '102', text: 'Lorem ipsum dolor  adipiscing elit.'},
-    {id: '103', text: 'Lorem ipsum dolor sit amet, consectetur  elit.'},
-    {id: '104', text: 'Lorem sit amet, consectetur adipiscing elit.'},
-    {id: '105', text: 'Lorem ipsum amet, consectetur adipiscing elit.'},
-]
+const jobDetails = [
+    {
+        id: '501',
+        responsiblities: [
+            {id: '101', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
+            {id: '102', text: 'Lorem ipsum dolor  adipiscing elit.'},
+            {id: '103', text: 'Lorem ipsum dolor sit amet, consectetur  elit.'},
+            {id: '104', text: 'Lorem sit amet, consectetur adipiscing elit.'},
+            {id: '105', text: 'Lorem ipsum amet, consectetur adipiscing elit.'},
+        ]
+    },
+    {
+        id: '502',
+        requirements: [
+            {id: '201', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
+            {id: '202', text: 'Lorem ipsum dolor  adipiscing elit.'},
+            {id: '203', text: 'Lorem ipsum dolor sit amet, consectetur  elit.'},
+            {id: '204', text: 'Lorem sit amet, consectetur adipiscing elit.'},
+            {id: '505', text: 'Lorem ipsum amet, consectetur adipiscing elit.'},
+        ]
+    }
 
-const requirements = [
-    {id: '101', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
-    {id: '102', text: 'Lorem ipsum dolor  adipiscing elit.'},
-    {id: '103', text: 'Lorem ipsum dolor sit amet, consectetur  elit.'},
-    {id: '104', text: 'Lorem sit amet, consectetur adipiscing elit.'},
-    {id: '105', text: 'Lorem ipsum amet, consectetur adipiscing elit.'},
 ]
 
 
 const JobDetails = ({route, navigation}) => {
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
-            <View flex-1>
+            <View style={{flex: 1}}>
                 <JobDetailsHeader name={'Jobs Details'} navigation={navigation}/>
                 <View paddingH-16 style={{backgroundColor: Colors.blue}} paddingB-12>
                     <Text h4 marginV-12 white>UX UI Designer</Text>
@@ -57,20 +69,26 @@ const JobDetails = ({route, navigation}) => {
                                     text={"Ring Road, House 18/5, Dhaka, 1207"} IconLib={SimpleLineIcons}/>
                 </View>
 
-                <ScrollView>
-                    <View>
+                <VirtualizedView>
+                    <View marginB-20>
                         <View marginT-20 paddingR-16>
-                            <JobResponsibility points={responsiblities} title={"Job Responsibilites"}/>
+                            <JobResponsibility points={jobDetails[0].responsiblities} title={"Job Responsibilites"}
+                                               value={"res-value"}/>
                         </View>
                         <View marginT-20 paddingR-16>
-                            <JobResponsibility points={requirements} title={"Experience Requirements"}/>
+                            <JobResponsibility points={jobDetails[1].requirements} title={"Experience Requirements"}
+                                               value={"req-value"}/>
                         </View>
                         <View marginT-20 paddingR-16>
-                            <JobResponsibility points={responsiblities} title={"Job Responsibilites"}/>
+                            <JobResponsibility points={jobDetails[0].responsiblities} title={"Job Responsibilites"}
+                                               value={"req2-value"}/>
                         </View>
-                    </View>
+                        <TouchableOpacity marginH-16 marginV-10 onPress={() => navigation.navigate('Apply')}>
+                            <FilledBtn title={"Apply Now"}/>
+                        </TouchableOpacity>
 
-                </ScrollView>
+                    </View>
+                </VirtualizedView>
 
             </View>
         </SafeAreaView>

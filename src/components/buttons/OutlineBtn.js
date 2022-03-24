@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, Colors, TouchableOpacity, View} from "react-native-ui-lib";
 
-const SecondaryBtn = () => {
+const OutlineBtn = () => {
     return (<View
         style={{
             backgroundColor: Colors.white,
@@ -16,4 +16,4 @@ const SecondaryBtn = () => {
     </View>);
 };
 
-export default SecondaryBtn;
+export default OutlineBtn;

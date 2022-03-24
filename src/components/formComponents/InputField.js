@@ -8,7 +8,7 @@ const InputField = ({title, placeholderText, isIcon}) => {
     const [visibleText, setVisibleText] = useState(true);
     return (
         <View>
-            <Text marginB-8 primaryText>{title}</Text>
+            <Text marginB-8 text>{title}</Text>
             <View style={{...styles.textInputStyle}} row>
                 <TextInput
                     style={{

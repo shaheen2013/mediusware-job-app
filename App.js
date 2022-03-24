@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import AppLoading from 'expo-app-loading';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -25,6 +25,9 @@ const navTheme = {
     ...DefaultTheme, colors: {
         ...DefaultTheme.colors, background: 'white',
     },
+    StatusBar: {
+        ...DefaultTheme, barStyle: 'light-content', backgroundColor: 'white'
+    }
 };
 
 Colors.loadColors({
@@ -47,8 +50,6 @@ Colors.loadColors({
     regularTextColor: '#4D4D4D',
     primaryColor: '#0060AF',
     primaryBtnTextColor: '#FFF',
-
-
 });
 
 Typography.loadTypographies({
@@ -56,10 +57,13 @@ Typography.loadTypographies({
     h2: {fontSize: 34, fontFamily: 'Montserrat_400Regular'},
     h3: {fontSize: 24, fontFamily: 'Montserrat_400Regular'},
     h4: {fontSize: 20, fontFamily: 'Montserrat_500Medium'},
+    h5: {fontSize: 24, fontFamily: 'Montserrat_500Medium'},
     subtitle1: {fontSize: 16, fontFamily: 'Montserrat_600SemiBold'},
     subtitle2: {fontSize: 16, fontFamily: 'Montserrat_400Regular'},
     subtitle3: {fontSize: 14, fontFamily: 'Montserrat_500Medium'},
+    subtitle4: {fontSize: 16, fontFamily: 'Montserrat_500Medium'},
     text: {fontSize: 14, fontFamily: 'Montserrat_400Regular'},
+    btn_text: {fontSize: 14, fontFamily: 'Montserrat_600SemiBold'},
     small_text: {fontSize: 12, fontFamily: 'Montserrat_500Medium'},
     caption: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
     overline: {fontSize: 10, fontFamily: 'Montserrat_400Regular'},
@@ -76,7 +80,6 @@ Typography.loadTypographies({
 });
 
 Spacings.loadSpacings({});
-
 
 export default function App() {
 
