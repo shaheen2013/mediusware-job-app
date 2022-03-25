@@ -10100,6 +10100,11 @@
     "hash-base" "^3.0.0"
     "inherits" "^2.0.1"
 
+"rn-keyboard-sticky-view@^1.0.4":
+  "integrity" "sha512-Ab+4TXYA6uGUtCmIXlyp9ta5y7oqHTpePfnMy/B9q76ssfQzzMHXGDY/rUIDL6hGC1tVJelt6HJYMzAQr9zRTQ=="
+  "resolved" "https://registry.npmjs.org/rn-keyboard-sticky-view/-/rn-keyboard-sticky-view-1.0.4.tgz"
+  "version" "1.0.4"
+
 "router-ips@^1.0.0":
   "integrity" "sha1-ROAIWOvrwBM9WOQLLNih+7BCA/U="
   "resolved" "https://registry.npmjs.org/router-ips/-/router-ips-1.0.0.tgz"

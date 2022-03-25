@@ -8,11 +8,15 @@ import OutlineBtn from "../components/buttons/OutlineBtn";
 import FilledBtn from "../components/buttons/FilledBtn";
 import {StatusBar,StyleSheet} from "react-native";
 import {Feather} from "@expo/vector-icons";
+import KeyboardStickyView from "rn-keyboard-sticky-view";
 
 const ApplyScreen = ({navigation, route}) => {
     const isIcon = false;
     return (
         <SafeAreaView>
+            <KeyboardStickyView>
+
+            </KeyboardStickyView>
             <CommonHeader name={route.name} navigation={navigation}/>
             <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
             <View paddingH-16 marginT-20>

@@ -59,7 +59,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
                 <View flex-1>
                     <View row>
-                        <TouchableOpacity marginT-14 flex-1 marginR-10>
+                        <TouchableOpacity marginT-14 flex-1 marginR-10 onPress={()=>navigation.navigate('Apply')}>
                             <BlueOutlineBtn title={'Back'}/>
                         </TouchableOpacity>
                         <TouchableOpacity marginT-14 flex-1>

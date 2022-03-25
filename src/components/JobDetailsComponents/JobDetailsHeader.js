@@ -3,17 +3,18 @@ import {CommonActions} from '@react-navigation/native';
 import {TouchableOpacity, View, Text, Colors} from "react-native-ui-lib";
 import {StyleSheet} from 'react-native'
 import WhiteLeftArrowIcon from "../../../assets/svgIcon/WhiteLeftArrowIcon";
+import LeftArrowIcon from "../../../assets/svgIcon/LeftArrowIcon";
 
 
 const JobDetailsHeader = ({name, navigation}) => {
     return (
         <View row paddingV-16
               style={{position: 'relative', backgroundColor: Colors.blue}}>
-            <View paddingH-16>
-                <TouchableOpacity onPress={() => navigation.dispatch(CommonActions.goBack())}>
+            <TouchableOpacity onPress={() => navigation.dispatch(CommonActions.goBack())}>
+                <View paddingH-16>
                     <WhiteLeftArrowIcon/>
-                </TouchableOpacity>
-            </View>
+                </View>
+            </TouchableOpacity>
             <View style={{position: 'absolute', left: '15%', marginTop: 10}}>
                 <Text subtitle1 style={{color: Colors.white}}>{name}</Text>
             </View>

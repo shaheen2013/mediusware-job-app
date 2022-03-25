@@ -9,11 +9,11 @@ const CommonHeader = ({name, navigation}) => {
     return (
         <View row paddingV-16
               style={styles.headerStyle}>
-            <View paddingH-16>
-                <TouchableOpacity onPress={() => navigation.dispatch(CommonActions.goBack())}>
+            <TouchableOpacity onPress={() => navigation.dispatch(CommonActions.goBack())}>
+                <View paddingH-16>
                     <LeftArrowIcon/>
-                </TouchableOpacity>
-            </View>
+                </View>
+            </TouchableOpacity>
             <View style={{position: 'absolute', left: '15%', marginTop: 10}}>
                 <Text subtitle1>{name}</Text>
             </View>
