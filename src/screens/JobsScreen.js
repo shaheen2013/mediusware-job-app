@@ -37,7 +37,6 @@ const jobs = [{
 },]
 
 const JobsScreen = ({navigation}) => {
-    console.log(navigation);
     return (
         <SafeAreaView style={{flex: 1}}>
 

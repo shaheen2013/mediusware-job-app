@@ -8,6 +8,7 @@ import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import JobDetailsScreen from "../screens/JobDetailsScreen";
 import ApplyScreen from "../screens/ApplyScreen";
 import ApplicantInformationScreen from "../screens/ApplicantInformationScreen";
+import SubmissionScreen from "../screens/SubmissionScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -24,6 +25,7 @@ const StackNavigation = () => {
             <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
             <Stack.Screen name="Apply" component={ApplyScreen} />
             <Stack.Screen name="ApplicantInformation" component={ApplicantInformationScreen} />
+            <Stack.Screen name="Submission" component={SubmissionScreen} />
         </Stack.Navigator>
     );
 };
