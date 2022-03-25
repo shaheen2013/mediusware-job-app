@@ -32,7 +32,7 @@ const SubmissionScreen = ({navigation,route}) => {
                 <View flex-12 paddingH-16>
                     <View style={{alignItems:'center'}} flex-8>
                         <Image source={require("../../assets/images/success.png")} />
-                        <Text h4 blue>Successful</Text>
+                        <Text h4 blue marginT-20 marginB-10>Successful</Text>
                         <Text gray text style={{textAlign:'center'}}>Your job application for UX UI Designer at Mediusware has successfully completed.
                             After initial screening process we will get back to you. </Text>
                     </View>

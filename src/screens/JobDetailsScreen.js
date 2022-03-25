@@ -70,7 +70,7 @@ const JobDetails = ({route, navigation}) => {
                 </View>
 
                 <VirtualizedView>
-                    <View marginB-20>
+                    <View marginB-60>
                         <View marginT-20 paddingR-16>
                             <JobResponsibility points={jobDetails[0].responsiblities} title={"Job Responsibilites"}
                                                value={"res-value"}/>
@@ -83,12 +83,16 @@ const JobDetails = ({route, navigation}) => {
                             <JobResponsibility points={jobDetails[0].responsiblities} title={"Job Responsibilites"}
                                                value={"req2-value"}/>
                         </View>
-                        <TouchableOpacity marginH-16 marginV-10 onPress={() => navigation.navigate('Apply')}>
-                            <FilledBtn title={"Apply Now"}/>
-                        </TouchableOpacity>
 
                     </View>
                 </VirtualizedView>
+                <View style={{position:'absolute',width:'98%',top:'91.5%'}}>
+                    <TouchableOpacity marginH-16 marginV-10 onPress={() => navigation.navigate('Apply')}
+                                      style={{resizeMode: 'contain'}}>
+                        <FilledBtn title={"Apply Now"}/>
+                    </TouchableOpacity>
+                </View>
+
 
             </View>
         </SafeAreaView>
