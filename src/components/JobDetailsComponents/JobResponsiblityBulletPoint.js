@@ -10,7 +10,7 @@ const JobResponsibilityBulletPoint = ({item}) => {
                 <FontAwesome name="check-circle" size={24} color={Colors.blue}/>
             </View>
             <View marginB-10>
-                <Text caption gray>{item.text}</Text>
+                <Text caption gray>{item}</Text>
             </View>
         </View>
     );

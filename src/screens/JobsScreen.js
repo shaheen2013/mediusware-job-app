@@ -7,9 +7,10 @@ import HeaderTitle from "../components/HeaderTitle";
 import SearchField from "../components/formComponents/SearchField";
 import FilterBtn from "../components/buttons/FilterBtn";
 import JobCard from "../components/JobCard";
+import useJobs from "../hooks/useJobs";
 
 
-const jobs = [{
+/*const jobs = [{
     id: 101,
     title: 'SENIOR SOFTWARE ENGINEER (PHP, Laravel)',
     salary: 'Tk. 25,000 - 45,000',
@@ -34,9 +35,10 @@ const jobs = [{
     title: 'SENIOR SOFTWARE ENGINEER (PHP, Laravel)',
     salary: 'Tk. 25,000 - 45,000',
     experience: '2 Year of experience'
-},]
+},]*/
 
 const JobsScreen = ({navigation}) => {
+    const [jobs] = useJobs();
     return (
         <SafeAreaView style={{flex: 1}}>
 
@@ -59,7 +61,8 @@ const JobsScreen = ({navigation}) => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={jobs}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item)=> item.title}
+                    //keyExtractor={(item,index)=> item.key}
                     renderItem={({item}) => {
                         return <JobCard
                             job={item}

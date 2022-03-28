@@ -12,15 +12,15 @@ const JobCard = ({job,navigation}) => {
                 borderRadius: 16,
                 overflow: 'hidden'
             }}>
-            <TouchableOpacity onPress={()=>navigation.navigate('StackNavigation', { screen: 'JobDetails' })}>
+            <TouchableOpacity onPress={()=>navigation.navigate('StackNavigation', { screen: 'JobDetails',params:{title:job.title} })}>
                 <ImageBackground source={require('../../assets/images/bgJobCard.jpg')} style={{
                     padding: 16,
                     resizeMode: 'cover',
                     justifyContent: 'center',
                 }}>
                     <Text blue text marginB-7>{job.title}</Text>
-                    <Text caption gray marginB-7>Salary: {job.salary}</Text>
-                    <Text caption gray marginB-7>Experience: {job.experience}</Text>
+                    <Text caption gray marginB-7>Salary: {job.job_summery.salary_range}</Text>
+                    <Text caption gray marginB-7>Experience: {job.job_summery.experience}</Text>
                 </ImageBackground>
             </TouchableOpacity>
 

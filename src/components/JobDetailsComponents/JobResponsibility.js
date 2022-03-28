@@ -13,7 +13,7 @@ const JobResponsibility = ({points, title, value}) => {
                 showsVerticalScrollIndicator={false}
                 listKey={value}
                 data={points}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item}
                 renderItem={({item}) => {
                     return <JobResponsibilityBulletPoint item={item}
                     />
