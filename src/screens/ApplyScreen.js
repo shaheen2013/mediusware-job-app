@@ -5,7 +5,7 @@ import CommonHeader from "../components/CommonHeader";
 import InputField from "../components/formComponents/InputField";
 import OutlineBtn from "../components/buttons/OutlineBtn";
 import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar, StyleSheet, KeyboardAvoidingView, Platform, ScrollView} from "react-native";
+import {StatusBar, StyleSheet,ScrollView} from "react-native";
 import {Feather} from "@expo/vector-icons";
 
 
@@ -44,7 +44,6 @@ const ApplyScreen = ({navigation, route}) => {
                 <TouchableOpacity marginV-15 onPress={() => navigation.navigate('ApplicantInformation')}>
                     <FilledBtn title={'Continue'}/>
                 </TouchableOpacity>
-
             </View>
         </SafeAreaView>
     );

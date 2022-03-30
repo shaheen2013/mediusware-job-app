@@ -65,11 +65,11 @@ const JobDetails = ({route, navigation}) => {
 
     const createPoint=(str)=>{
         str = str.toString();
-        console.log("With end Tags: ",str);
+        //console.log("With end Tags: ",str);
         str =  str.replace( /(<([^>]+)>)/ig, '');
-        console.log("without  Tags: ",str);
+        //console.log("without  Tags: ",str);
         str = str.split('\n');
-        console.log('create array:',str);
+        //console.log('create array:',str);
         str.shift();
         str.pop();
         //console.log('remove first  and last element array:',str);
@@ -77,13 +77,7 @@ const JobDetails = ({route, navigation}) => {
         //console.log("points",points);
         return points;
     }
-/*
-    const createPoints=(text)=>{
-        text = text.toString();
-        return text.replace( /(<([^>]+)>)/ig, '');
-        console.log(text);
-        return text;
-    }*/
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>

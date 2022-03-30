@@ -1,6 +1,6 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {FlatList, StatusBar, StyleSheet} from 'react-native';
+import {FlatList, StatusBar, StyleSheet,Button} from 'react-native';
 import {Text, View, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import Logo from "../../assets/svgIcon/Logo";
 import HeaderTitle from "../components/HeaderTitle";
@@ -57,6 +57,7 @@ const JobsScreen = ({navigation}) => {
                         <FilterBtn/>
                     </TouchableOpacity>
                 </View>
+                <Button title={'Exam Progress'} onPress={()=> navigation.navigate('ExamProgress')}/>
                 <Text marginV-10 subtitle1 deepGray>Mediusware Jobs</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}
