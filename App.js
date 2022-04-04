@@ -33,6 +33,7 @@ const navTheme = {
 Colors.loadColors({
     white: '#FFFFFF',
     gray: '#4D4D4D',
+    blackGray:'#333333',
     lightGray: '#949494',
     deepGray: '#2B2B2B',
     borderColor: '#E9E9E9',

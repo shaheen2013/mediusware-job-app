@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import _ from 'lodash';
 import {ScrollView, StatusBar} from 'react-native';
 import CommonHeader from "../components/CommonHeader";
 import {
@@ -115,12 +114,27 @@ const ExamProgress = ({route, navigation}) => {
     const setLabel = (index) =>{
         return  activeIndex >= index ? index+1 : ''
     }
+
+
     const setConnectorStyle = (index) =>{
-        const defaultStyle = {borderWidth:5,borderColor:Colors.lightGray};
-        const activeStyle = {borderWidth:5,borderColor:Colors.blue};
+        const defaultStyle = {borderWidth:5,borderColor:Colors.borderColor,borderRadius:5,width:'1.5%'};
+        const activeStyle = {borderWidth:5,borderColor:Colors.blue,borderRadius:5};
         return activeIndex >= index ? activeStyle:defaultStyle;
     }
 
+    const indexlabelColor = (index) =>{
+        const defaultColor = {color: Colors.lightGray};
+        const activeColor  = {color: Colors.white};
+        return activeIndex >= index ? activeColor: defaultColor;
+    }
+
+    const updateLabelText = (index) =>{
+        const activeStyle={color:Colors.blue};
+        const defaultStyle={color:Colors.blackGray};
+        return activeIndex >= index ? activeStyle: defaultStyle;
+    }
+
+    let indexLabelStyle = indexlabelColor;
     return (
         <SafeAreaView style={{flex: 1}}>
             <View flex-1>
@@ -134,32 +148,44 @@ const ExamProgress = ({route, navigation}) => {
                         backgroundColor: 'transparent',
                         shadowOffset: {width: 0, height: 0}
                     }}>
-                        <Wizard.Step state={getStepState(0)}
-                                     connectorStyle={{borderWidth:5,borderColor:Colors.lightGray}}
-                                     color={Colors.white}
-                                     circleBackgroundColor={setStepBg(0)}/>
+                            <Wizard.Step state={getStepState(0)}
+                                         labelStyle={{color:Colors.primary}}
+                                         indexLabelStyle={indexlabelColor(0)}
+                                         connectorStyle={setConnectorStyle(0)}
+                                         circleBackgroundColor={setStepBg(0)}
+                            />
+
                         <Wizard.Step state={getStepState(1)}
+                                     indexLabelStyle={indexlabelColor(1)}
                                      connectorStyle={setConnectorStyle(1)}
                                      color={Colors.white}
                                      circleBackgroundColor={setStepBg(1)}/>
                         <Wizard.Step state={getStepState(2)}
+                                     indexLabelStyle={indexlabelColor(2)}
                                      connectorStyle={setConnectorStyle(2)}
                                      color={Colors.white}
                                      circleBackgroundColor={setStepBg(2)}/>
                         <Wizard.Step state={getStepState(3)}
+                                     indexLabelStyle={indexlabelColor(3)}
                                      connectorStyle={setConnectorStyle(3)}
                                      color={Colors.white}
                                      circleBackgroundColor={setStepBg(3)}/>
                         <Wizard.Step state={getStepState(4)}
+                                     indexLabelStyle={indexlabelColor(4)}
                                      connectorStyle={setConnectorStyle(4)}
                                      color={Colors.white}
                                      circleBackgroundColor={setStepBg(4)}/>
-                    </Wizard>
+                        </Wizard>
+                        <View marginH-8 row>
+                            <Text marginH-16 style={updateLabelText(0)}>Pending</Text>
+                            <Text marginH-10 style={updateLabelText(1)}>MCQ</Text>
+                            <Text marginH-16 style={updateLabelText(2)}>Written</Text>
+                            <Text marginH-16 style={updateLabelText(3)}>Viva</Text>
+                            <Text marginH-16 style={updateLabelText(4)}>Result</Text>
+                        </View>
                     {renderCurrentStep()}
                 </View>
-                <View>
 
-                </View>
 
             </View>
 
