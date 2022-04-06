@@ -57,7 +57,6 @@ const JobsScreen = ({navigation}) => {
                         <FilterBtn/>
                     </TouchableOpacity>
                 </View>
-                <Button title={'Exam Progress'} onPress={()=> navigation.navigate('ExamProgress')}/>
                 <Text marginV-10 subtitle1 deepGray>Mediusware Jobs</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}

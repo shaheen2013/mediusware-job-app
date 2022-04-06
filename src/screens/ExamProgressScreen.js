@@ -17,6 +17,12 @@ import FilledBtn from "../components/buttons/FilledBtn";
 import {SafeAreaView} from "react-native-safe-area-context";
 import ProgressBtn from "../components/buttons/ProgressBtn";
 import {getBackgroundColor} from "react-native/Libraries/LogBox/UI/LogBoxStyle";
+import Pending from "../components/ExamProgress/Pending";
+import Mcq from "../components/ExamProgress/Mcq";
+import Written from "../components/ExamProgress/Written";
+import Viva from "../components/ExamProgress/Viva";
+import Result from "../components/ExamProgress/Result";
+
 
 const ExamProgress = ({route, navigation}) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -47,60 +53,21 @@ const ExamProgress = ({route, navigation}) => {
         return state;
     }
 
-    const renderOne = () => {
-        return (
-            <View>
-                <Text>This is Step One Page</Text>
-            </View>
-        );
-    };
-
-    const renderTwo = () => {
-        return (
-            <View>
-                <Text>This is Step Two Page</Text>
-            </View>
-        );
-    };
-
-    const renderThree = () => {
-        return (
-            <View>
-                <Text>This is Step Three Page</Text>
-            </View>
-        );
-    };
-
-    const renderFour = () => {
-        return (
-            <View>
-                <Text>This is Step Four Page</Text>
-            </View>
-        );
-    };
-
-    const renderFive = () => {
-        return (
-            <View>
-                <Text>This is Step Five Page</Text>
-            </View>
-        );
-    };
 
 
     const renderCurrentStep = () => {
         switch (activeIndex) {
             case 0:
             default:
-                return renderOne();
+                return <Pending/>;
             case 1:
-                return renderTwo();
+                return <Mcq/>;
             case 2:
-                return renderThree();
+                return <Written/>;
             case 3:
-                return renderFour();
+                return <Viva/>;
             case 4:
-                return renderFive();
+                return <Result/>;
         }
     };
 
@@ -176,14 +143,16 @@ const ExamProgress = ({route, navigation}) => {
                                      color={Colors.white}
                                      circleBackgroundColor={setStepBg(4)}/>
                         </Wizard>
-                        <View marginH-8 row>
-                            <Text marginH-16 style={updateLabelText(0)}>Pending</Text>
-                            <Text marginH-10 style={updateLabelText(1)}>MCQ</Text>
-                            <Text marginH-16 style={updateLabelText(2)}>Written</Text>
-                            <Text marginH-16 style={updateLabelText(3)}>Viva</Text>
-                            <Text marginH-16 style={updateLabelText(4)}>Result</Text>
+                        <View row>
+                            <Text text style={updateLabelText(0)}>Pending</Text>
+                            <Text marginH-16 text style={updateLabelText(1)}>MCQ</Text>
+                            <Text marginH-16 text style={updateLabelText(2)}>Written</Text>
+                            <Text marginH-16 text style={updateLabelText(3)}>Viva</Text>
+                            <Text marginH-16 text style={updateLabelText(4)}>Result</Text>
                         </View>
+                    <Text caption color={Colors.gray} marginT-20->Hello, Jack</Text>
                     {renderCurrentStep()}
+
                 </View>
 
 
