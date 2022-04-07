@@ -29,7 +29,7 @@ const CustomDrawerContent = (props) => {
                         </View>
                         <View marginL-10>
                             <Text style={{fontSize:20,fontFamily:'Montserrat_500Medium'}}>Guest User</Text>
-                                <TouchableOpacity onPress={()=> props.navigation.navigate('StackNavigation', { screen: 'Login' })}>
+                                <TouchableOpacity onPress={()=> props.navigation.navigate('LoginStackNavigation', { screen: 'Login' })}>
                                     <View style={{paddingVertical:5,flexDirection:'row'}}>
                                         <Text style={{color:'blue',fontFamily:'Montserrat_500Medium',marginRight:5}}>Login</Text>
                                         <MaterialCommunityIcons name="login" size={24} color="blue" />

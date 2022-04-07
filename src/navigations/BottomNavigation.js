@@ -1,22 +1,60 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {StyleSheet} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import JobsScreen from "../screens/JobsScreen";
 import ExamProgress from "../screens/ExamProgressScreen";
 import StackNavigation from "./StackNavigation";
 import DrawerNavigation from "./DrawerNavigation";
-
+import JobsStackNavigation from "./StackNavigators/JobsStackNavigation";
+import DashboardStackNavigation from "./StackNavigators/DashboardStackNavigation";
+import HomeIcon from "../../assets/svgIcon/HomeIcon";
+import { Feather } from '@expo/vector-icons';
+import HomeFillIcon from "../../assets/svgIcon/HomeFillIcon";
+import DashBoardIcon from "../../assets/svgIcon/DashBoardIcon";
+import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
 
 const Tab = createBottomTabNavigator();
 const BottomNavigation = () => {
-
     return (
-        <Tab.Navigator initialRouteName="Home"
-                       screenOptions={{headerShown: false}}>
-            <Tab.Screen name="Home" component={JobsScreen} />
-            <Tab.Screen name="Dashboard" component={ExamProgress} />
+        <Tab.Navigator
+            tabBarStyle={styles.customTabBarStyle}
+            initialRouteName="Home"
+            screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    height: 55,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingBottom:5,
+                }
+            }}>
+
+            <Tab.Screen name="Home" component={JobsScreen} options={{
+                tabBarLabel: 'HOME',
+                tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
+                tabBarIcon: ({focused}) => (
+                    focused ? <HomeFillIcon/>:<HomeIcon/>
+                )
+            }}/>
+            <Tab.Screen name="DashboardStackNavigation" component={DashboardStackNavigation} options={{
+                tabBarLabel: 'DASHBOARD',
+                tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
+                tabBarIcon: ({focused}) => (
+                    focused  ?<DashBoardIcon/>:<DashBoardOutlineIcon/>
+                )
+            }}/>
         </Tab.Navigator>
 
     );
 };
 
 export default BottomNavigation;
+
+const styles = StyleSheet.create({
+    customTabBarStyle: {
+        backgroundColor: 'blue'
+    }
+
+})

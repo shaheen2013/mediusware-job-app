@@ -37,7 +37,7 @@ const SubmissionScreen = ({navigation,route}) => {
                             After initial screening process we will get back to you. </Text>
                     </View>
                     <View flex-1>
-                        <TouchableOpacity marginV-15 onPress={() =>navigation.navigate('Jobs')}>
+                        <TouchableOpacity marginV-15 onPress={() =>navigation.navigate('BottomNavigation',{screen:'Home'})}>
                             <FilledBtn title={'Go to Home'}/>
                         </TouchableOpacity>
                     </View>

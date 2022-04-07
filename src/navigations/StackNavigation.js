@@ -8,6 +8,8 @@ import JobDetailsScreen from "../screens/JobDetailsScreen";
 import ApplyScreen from "../screens/ApplyScreen";
 import ApplicantInformationScreen from "../screens/ApplicantInformationScreen";
 import SubmissionScreen from "../screens/SubmissionScreen";
+import DrawerNavigation from "./DrawerNavigation";
+import BottomNavigation from "./BottomNavigation";
 
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +27,7 @@ const StackNavigation = () => {
             <Stack.Screen name="Apply" component={ApplyScreen}/>
             <Stack.Screen name="ApplicantInformation" component={ApplicantInformationScreen}/>
             <Stack.Screen name="Submission" component={SubmissionScreen}/>
+
         </Stack.Navigator>);
 };
 

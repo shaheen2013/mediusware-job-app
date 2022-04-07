@@ -19,6 +19,8 @@ import {
     Montserrat_800ExtraBold,
 } from '@expo-google-fonts/montserrat';
 import DrawerNavigation from "./src/navigations/DrawerNavigation";
+//import BottomNavigation from "./src/navigations/BottomNavigation";
+//import StackNavigation from "./src/navigations/StackNavigation";
 
 
 const navTheme = {

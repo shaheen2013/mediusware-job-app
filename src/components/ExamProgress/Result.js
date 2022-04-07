@@ -1,9 +1,9 @@
 import React from 'react';
-import {Colors, Text, View} from 'react-native-ui-lib';
+import {Colors, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import Point from "./Point";
 import FilledBtn from "../buttons/FilledBtn";
 import AlertOutlineBtn from "../buttons/AlertOutlineBtn";
-const Result = () => {
+const Result = ({navigation}) => {
     return (
         <View marginT-10>
             <View row marginB-10>
@@ -21,7 +21,10 @@ const Result = () => {
 
 
             <View marginT-40>
-                <FilledBtn title={"Go to Dashboard"}/>
+                <TouchableOpacity onPress={()=> navigation.navigate('Dashboard')}>
+                    <FilledBtn title={"Go to Dashboard"}/>
+                </TouchableOpacity>
+
             </View>
         </View>
     );

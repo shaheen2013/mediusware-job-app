@@ -5206,7 +5206,7 @@
   "resolved" "https://registry.npmjs.org/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz"
   "version" "1.0.2"
 
-"fbjs@^0.8.4":
+"fbjs@^0.8.4", "fbjs@^0.8.9":
   "integrity" "sha512-EQaWFK+fEPSoibjNy8IxUtaFOMXcWsY0JaVrQoZR9zC8N2Ygf9iDITPWjUTVIax95b6I742JFLqASHfsag/vKA=="
   "resolved" "https://registry.npmjs.org/fbjs/-/fbjs-0.8.18.tgz"
   "version" "0.8.18"
@@ -5550,6 +5550,11 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fs@^0.0.1-security":
+  "integrity" "sha1-invTcYa23d84E/I4WLV+yq9eQdQ="
+  "resolved" "https://registry.npmjs.org/fs/-/fs-0.0.1-security.tgz"
+  "version" "0.0.1-security"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
@@ -5913,7 +5918,7 @@
     "minimalistic-assert" "^1.0.0"
     "minimalistic-crypto-utils" "^1.0.1"
 
-"hoist-non-react-statics@^3.0.0", "hoist-non-react-statics@^3.3.0":
+"hoist-non-react-statics@^3.0.0", "hoist-non-react-statics@^3.3.0", "hoist-non-react-statics@^3.3.1":
   "integrity" "sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw=="
   "resolved" "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"
   "version" "3.3.2"
@@ -6164,6 +6169,11 @@
   "integrity" "sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA=="
   "resolved" "https://registry.npmjs.org/immer/-/immer-8.0.1.tgz"
   "version" "8.0.1"
+
+"immutable@^4.0.0-rc.12":
+  "integrity" "sha512-zIE9hX70qew5qTUjSS7wi1iwj/l7+m54KWU247nhM3v806UdGj1yDndXj+IOYxxtW9zyLI+xqFNZjTuDaLUqFw=="
+  "resolved" "https://registry.npmjs.org/immutable/-/immutable-4.0.0.tgz"
+  "version" "4.0.0"
 
 "import-fresh@^2.0.0":
   "integrity" "sha1-2BNVwVYS04bGH53dOSLUMEgipUY="
@@ -7123,7 +7133,7 @@
   "resolved" "https://registry.npmjs.org/lodash.assign/-/lodash.assign-4.2.0.tgz"
   "version" "4.2.0"
 
-"lodash.debounce@^4.0.8":
+"lodash.debounce@^4.0.8", "lodash.debounce@4.0.8":
   "integrity" "sha1-gteb/zCmfEAF/9XiUVMArZyk168="
   "resolved" "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
   "version" "4.0.8"
@@ -7350,7 +7360,7 @@
   "resolved" "https://registry.npmjs.org/media-typer/-/media-typer-0.3.0.tgz"
   "version" "0.3.0"
 
-"memoize-one@^5.0.5":
+"memoize-one@^5.0.5", "memoize-one@^5.2.1":
   "integrity" "sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q=="
   "resolved" "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz"
   "version" "5.2.1"
@@ -9251,6 +9261,13 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.13.1"
 
+"prop-types@15.5.8":
+  "integrity" "sha1-a3suFBCDvjjIWVqlH8VXdccZk5Q="
+  "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.5.8.tgz"
+  "version" "15.5.8"
+  dependencies:
+    "fbjs" "^0.8.9"
+
 "proxy-addr@~2.0.4", "proxy-addr@~2.0.7":
   "integrity" "sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg=="
   "resolved" "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.7.tgz"
@@ -9510,6 +9527,23 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
 
+"react-native-calendars@^1.1281.0":
+  "integrity" "sha512-aG8r4fycwY3edV+93McLDQ233O3liQvz0uPAVhctL6f5U7ZT5cI40JhqAo0/w98k0n2b/SAXdEMMosT0xXadcQ=="
+  "resolved" "https://registry.npmjs.org/react-native-calendars/-/react-native-calendars-1.1281.0.tgz"
+  "version" "1.1281.0"
+  dependencies:
+    "fs" "^0.0.1-security"
+    "hoist-non-react-statics" "^3.3.1"
+    "immutable" "^4.0.0-rc.12"
+    "lodash" "^4.17.15"
+    "memoize-one" "^5.2.1"
+    "prop-types" "^15.5.10"
+    "react-native-swipe-gestures" "^1.0.5"
+    "recyclerlistview" "^3.0.5"
+    "xdate" "^0.8.0"
+  optionalDependencies:
+    "moment" "^2.24.0"
+
 "react-native-codegen@^0.0.6":
   "integrity" "sha512-cMvrUelD81wiPitEPiwE/TCNscIVauXxmt4NTGcy18HrUd0WRWXfYzAQGXm0eI87u3NMudNhqFj2NISJenxQHg=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.6.tgz"
@@ -9604,6 +9638,11 @@
   dependencies:
     "is-hexcolor" "^1.0.0"
 
+"react-native-swipe-gestures@^1.0.5":
+  "integrity" "sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw=="
+  "resolved" "https://registry.npmjs.org/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz"
+  "version" "1.0.5"
+
 "react-native-text-size@4.0.0-rc.1":
   "integrity" "sha512-CysqjU2jK6Yc+a+kEI222pUyTY2ywcU2HqbFqf1KHymW6OPTdvBBHqbEJKL0QiLhQaFYDbqicM+h990s9TP00g=="
   "resolved" "https://registry.npmjs.org/react-native-text-size/-/react-native-text-size-4.0.0-rc.1.tgz"
@@ -9655,7 +9694,7 @@
     "escape-string-regexp" "2.0.0"
     "invariant" "2.2.4"
 
-"react-native@*", "react-native@^0.62.1", "react-native@>=0.50.0", "react-native@>=0.59.0", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@>=0.64.1", "react-native@0.64.3":
+"react-native@*", "react-native@^0.62.1", "react-native@>= 0.30.0", "react-native@>=0.50.0", "react-native@>=0.59.0", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@>=0.64.1", "react-native@0.64.3":
   "integrity" "sha512-2OEU74U0Ek1/WeBzPbg6XDsCfjF/9fhrNX/5TFgEiBKd5mNc9LOZ/OlMmkb7iues/ZZ/oc51SbEfLRQdcW0fVw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.64.3.tgz"
   "version" "0.64.3"
@@ -9698,7 +9737,7 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.4.3.tgz"
   "version" "0.4.3"
 
-"react@*", "react@^16.13.1", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@>=17.0.1", "react@17.0.1":
+"react@*", "react@^16.13.1", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@>= 15.2.1", "react@>=17.0.1", "react@17.0.1":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
@@ -9791,6 +9830,15 @@
   "version" "2.2.2"
   dependencies:
     "minimatch" "3.0.4"
+
+"recyclerlistview@^3.0.5":
+  "integrity" "sha512-JVHz13u520faEsbVqFrJOMuJjc4mJlOXODe5QdqAJHdl5/IpyYeo83uiHrpzxyLb8QtJ0889JMlDik+Z1Ed0QQ=="
+  "resolved" "https://registry.npmjs.org/recyclerlistview/-/recyclerlistview-3.0.5.tgz"
+  "version" "3.0.5"
+  dependencies:
+    "lodash.debounce" "4.0.8"
+    "prop-types" "15.5.8"
+    "ts-object-utils" "0.0.5"
 
 "regenerate-unicode-properties@^10.0.1":
   "integrity" "sha512-vn5DU6yg6h8hP/2OkQo3K7uVILvY4iu0oI4t3HFa81UPkhGJwkRwM10JEc3upjdhHjs/k8GJY1sRBhk5sr69Bw=="
@@ -11285,6 +11333,11 @@
   dependencies:
     "tslib" "^1.9.3"
 
+"ts-object-utils@0.0.5":
+  "integrity" "sha1-lTYc3s1+UhZ8/F5jTHY0XpCiYHc="
+  "resolved" "https://registry.npmjs.org/ts-object-utils/-/ts-object-utils-0.0.5.tgz"
+  "version" "0.0.5"
+
 "ts-pnp@^1.1.6":
   "integrity" "sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw=="
   "resolved" "https://registry.npmjs.org/ts-pnp/-/ts-pnp-1.2.0.tgz"
@@ -12022,6 +12075,11 @@
   dependencies:
     "simple-plist" "^1.1.0"
     "uuid" "^7.0.3"
+
+"xdate@^0.8.0":
+  "integrity" "sha1-17AzwASF0CaVuvAET06s2j/JYaM="
+  "resolved" "https://registry.npmjs.org/xdate/-/xdate-0.8.2.tgz"
+  "version" "0.8.2"
 
 "xdl@*", "xdl@59.2.30":
   "integrity" "sha512-Id4b3prDMPlW9OuycaeQwXeD/3tAgTmJY0N1blRL5Xr3KXhybXkyCsnvOaFyvQ+luqnmsOUdJQkfzL0JuyIauw=="

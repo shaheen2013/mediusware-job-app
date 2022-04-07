@@ -67,7 +67,7 @@ const ExamProgress = ({route, navigation}) => {
             case 3:
                 return <Viva/>;
             case 4:
-                return <Result/>;
+                return <Result navigation={navigation}/>;
         }
     };
 
