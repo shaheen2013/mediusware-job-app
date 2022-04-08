@@ -44,6 +44,7 @@ Colors.loadColors({
     deepBlue: '#004D8C',
     bgColor: '#F3F7FB',
     lightColor: '#D9E7F3',
+    warningColor:'#FF0000',
 
     // will be removed....
     iconBg: '#F3F7FB',

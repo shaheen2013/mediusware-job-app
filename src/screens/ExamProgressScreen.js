@@ -61,13 +61,13 @@ const ExamProgress = ({route, navigation}) => {
             default:
                 return <Pending/>;
             case 1:
-                return <Mcq/>;
+                return <Mcq navigation={navigation}/>;
             case 2:
-                return <Written/>;
+                return <Written navigation={navigation}/>;
             case 3:
-                return <Viva/>;
+                return <Viva navigation={navigation}/>;
             case 4:
-                return <Result navigation={navigation}/>;
+                return <Result  />;
         }
     };
 

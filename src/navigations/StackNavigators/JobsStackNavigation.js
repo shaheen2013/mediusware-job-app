@@ -1,13 +1,9 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import JobDetailsScreen from "../../screens/JobDetailsScreen";
-import ApplyScreen from "../../screens/ApplyScreen";
-import ApplicantInformationScreen from "../../screens/ApplicantInformationScreen";
-import SubmissionScreen from "../../screens/SubmissionScreen";
-import JobsScreen from "../../screens/JobsScreen";
 import JobsDetailsStackNavigation from "./JobsDetailsStackNavigation";
 import BottomNavigation from "../BottomNavigation";
+import ExamStackNavigation from "./ExamStackNavigtion";
 
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +16,7 @@ const JobsStackNavigation = () => {
     >
         <Stack.Screen name="BottomNavigation" component={BottomNavigation}/>
         <Stack.Screen name="JobsDetailsStackNavigation" component={JobsDetailsStackNavigation}/>
+        <Stack.Screen name="ExamStackNavigation" component={ExamStackNavigation}/>
     </Stack.Navigator>);
 };
 
