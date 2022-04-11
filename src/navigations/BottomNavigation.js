@@ -7,11 +7,14 @@ import StackNavigation from "./StackNavigation";
 import DrawerNavigation from "./DrawerNavigation";
 import JobsStackNavigation from "./StackNavigators/JobsStackNavigation";
 import DashboardStackNavigation from "./StackNavigators/DashboardStackNavigation";
+import ProfileStackNavigation from "./StackNavigators/ProfileStackNavigation";
 import HomeIcon from "../../assets/svgIcon/HomeIcon";
 import { Feather } from '@expo/vector-icons';
 import HomeFillIcon from "../../assets/svgIcon/HomeFillIcon";
 import DashBoardIcon from "../../assets/svgIcon/DashBoardIcon";
 import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
+import ProfileIcon from "../../assets/svgIcon/ProfileIcon";
+import ProfileFilledIcon from "../../assets/svgIcon/ProfileFilledIcon";
 
 const Tab = createBottomTabNavigator();
 const BottomNavigation = () => {
@@ -43,6 +46,14 @@ const BottomNavigation = () => {
                 tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
                 tabBarIcon: ({focused}) => (
                     focused  ?<DashBoardIcon/>:<DashBoardOutlineIcon/>
+                )
+            }}/>
+
+            <Tab.Screen name="ProfileStackNavigation" component={ProfileStackNavigation} options={{
+                tabBarLabel: 'Profile',
+                tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
+                tabBarIcon: ({focused}) => (
+                    focused  ?<ProfileFilledIcon/>:<ProfileIcon/>
                 )
             }}/>
         </Tab.Navigator>

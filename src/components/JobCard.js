@@ -13,7 +13,7 @@ const JobCard = ({job,navigation}) => {
                 borderRadius: 16,
                 overflow: 'hidden'
             }}>
-            <TouchableOpacity onPress={()=>navigation.navigate('JobsDetailsStackNavigation',{ screen: 'JobDetails',params:{title:job.title} })}>
+            <TouchableOpacity onPress={()=>navigation.navigate('JobsDetailsStackNavigation',{ screen: 'JobDetails',params:{slug:job.slug} })}>
                 {/*<TouchableOpacity onPress={()=>navigation.navigate('JobsStackNavigation', { screen: 'JobDetails',params:{title:job.title} })}>*/}
                 <ImageBackground source={require('../../assets/images/bgJobCard.jpg')} style={{
                     padding: 16,
