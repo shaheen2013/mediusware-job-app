@@ -4,7 +4,7 @@ import {TextInput, StyleSheet} from 'react-native';
 import {Text, View, TouchableOpacity, TextField} from 'react-native-ui-lib';
 
 
-const InputField = ({title, placeholderText, isIcon}) => {
+const InputField = ({title, placeholderText, isIcon,value}) => {
     const [visibleText, setVisibleText] = useState(true);
     return (
         <View>
@@ -15,6 +15,7 @@ const InputField = ({title, placeholderText, isIcon}) => {
                         flex: 1,
                         fontFamily: 'Montserrat_400Regular'
                     }}
+                    value={value}
                     placeholder={placeholderText}
                     secureTextEntry={visibleText ? true : false}
                 />

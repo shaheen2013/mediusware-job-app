@@ -8,10 +8,10 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 const DashBoardScreen = ({navigation, route}) => {
     console.log(navigation);
     return (
-        <SafeAreaView style={{flex: 1,paddingHorizontal:16}}>
+        <SafeAreaView style={{flex: 1}}>
             <View style={{flex:1}}>
                 <CommonHeader name={'Dashboard'} navigation={navigation}/>
-                <View>
+                <View paddingH-16>
                     <Text caption color={Colors.gray} marginT-20->Hello, Jack</Text>
                     <View row marginB-10 marginT-6>
                         <Text subTitleText deepGray>Welcome to</Text>
@@ -45,7 +45,7 @@ const DashBoardScreen = ({navigation, route}) => {
                     </View>
             </View>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:10}}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:10,paddingHorizontal:16}}>
                     <Text deepGray subtitle1 marginT-20 marginB-10>Calendar</Text>
                     <Calendar
                         style={{borderColor: Colors.borderColor, borderRadius: 10, borderWidth: 1}}

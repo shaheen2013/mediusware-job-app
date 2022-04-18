@@ -21,7 +21,7 @@ const Result = ({navigation}) => {
 
 
             <View marginT-40>
-                <TouchableOpacity onPress={()=> navigation.navigate('Dashboard')}>
+                <TouchableOpacity onPress={()=> navigation.navigate('DashboardStackNavigation',{screen:'Dashboard'})}>
                     <FilledBtn title={"Go to Dashboard"}/>
                 </TouchableOpacity>
 
