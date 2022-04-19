@@ -19,6 +19,7 @@ import {
     Montserrat_800ExtraBold,
 } from '@expo-google-fonts/montserrat';
 import DrawerNavigation from "./src/navigations/DrawerNavigation";
+import {Provider as AuthProvider} from './src/contexts/AuthContext'
 //import BottomNavigation from "./src/navigations/BottomNavigation";
 //import StackNavigation from "./src/navigations/StackNavigation";
 
@@ -100,12 +101,13 @@ export default function App() {
         return <AppLoading/>;
     } else {
         return (
-            <SafeAreaProvider>
-                <NavigationContainer theme={navTheme}>
-                    <DrawerNavigation/>
-                </NavigationContainer>
-            </SafeAreaProvider>
-
+            <AuthProvider>
+                <SafeAreaProvider>
+                    <NavigationContainer theme={navTheme}>
+                        <DrawerNavigation/>
+                    </NavigationContainer>
+                </SafeAreaProvider>
+            </AuthProvider>
         );
     }
 

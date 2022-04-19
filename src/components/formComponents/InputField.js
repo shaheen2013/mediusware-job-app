@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
 import {Feather} from '@expo/vector-icons';
 import {TextInput, StyleSheet} from 'react-native';
-import {Text, View, TouchableOpacity, TextField} from 'react-native-ui-lib';
+import {Text, View, TouchableOpacity} from 'react-native-ui-lib';
 
 
-const InputField = ({title, placeholderText, isIcon,value}) => {
+const InputField = ({title, placeholderText, isIcon,value,onChangeText}) => {
     const [visibleText, setVisibleText] = useState(true);
     return (
         <View>
@@ -16,8 +16,11 @@ const InputField = ({title, placeholderText, isIcon,value}) => {
                         fontFamily: 'Montserrat_400Regular'
                     }}
                     value={value}
+                    onChangeText={onChangeText}
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
                     placeholder={placeholderText}
-                    secureTextEntry={visibleText ? true : false}
+                    secureTextEntry = {isIcon ?(visibleText ? true : false):false}
                 />
                 {
                     isIcon &&

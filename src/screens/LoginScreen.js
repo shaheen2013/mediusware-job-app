@@ -26,6 +26,10 @@ const LoginScreen = ({navigation, route}) => {
             <TouchableOpacity marginT-40>
                 <FilledBtn title={'Login'}/>
             </TouchableOpacity>
+            <View>
+                <Text text gray marginV-20>If don't apply any mediusware job,then apply one <Text
+                    onPress={() => navigation.navigate('BottomNavigation',{screen:'Home'})} blue>Job</Text></Text>
+            </View>
         </View>
     </SafeAreaView>);
 };

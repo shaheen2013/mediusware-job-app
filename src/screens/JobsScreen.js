@@ -41,7 +41,7 @@ const JobsScreen = ({navigation}) => {
     const [jobs] = useJobs();
     return (
         <SafeAreaView style={{flex: 1}}>
-
+            <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
             <View paddingH-16 flex-1>
                 <HeaderTitle navigation={navigation}/>
                 <Text marginT-20 marginB-6 caption gray>Hey, Good Morning!</Text>
