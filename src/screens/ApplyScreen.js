@@ -12,22 +12,50 @@ import * as DocumentPicker from 'expo-document-picker';
 
 
 const ApplyScreen = ({navigation, route}) => {
-    const {state,apply} = useContext(AuthContext);
+    const {state,register,login} = useContext(AuthContext);
     const isIcon = false;
     const [full_name,setFull_name] = useState('');
     const [phone,setPhone] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [rePassword,setRePassword] = useState('');
-    //const [Resume,setResume] = useState('');
     const [cv,setCv] = useState({});
+    const formDataObj = new FormData();
 
     // Document Picker Expo
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
-        //setDocName(result.uri);
-        setCv(result);
+        //setResume(result);
+        const {name, uri} = result;
+        const uriParts = name.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+        formDataObj.append('cv', {
+            uri,
+            name,
+            type: `application/${fileType}`,
+        })
+        //setResume(result);
+        //console.log(formDataObj);
     };
+
+    const registration = async () =>{
+        let formData = {
+            full_name,phone,email,password
+        }
+        for (let key in formData) {
+            formDataObj.append(key, Array.isArray(formData[key]) ? JSON.stringify(formData[key]) : formData[key]);
+        }
+        await login({email,password});
+        // call apply method to user register
+        register(formDataObj);
+        setFull_name('');
+        setEmail('');
+        setPhone('');
+        setPassword('');
+        setRePassword('');
+        setCv({});
+
+    }
 
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -84,14 +112,14 @@ const ApplyScreen = ({navigation, route}) => {
                                     File</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.fileNameStyle} paddingH-10 paddingV-10>
-                                <Text>{cv.name}</Text>
+                            <View style={styles.fileNameStyle} paddingH-10 paddingV-4>
+                                <Text>{cv?.name}</Text>
                             </View>
                         </View>
                     </View>
                 </ScrollView>
                 {/*<TouchableOpacity marginV-15 onPress={() => navigation.navigate('ApplicantInformation')}>*/}
-                <TouchableOpacity marginV-15 onPress={() => apply({full_name,email,phone,password,cv})}>
+                <TouchableOpacity marginV-15 onPress={registration}>
                     <FilledBtn title={'Continue'}/>
                 </TouchableOpacity>
             </View>

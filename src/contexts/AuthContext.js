@@ -7,10 +7,14 @@ const authReducer = (state,action) =>{
     }
 }
 
-const apply = (dispatch) =>{
-    return async ({full_name, email, password, phone, cv}) => {
+const register = (dispatch) =>{
+    return async (formDataObj) => {
         try {
-            const response = await mediusware.post('/register-candidate/',{full_name, email, password, phone, cv});
+            const response = await mediusware.post('/register-candidate/', formDataObj,{
+                headers:{
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
             console.log("success",response.data);
         } catch (err) {
             console.log("error:",err.response.data);
@@ -20,8 +24,13 @@ const apply = (dispatch) =>{
 }
 
 const login = (dispatch)=>{
-    return({email,password})=>{
-
+    return async ({email,password})=>{
+        try {
+            const response = await mediusware.post('/login/', {email,password});
+            console.log("success",response.data);
+        } catch (err) {
+            console.log("error:",err.response.data);
+        }
     }
 }
 
@@ -32,5 +41,5 @@ const logout=(dispatch)=>{
 }
 export const {Provider,Context} = createDataContext(
     authReducer,
-    {login,logout,apply},
+    {login,logout,register},
     {isSignedIn:false})
