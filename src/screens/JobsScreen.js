@@ -10,33 +10,6 @@ import JobCard from "../components/JobCard";
 import useJobs from "../hooks/useJobs";
 
 
-/*const jobs = [{
-    id: 101,
-    title: 'SENIOR SOFTWARE ENGINEER (PHP, Laravel)',
-    salary: 'Tk. 25,000 - 45,000',
-    experience: '2 Year of experience'
-}, {
-    id: 102,
-    title: 'JUNIOR SOFTWARE ENGINEER (PHP, Laravel)',
-    salary: 'Tk. 10,000 - 25,000',
-    experience: '0-1 Year of experience'
-}, {
-    id: 103,
-    title: 'JUNIOR SOFTWARE ENGINEER (PYTHON, DJANGO)',
-    salary: 'Tk. 10,000 - 25,000',
-    experience: '0-1 Year of experience'
-}, {
-    id: 104,
-    title: 'SENIOR SOFTWARE ENGINEER (PYTHON, DJANGO)',
-    salary: 'Tk. 25,000 - 45,000',
-    experience: '2 Year of experience'
-}, {
-    id: 105,
-    title: 'SENIOR SOFTWARE ENGINEER (PHP, Laravel)',
-    salary: 'Tk. 25,000 - 45,000',
-    experience: '2 Year of experience'
-},]*/
-
 const JobsScreen = ({navigation}) => {
     const [jobs] = useJobs();
     return (

@@ -3,7 +3,6 @@ import {ImageBackground} from 'react-native';
 import {Colors, Text, View, TouchableOpacity} from 'react-native-ui-lib';
 
 const JobCard = ({job,navigation}) => {
-    console.log(navigation);
     return (
         <View
             marginV-8

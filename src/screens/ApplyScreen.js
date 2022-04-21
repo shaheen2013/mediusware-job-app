@@ -9,10 +9,14 @@ import {StatusBar, StyleSheet,ScrollView} from "react-native";
 import {Feather} from "@expo/vector-icons";
 import {Context as AuthContext} from '../contexts/AuthContext';
 import * as DocumentPicker from 'expo-document-picker';
+import Register from "../components/apply/Register";
+import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
+import UserInfo from "../components/apply/UserInfo";
 
 
 const ApplyScreen = ({navigation, route}) => {
-    const {state,register,login} = useContext(AuthContext);
+    const {state,register,login,apply} = useContext(AuthContext);
+    const {title,job_slug} = route.params;
     const isIcon = false;
     const [full_name,setFull_name] = useState('');
     const [phone,setPhone] = useState('');
@@ -20,11 +24,17 @@ const ApplyScreen = ({navigation, route}) => {
     const [password,setPassword] = useState('');
     const [rePassword,setRePassword] = useState('');
     const [cv,setCv] = useState({});
-    const formDataObj = new FormData();
+    const [isRegister,setIsRegister] = useState(true);
+    const [expSalary,setExpSalary] = useState('');
+    const [gitUrl, setGitUrl] = useState('');
+    const [linkedin,setLinkedin] = useState('');
+    const [comments,setComments] = useState('');
+    const [totalFormDataObj,setTotalFormDataObj] = useState(new FormData());
+    let formDataObj = new FormData();
 
     // Document Picker Expo
     const pickDocument = async () => {
-        let result = await DocumentPicker.getDocumentAsync({});
+         let result =  await DocumentPicker.getDocumentAsync({});
         //setResume(result);
         const {name, uri} = result;
         const uriParts = name.split('.');
@@ -34,26 +44,33 @@ const ApplyScreen = ({navigation, route}) => {
             name,
             type: `application/${fileType}`,
         })
-        //setResume(result);
-        //console.log(formDataObj);
+        setCv(result);
+        setTotalFormDataObj(formDataObj);
+        console.log(formDataObj);
     };
 
-    const registration = async () =>{
+    const registration =  () =>{
+        formDataObj = totalFormDataObj;
         let formData = {
             full_name,phone,email,password
         }
         for (let key in formData) {
             formDataObj.append(key, Array.isArray(formData[key]) ? JSON.stringify(formData[key]) : formData[key]);
         }
-        await login({email,password});
-        // call apply method to user register
-        register(formDataObj);
-        setFull_name('');
+        // call register method for user registration
+        register(formDataObj).then(()=>login({email,password}));
+        setTotalFormDataObj(new FormData());
+        setIsRegister(false);
+        //apply({expSalary,gitUrl,linkedin,comments});
+       //await login({email,password})
+
+        // clear all data
+        /*setFull_name('');
         setEmail('');
         setPhone('');
         setPassword('');
         setRePassword('');
-        setCv({});
+        setCv({});*/
 
     }
 
@@ -66,62 +83,45 @@ const ApplyScreen = ({navigation, route}) => {
 
             <View paddingH-16 style={{flex: 12}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text subtitle4 blue marginB-10>Job application for “UX UI Designer</Text>
+                    <Text subtitle4 blue marginB-10>{title}</Text>
                     <View>
                         <Text text gray marginB-20>If already have Mediusware job account then please <Text
                             onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>
                     </View>
-                    <InputField
-                        title={'Full Name*'}
-                        placeholderText={'Enter Your Name'}
-                        value={full_name}
-                        onChangeText={setFull_name}
-                    />
-                    <InputField
-                        title={'Email Address*'}
-                        placeholderText={'Enter Your Email'}
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                    <InputField
-                        title={'Phone Number'}
-                        placeholderText={'+880'}
-                        value={phone}
-                        onChangeText={setPhone}
-                    />
-                    <InputField
-                        isIcon={true}
-                        title={'Password'}
-                        placeholderText={'Enter Your Password'}
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                    <InputField
-                        isIcon={true}
-                        title={'Re-Type Password'}
-                        placeholderText={'Enter Your Re-Type Password'}
-                        value={rePassword}
-                        onChangeText={setRePassword}
-                    />
-                    <View>
-                        <Text marginB-8 text>CV/Resume*</Text>
-                        <View style={styles.uploadContainer}>
-                            <View style={styles.uploadStyle}>
-                                <TouchableOpacity paddingH-10 paddingV-3
-                                 onPress={pickDocument}><Text blue subtitle3>Choose
-                                    File</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.fileNameStyle} paddingH-10 paddingV-4>
-                                <Text>{cv?.name}</Text>
-                            </View>
-                        </View>
-                    </View>
+                    { isRegister ?
+                        <Register full_name={full_name} setFull_name={setFull_name}
+                               phone={phone} setPhone={setPhone}
+                               email={email} setEmail={setEmail}
+                               password={password} setPassword={setPassword}
+                               rePassword={rePassword} setRePassword={setRePassword}
+                               cv={cv} setCv={setCv}
+                               pickDocument={pickDocument}/>
+                        :
+                        <UserInfo expSalary={expSalary} setExpSalary={setExpSalary}
+                                  gitUrl={gitUrl} setGitUrl={setGitUrl}
+                                  linkedin={linkedin} setLinkedin={setLinkedin}
+                                  comments={comments} setComments={setComments}
+                        />
+
+                    }
+
                 </ScrollView>
-                {/*<TouchableOpacity marginV-15 onPress={() => navigation.navigate('ApplicantInformation')}>*/}
-                <TouchableOpacity marginV-15 onPress={registration}>
+                { isRegister ? <TouchableOpacity marginV-15
+                                   onPress={registration}>
+                    {/*<TouchableOpacity marginV-15 onPress={registration}>*/}
                     <FilledBtn title={'Continue'}/>
                 </TouchableOpacity>
+                :
+                    <View row marginV-15>
+                        <TouchableOpacity flex-1 marginR-10 onPress={() => setIsRegister(true)}>
+                            <BlueOutlineBtn title={'Back'}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity flex-1 onPress={()=>apply({job_slug,expected_salary:expSalary,additional_message:comments,additional_fields:gitUrl})}>
+                            {/*<TouchableOpacity flex-1 onPress={() => navigation.navigate('Submission')}>*/}
+                            <FilledBtn title={'Submit'}/>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
         </SafeAreaView>
     );

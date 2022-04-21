@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import CommonHeader from "../components/CommonHeader";
@@ -8,8 +8,11 @@ import FilledBtn from "../components/buttons/FilledBtn";
 import {StatusBar, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView} from "react-native";
 import {Feather} from "@expo/vector-icons";
 import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
+import {Context as AuthContext} from "../contexts/AuthContext";
 
 const ApplicantInformationScreen = ({navigation, route}) => {
+    const {state,register,login} = useContext(AuthContext);
+    const {title} = route.params;
     const isIcon = false;
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -21,7 +24,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
             <View paddingH-16 flex-12>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View flex-8>
-                        <Text subtitle4 blue marginB-10>Job application for “UX UI Designer</Text>
+                        <Text subtitle4 blue marginB-10>{title}</Text>
                         <View>
                             <Text text gray marginB-20>If already have Mediusware job account then please <Text
                                 onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>

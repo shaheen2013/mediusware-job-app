@@ -90,7 +90,7 @@ const JobDetails = ({route, navigation}) => {
                     </View>
                 </VirtualizedView>
                 <View style={{position: 'absolute', width: '98%', top: '91.5%'}}>
-                    <TouchableOpacity marginH-16 marginV-10 onPress={() => navigation.navigate('Apply')}
+                    <TouchableOpacity marginH-16 marginV-10 onPress={() => navigation.navigate('Apply',{title:selectedJob?.title,job_slug:slug})}
                                       style={{resizeMode: 'contain'}}>
                         <FilledBtn title={"Apply Now"}/>
                     </TouchableOpacity>

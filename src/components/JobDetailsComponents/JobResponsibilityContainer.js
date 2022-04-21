@@ -37,7 +37,6 @@ const JobResponsibilityContainer = () => {
                 data={allResandRequire}
                 keyExtractor={item => item}
                 renderItem={({item}) => {
-                    console.log(item)
                     return <View>
                         <View marginT-20 paddingR-16>
                             <JobResponsibility points={item.responsibilites} title={"Job Responsibilites"}/>

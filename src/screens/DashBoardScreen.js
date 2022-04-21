@@ -6,7 +6,6 @@ import {ImageBackground, StatusBar,ScrollView} from "react-native";
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 
 const DashBoardScreen = ({navigation, route}) => {
-    console.log(navigation);
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{flex:1}}>
