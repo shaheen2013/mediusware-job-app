@@ -2,10 +2,13 @@ import createDataContext from "./createDataContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import mediusware from '../api/mediusware';
 import axios from 'axios';
+import {navigate} from '../navigationRef'
 let token;
 
 const authReducer = (state,action) =>{
     switch (action.type){
+        case 'login':
+            return {...state,token:action.payload}
         default:
             return state;
     }
@@ -30,12 +33,15 @@ const login = (dispatch)=>{
     return async ({email,password})=>{
         try {
             const response = await mediusware.post('/login/', {email,password});
-             token = response.data;
+             token = response.data._token;
+            const tokenValue = JSON.stringify(response.data._token)
+            await AsyncStorage.setItem('token', tokenValue)
            // await AsyncStorage.setItem('token', tokenValue);
           //  dispatch({type:'login',payload:tokenValue})
             //await AsyncStorage.setItem('_token',response.data.token);
-            console.log("success",response.data);
-            //dispatch({type:'login',payload:response.data.token})
+            console.log("success",response.data._token);
+            dispatch({type:'login',payload:tokenValue});
+           // navigate('Home')
         } catch (err) {
             console.log("error:",err.response.data);
         }
@@ -47,12 +53,12 @@ const apply = (dispatch)=>{
         console.log(job_slug,expected_salary,additional_message,additional_fields);
         try {
             const json = JSON.stringify({ job_slug,expected_salary,additional_message,additional_fields });
-            const res = await axios.post('https://hr.mediusware.xyz/api/apply', json, {
+            const res = await axios.post('https://hr.mediusware.xyz/api/apply/', json, {
                 headers: {
                     // Overwrite Axios's automatically set Content-Type
-                    'Content-Type': 'application/json',
+                   // 'Content-Type': 'application/json',
                     "Authorization": `Bearer ${token}`,
-                    "cache-control": "no-cache",
+                   // "cache-control": "no-cache",
                 }
             });
 

@@ -19,7 +19,9 @@ import {
     Montserrat_800ExtraBold,
 } from '@expo-google-fonts/montserrat';
 import DrawerNavigation from "./src/navigations/DrawerNavigation";
-import {Provider as AuthProvider} from './src/contexts/AuthContext'
+import {Provider as AuthProvider} from './src/contexts/AuthContext';
+import {setNavigator} from "./src/navigationRef";
+
 //import BottomNavigation from "./src/navigations/BottomNavigation";
 //import StackNavigation from "./src/navigations/StackNavigation";
 
@@ -87,6 +89,7 @@ Typography.loadTypographies({
 Spacings.loadSpacings({});
 
 export default function App() {
+    //const ref = useRef();
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,

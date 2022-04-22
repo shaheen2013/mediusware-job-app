@@ -29,8 +29,11 @@ const ApplyScreen = ({navigation, route}) => {
     const [gitUrl, setGitUrl] = useState('');
     const [linkedin,setLinkedin] = useState('');
     const [comments,setComments] = useState('');
+    const[addionalfields,setAdditionalFields] = useState([]);
     const [totalFormDataObj,setTotalFormDataObj] = useState(new FormData());
     let formDataObj = new FormData();
+    const [errorMsg,setErrorMsg] = useState('');
+    const [error,setError] = useState('');
 
     // Document Picker Expo
     const pickDocument = async () => {
@@ -50,6 +53,48 @@ const ApplyScreen = ({navigation, route}) => {
     };
 
     const registration =  () =>{
+        if(full_name  === ""){
+            setError("name");
+            setErrorMsg("Please, Enter your Name");
+            return;
+        }
+        if(email  === ""){
+            setError("email");
+            setErrorMsg("Please, Enter your Email Address");
+            return;
+        }
+        if(phone  === ""){
+            setError("phone");
+            setErrorMsg("Please, Enter your Phone Number");
+            return;
+        }
+        if(phone.length !== 10){
+            setError("phone");
+            setErrorMsg("Phone Number should be 10 digits without Beginning 0");
+            return;
+        }
+
+        if(password  === ""){
+            setError("password");
+            setErrorMsg("Please, Enter your Password");
+            return;
+        }
+
+        if(password.length < 6){
+            setError("password");
+            setErrorMsg("Password Should be more than 6 character long");
+            return;
+        }
+        if(password !== rePassword){
+            setError("re_password");
+            setErrorMsg("Passwords are not matched!!!");
+            return;
+        }
+        if(password !== rePassword){
+            setError("re_password");
+            setErrorMsg("Passwords are not matched!!!");
+            return;
+        }
         formDataObj = totalFormDataObj;
         let formData = {
             full_name,phone,email,password
@@ -74,6 +119,11 @@ const ApplyScreen = ({navigation, route}) => {
 
     }
 
+    const submit = () =>{
+        //setAdditionalFields([gitUrl,5,linkedin]);
+        apply({job_slug,expected_salary:expSalary,additional_message:comments,additional_fields:[gitUrl,"5",linkedin]});
+    }
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{flex: 1}}>
@@ -94,7 +144,7 @@ const ApplyScreen = ({navigation, route}) => {
                                email={email} setEmail={setEmail}
                                password={password} setPassword={setPassword}
                                rePassword={rePassword} setRePassword={setRePassword}
-                               cv={cv} setCv={setCv}
+                               cv={cv} setCv={setCv} errorMsg={errorMsg} error={error}
                                pickDocument={pickDocument}/>
                         :
                         <UserInfo expSalary={expSalary} setExpSalary={setExpSalary}
@@ -116,7 +166,7 @@ const ApplyScreen = ({navigation, route}) => {
                         <TouchableOpacity flex-1 marginR-10 onPress={() => setIsRegister(true)}>
                             <BlueOutlineBtn title={'Back'}/>
                         </TouchableOpacity>
-                        <TouchableOpacity flex-1 onPress={()=>apply({job_slug,expected_salary:expSalary,additional_message:comments,additional_fields:gitUrl})}>
+                        <TouchableOpacity flex-1 onPress={submit}>
                             {/*<TouchableOpacity flex-1 onPress={() => navigation.navigate('Submission')}>*/}
                             <FilledBtn title={'Submit'}/>
                         </TouchableOpacity>

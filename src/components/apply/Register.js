@@ -3,7 +3,8 @@ import {Text, View, Colors, TouchableOpacity} from 'react-native-ui-lib';
 import {ScrollView, StyleSheet} from "react-native";
 import InputField from "../formComponents/InputField";
 import FilledBtn from "../buttons/FilledBtn";
-const Register = ({full_name,setFull_name,email,setEmail,phone,setPhone,password,setPassword,rePassword,setRePassword,cv,setCv,pickDocument}) => {
+import ErrorMsg from "../ErrorMsg";
+const Register = ({full_name,setFull_name,email,setEmail,phone,setPhone,password,setPassword,rePassword,setRePassword,cv,setCv,pickDocument,errorMsg,error}) => {
     return (
         <View>
             <InputField
@@ -12,18 +13,29 @@ const Register = ({full_name,setFull_name,email,setEmail,phone,setPhone,password
                 value={full_name}
                 onChangeText={setFull_name}
             />
+            {
+                error==="name" && <ErrorMsg msg={errorMsg}/>
+            }
             <InputField
                 title={'Email Address*'}
                 placeholderText={'Enter Your Email'}
                 value={email}
                 onChangeText={setEmail}
             />
+            {
+                error==="email" && <ErrorMsg msg={errorMsg}/>
+            }
+
             <InputField
                 title={'Phone Number'}
                 placeholderText={'+880'}
                 value={phone}
                 onChangeText={setPhone}
             />
+            {
+                error==="phone" && <ErrorMsg msg={errorMsg}/>
+            }
+
             <InputField
                 isIcon={true}
                 title={'Password'}
@@ -31,6 +43,9 @@ const Register = ({full_name,setFull_name,email,setEmail,phone,setPhone,password
                 value={password}
                 onChangeText={setPassword}
             />
+            {
+                error==="password" && <ErrorMsg msg={errorMsg}/>
+            }
             <InputField
                 isIcon={true}
                 title={'Re-Type Password'}
@@ -38,6 +53,10 @@ const Register = ({full_name,setFull_name,email,setEmail,phone,setPhone,password
                 value={rePassword}
                 onChangeText={setRePassword}
             />
+            {
+                error==="re_password" && <ErrorMsg msg={errorMsg}/>
+            }
+
             <View>
                 <Text marginB-8 text>CV/Resume*</Text>
                 <View style={styles.uploadContainer}>
