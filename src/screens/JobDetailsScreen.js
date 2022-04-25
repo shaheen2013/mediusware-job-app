@@ -1,18 +1,16 @@
-import React, {useEffect} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {FlatList, StyleSheet, StatusBar, ScrollView} from 'react-native';
-import {Colors, View, TouchableOpacity, Text} from 'react-native-ui-lib';
-import {useIsFocused} from '@react-navigation/native';
-import JobDetailsInfo from "../components/JobDetailsComponents/JobDetailsInfo";
-import {Feather} from '@expo/vector-icons';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {SimpleLineIcons} from '@expo/vector-icons';
-import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
-import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
-import VirtualizedView from "../components/VirtualizedView";
+import { Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import FilledBtn from "../components/buttons/FilledBtn";
+import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
+import JobDetailsInfo from "../components/JobDetailsComponents/JobDetailsInfo";
+import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
+import VirtualizedView from "../components/VirtualizedView";
+import { Context as AuthContext } from '../contexts/AuthContext';
 import useJobs from "../hooks/useJobs";
-
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
@@ -20,6 +18,7 @@ function FocusAwareStatusBar(props) {
 
 
 const JobDetails = ({route, navigation}) => {
+    const { clearErrorMsg } = useContext(AuthContext);
     const {slug} = route.params;
     const [jobs] = useJobs();
     const selectedJob = jobs.find(job => slug === job.slug);
