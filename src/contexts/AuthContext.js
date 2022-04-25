@@ -39,8 +39,8 @@ const register = dispatch => async (formDataObj,callback) => {
       let payloadMsg;
       let emailError = err.response.data?.email;
       let phoneError = err.response.data?.phone;
-      emailError && payloadMsg = "Candidate with this email already exists!!!";  
-      phoneError && payloadMsg = "Candidate with this phone number already exists!!!";
+      emailError && (payloadMsg = "Candidate with this email already exists!!!");  
+      phoneError && (payloadMsg = "Candidate with this phone number already exists!!!");
      
       dispatch({ type: "add_error", payload: payloadMsg });
       // console.log("emaillength:",err.response.data.email.length);
