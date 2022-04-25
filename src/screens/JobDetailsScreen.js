@@ -1,6 +1,6 @@
 import { Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
@@ -9,16 +9,13 @@ import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeade
 import JobDetailsInfo from "../components/JobDetailsComponents/JobDetailsInfo";
 import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
 import VirtualizedView from "../components/VirtualizedView";
-import { Context as AuthContext } from '../contexts/AuthContext';
 import useJobs from "../hooks/useJobs";
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
 
-
 const JobDetails = ({route, navigation}) => {
-    const { clearErrorMsg } = useContext(AuthContext);
     const {slug} = route.params;
     const [jobs] = useJobs();
     const selectedJob = jobs.find(job => slug === job.slug);

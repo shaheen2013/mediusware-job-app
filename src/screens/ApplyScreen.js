@@ -138,20 +138,19 @@ const ApplyScreen = ({ navigation, route }) => {
     const registerSuccess = () => {
       console.log("state: ", state);
       clearErrorMsg();
+      console.log("after state: ", state);
       login({ email, password });
-      setTotalFormDataObj(new FormData());
       setIsRegister(false);
+      setTotalFormDataObj(new FormData());
       // clear all data
-      setFull_name("");
-      setEmail("");
-      setPhone("");
-      setPassword("");
-      setRePassword("");
-      setCv({});
+     setFull_name("");
+     setEmail("");
+     setPhone("");
+     setPassword("");
+     setRePassword("");
+     setCv({});
+    
     };
-
-    //apply({expSalary,gitUrl,linkedin,comments});
-    //await login({email,password})
   };
 
   const validateLinkedin = (linkedinProfile) => {
@@ -190,6 +189,15 @@ const ApplyScreen = ({ navigation, route }) => {
 
     setError("");
     setErrorMsg("");
+    const successApply = () =>{
+        navigation.navigate("Submission");
+      
+        setComments("");
+        setGitUrl("");
+        setLinkedin("");
+        setExpSalary("");
+        setExperience("");
+    }
     //setAdditionalFields([gitUrl,5,linkedin]);
     apply(
       {
@@ -198,7 +206,7 @@ const ApplyScreen = ({ navigation, route }) => {
         additional_message: comments,
         additional_fields: [gitUrl, experience, linkedin],
       },
-      () => navigation.navigate("Submission")
+      () => successApply()
     );
   };
 
