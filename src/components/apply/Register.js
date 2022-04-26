@@ -68,7 +68,7 @@ const Register = ({
         </Text>
         <View style={styles.uploadContainer}>
           <View style={styles.uploadStyle}>
-            <TouchableOpacity paddingH-10 paddingV-3 onPress={pickDocument}>
+            <TouchableOpacity paddingH-8 paddingV-3 onPress={pickDocument}>
               <Text blue subtitle3>
                 Choose File
               </Text>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: 8,
     borderRadius: 10,
-    width: "33%",
+    width: "35%",
   },
   fileNameStyle: {
     position: "absolute",

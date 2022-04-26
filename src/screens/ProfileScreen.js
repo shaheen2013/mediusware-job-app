@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity, Colors, Image} from 'react-native-ui-lib';
 import CommonHeader from "../components/CommonHeader";
-import {StatusBar, ScrollView, StyleSheet} from "react-native";
+import {StatusBar, ScrollView, StyleSheet,Linking,Button} from "react-native";
 import FilledBtn from "../components/buttons/FilledBtn";
 import {useIsFocused} from "@react-navigation/native";
 import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
 import ProfileHeader from "../components/ProfileHeader";
 import { Feather } from '@expo/vector-icons';
 import InputField from "../components/formComponents/InputField";
+import useCandidate from "../hooks/useCandidate";
+import * as ImagePicker from 'expo-image-picker';
+import Modal from "react-native-modal";
+import OutlineBtn from "../components/buttons/OutlineBtn";
+import { EvilIcons } from '@expo/vector-icons';
 
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -16,12 +21,56 @@ function FocusAwareStatusBar(props) {
 }
 
 const ProfileScreen = ({navigation, route}) => {
+    const [user] = useCandidate();
+    const[updateName,setUpdateName] = useState(user?.full_name);
+    const [selectedImage, setSelectedImage] = React.useState(null);
+    const [modalVisible,setModalVisible] = useState(false);
+    useEffect(()=>{
+        setUpdateName(user?.full_name);
+    },[user?.full_name])
+
+    let openImagePickerAsync = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permissionResult.granted === false) {
+            alert('Permission to access camera roll is required!');
+            return;
+        }
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        if (pickerResult.cancelled === true) {
+            return;
+        }
+        setSelectedImage({ localUri: pickerResult.uri });
+    };
 
     return (
         <SafeAreaView style={{flex: 1}}>
+            <View style={{position: 'absolute'}}>
+                <Modal isVisible={modalVisible} >
+                    <View style={styles.modalView}>
+                        <View style={styles.modalElementContainer}>
+                            <View marginB-40 row style={{justifyContent: 'space-between'}}>
+                                <Text blackGray subtitle4>Setting</Text>
+                                <TouchableOpacity onPress={()=>setModalVisible(false)}>
+                                    <EvilIcons name="close" size={30} color={Colors.gray} />
+                                </TouchableOpacity>
+                            </View>
+
+                            <TouchableOpacity style={{marginVertical:8}}>
+                                <OutlineBtn title={"Change Password"}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{marginVertical:8}}>
+                                <FilledBtn title={"Logout"}/>
+                            </TouchableOpacity>
+
+                        </View>
+
+                    </View>
+                </Modal>
+            </View>
             <View flex-1>
-                <ProfileHeader name={'Profile'} navigation={navigation}/>
                 <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
+                <ProfileHeader name={'Profile'} navigation={navigation} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+
                 <View  style={{flex: 8}}>
                     <View style={{position:'relative'}}>
                         <View>
@@ -29,10 +78,10 @@ const ProfileScreen = ({navigation, route}) => {
                             <View style={{height:50}} backgroundColor={Colors.white}/>
                         </View>
                         <View style={{position:'absolute',alignSelf:'center',marginTop:10}}>
-                            <Image source={require("../../assets/images/profile.png")}/>
+                            {selectedImage !== null ?<Image source={{ uri: selectedImage.localUri }} style={{height:80,width:80,borderRadius:10}}/>:<Image source={require("../../assets/images/profile.png")}/>}
                         </View>
                         <View  style={{position:'absolute',marginTop:'15%',marginLeft:'52%'}} >
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={openImagePickerAsync}>
                                 <View backgroundColor={Colors.white} paddingV-5 paddingL-6 style={{borderRadius:15,elevation: 2,width:40}}>
                                     <Feather name="camera" size={26} color="#4D4D4D" />
                                 </View>
@@ -41,8 +90,9 @@ const ProfileScreen = ({navigation, route}) => {
                         </View>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false} style={{paddingHorizontal: 16}}>
-                        <InputField title={'Name*'} placeholderText={'Jack Janson'}/>
-                        <InputField title={'Email*'} placeholderText={'example@mail.com'}/>
+                        <InputField title={'Name*'}  value={updateName}
+                                    onChangeText={setUpdateName}/>
+                        <InputField title={'Email*'} placeholderText={'Your Email'} value={user?.email} editable={false}/>
                         <View>
                             <Text marginB-8 text>CV/Resume*</Text>
                             <View style={styles.uploadContainer}>
@@ -51,7 +101,7 @@ const ProfileScreen = ({navigation, route}) => {
                                         File</Text></TouchableOpacity>
                                 </View>
                             </View>
-                            <Text marginB-16 small_text blue>Current CV/Resume*</Text>
+                            <Text marginB-16 small_text blue onPress={()=>Linking.openURL(`${user?.cv}`)}>Current CV/Resume*</Text>
                         </View>
                         <InputField isIcon={true} title={'Current Password'} placeholderText={''}/>
                     </ScrollView>
@@ -87,5 +137,26 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         borderRadius: 10,
         width: '33%'
+    },
+    modalView: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        zIndex: 1
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 4,
+        // elevation: 5
+    },
+    modalElementContainer:{
+        height:220,
+        backgroundColor:Colors.white,
+        borderRadius:20,
+        padding:16,
     }
+
 })

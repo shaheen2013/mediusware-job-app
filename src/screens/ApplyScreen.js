@@ -29,7 +29,7 @@ const ApplyScreen = ({ navigation, route }) => {
   const [experience, setExperience] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [comments, setComments] = useState("");
-  const [addionalfields, setAdditionalFields] = useState([]);
+  //const [addionalfields, setAdditionalFields] = useState([]);
   const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
   let formDataObj = new FormData();
   const [errorMsg, setErrorMsg] = useState("");
@@ -136,10 +136,10 @@ const ApplyScreen = ({ navigation, route }) => {
     register(formDataObj, () => registerSuccess());
 
     const registerSuccess = () => {
+      login({ email, password });
       console.log("state: ", state);
       clearErrorMsg();
       console.log("after state: ", state);
-      login({ email, password });
       setIsRegister(false);
       setTotalFormDataObj(new FormData());
       // clear all data

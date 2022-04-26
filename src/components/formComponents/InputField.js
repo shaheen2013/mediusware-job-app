@@ -10,6 +10,7 @@ const InputField = ({
   value,
   onChangeText,
   keyboardType,
+    editable
 }) => {
   const [visibleText, setVisibleText] = useState(true);
   const [focus, setFocus] = useState(false);
@@ -33,6 +34,7 @@ const InputField = ({
             flex: 1,
             fontFamily: "Montserrat_400Regular",
           }}
+          editable={editable}
           keyboardType={keyboardType}
           onFocus={handleFocus}
           onBlur={handleBlur}

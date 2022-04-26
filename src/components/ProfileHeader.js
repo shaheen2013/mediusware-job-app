@@ -7,7 +7,7 @@ import { Feather } from '@expo/vector-icons';
 
 
 
-const ProfileHeader = ({name, navigation}) => {
+const ProfileHeader = ({name, navigation,modalVisible,setModalVisible}) => {
     return (
         <View row paddingV-20
               style={{position: 'relative', backgroundColor: Colors.blue}}>
@@ -20,7 +20,7 @@ const ProfileHeader = ({name, navigation}) => {
                 <Text subtitle1 style={{color: Colors.white}}>{name}</Text>
             </View>
             <View style={{position: 'absolute', right: '8%', marginTop: 11}}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>setModalVisible(true)}>
                     <Feather name="settings" size={24} color="white"/>
                 </TouchableOpacity>
 

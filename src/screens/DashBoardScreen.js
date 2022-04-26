@@ -4,14 +4,19 @@ import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import CommonHeader from "../components/CommonHeader";
 import {ImageBackground, StatusBar,ScrollView} from "react-native";
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import useCandidate from "../hooks/useCandidate";
+import useApply from "../hooks/useApply";
 
 const DashBoardScreen = ({navigation, route}) => {
+    const [user] = useCandidate();
+    const [apply] = useApply();
+    console.log(apply);
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{flex:1}}>
                 <CommonHeader name={'Dashboard'} navigation={navigation}/>
                 <View paddingH-16>
-                    <Text caption color={Colors.gray} marginT-20->Hello, Jack</Text>
+                    <Text caption color={Colors.gray} marginT-20->Hello, {user?.full_name?user?.full_name.split(' ')[0]:'Jack'}</Text>
                     <View row marginB-10 marginT-6>
                         <Text subTitleText deepGray>Welcome to</Text>
                         <Text subTitleText blue> Candidate Dashboard!</Text>

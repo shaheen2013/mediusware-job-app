@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 import mediusware from "../api/mediusware";
 const useResult = () => {
     const [jobs, setJobs] = useState([]);
