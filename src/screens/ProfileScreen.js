@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity, Colors, Image} from 'react-native-ui-lib';
 import CommonHeader from "../components/CommonHeader";
@@ -14,6 +14,11 @@ import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
 import OutlineBtn from "../components/buttons/OutlineBtn";
 import { EvilIcons } from '@expo/vector-icons';
+import * as DocumentPicker from "expo-document-picker";
+import mediusware from "../api/mediusware";
+import {Context as AuthContext} from "../contexts/AuthContext";
+import ErrorMsg from "../components/ErrorMsg";
+import SuccessMsg from "../components/SuccessMsg";
 
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -21,11 +26,20 @@ function FocusAwareStatusBar(props) {
 }
 
 const ProfileScreen = ({navigation, route}) => {
+    const {state,tryLocalLogin} = useContext(AuthContext);
     const [user] = useCandidate();
     const[updateName,setUpdateName] = useState(user?.full_name);
     const [selectedImage, setSelectedImage] = React.useState(null);
+    const [cv, setCv] = useState({});
+    const [password,setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState("");
+    const [error, setError] = useState("");
+    const[success,setSuccess ] = useState("");
+    const[isSuccess,setISSuccess ] = useState(false);
     const [modalVisible,setModalVisible] = useState(false);
-    console.log(modalVisible);
+    const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
+    let formDataObj = new FormData();
+
     useEffect(()=>{
         setUpdateName(user?.full_name);
     },[user?.full_name])
@@ -41,7 +55,91 @@ const ProfileScreen = ({navigation, route}) => {
             return;
         }
         setSelectedImage({ localUri: pickerResult.uri });
+        const uri = pickerResult.uri;
+        const uriParts = uri.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+        formDataObj.append('avatar', {
+            uri,
+            name: `avatar.${fileType}`,
+            type: `image/${fileType}`,
+        });
+        setTotalFormDataObj(formDataObj);
+        console.log("after: ",totalFormDataObj);
     };
+
+    // Document Picker Expo
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({});
+        //setResume(result);
+        if (result) {
+            const { name, uri } = result;
+            const uriParts = name.split(".");
+            const fileType = uriParts[uriParts.length - 1];
+            formDataObj.append("cv", {
+                uri,
+                name,
+                type: `application/${fileType}`,
+            });
+            setCv(result);
+        }
+
+        console.log("before: ", totalFormDataObj);
+        setTotalFormDataObj(formDataObj);
+        console.log("after: ",totalFormDataObj);
+        //console.log(formDataObj);
+    };
+
+    // update profile post api
+    const updateProfile = async () => {
+        if (password === "") {
+            setError("password");
+            setErrorMsg("Please, Enter your Password");
+            return;
+        }
+
+        if (password.length < 6) {
+            setError("password");
+            setErrorMsg("Password Should be more than 6 character long");
+            return;
+        }
+        if (updateName === "") {
+            setError("name");
+            setErrorMsg("Name field should not be empty");
+            return;
+        }
+        formDataObj = totalFormDataObj;
+        let formData = {
+            full_name:updateName,
+            current_password:password,
+        };
+        for (let key in formData) {
+            formDataObj.append(
+                key,
+                Array.isArray(formData[key])
+                    ? JSON.stringify(formData[key])
+                    : formData[key]
+            );
+        }
+        console.log(formDataObj);
+        try {
+            const response = await mediusware.post('/candidate/', formDataObj,{
+                headers: {
+                    Authorization: `Bearer ${state.token}`,
+                    "Content-Type": "multipart/form-data",
+                }
+            });
+            setISSuccess(true);
+            setSuccess("Updated your profile successfully.");
+            //navigation.navigate('Home');
+            console.log("update profile:",response.data);
+            setPassword('');
+            setCv({});
+
+        }catch(err){
+            console.log(err.response.data);
+
+        }
+    }
 
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -82,7 +180,7 @@ const ProfileScreen = ({navigation, route}) => {
                             <View style={{height:50}} backgroundColor={Colors.white}/>
                         </View>
                         <View style={{position:'absolute',alignSelf:'center',marginTop:10}}>
-                            {selectedImage !== null ?<Image source={{ uri: selectedImage.localUri }} style={{height:80,width:80,borderRadius:10}}/>:<Image source={require("../../assets/images/profile.png")}/>}
+                            {user?.avatar !== null ?<Image source={{ uri: user?.avatar }} style={{height:80,width:80,borderRadius:10}}/>:<Image source={require("../../assets/images/profile.png")}/>}
                         </View>
                         <View  style={{position:'absolute',marginTop:'15%',marginLeft:'52%'}} >
                             <TouchableOpacity onPress={openImagePickerAsync}>
@@ -94,26 +192,34 @@ const ProfileScreen = ({navigation, route}) => {
                         </View>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false} style={{paddingHorizontal: 16}}>
-                        <InputField title={'Name*'}  value={updateName}
-                                    onChangeText={setUpdateName}/>
+                        <InputField title={'Name*'}  value={updateName} onChangeText={setUpdateName}/>
+                        {error === "name" && <ErrorMsg msg={errorMsg} />}
                         <InputField title={'Email*'} placeholderText={'Your Email'} value={user?.email} editable={false}/>
                         <View>
                             <Text marginB-8 text>CV/Resume*</Text>
                             <View style={styles.uploadContainer}>
                                 <View style={styles.uploadStyle}>
-                                    <TouchableOpacity paddingH-10 paddingV-3><Text blue subtitle3>Choose
-                                        File</Text></TouchableOpacity>
+                                    <TouchableOpacity paddingH-8 paddingV-3 onPress={pickDocument}>
+                                        <Text blue subtitle3>
+                                            Choose File
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.fileNameStyle} paddingH-10 paddingV-4>
+                                    <Text>{cv?.name}</Text>
                                 </View>
                             </View>
                             <Text marginB-16 small_text blue onPress={()=>Linking.openURL(`${user?.cv}`)}>Current CV/Resume*</Text>
                         </View>
-                        <InputField isIcon={true} title={'Current Password'} placeholderText={''}/>
+                        <InputField isIcon={true} title={'Current Password'} placeholderText={''} value={password} onChangeText={setPassword}/>
+                        {error === "password" && <ErrorMsg msg={errorMsg} />}
+                        {isSuccess && <SuccessMsg msg={success}/>}
                     </ScrollView>
 
                 </View>
 
                 <View flex-1 paddingH-16 >
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={updateProfile}>
                         <FilledBtn title={'Save'}/>
                     </TouchableOpacity>
                 </View>
@@ -140,27 +246,23 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginVertical: 8,
         borderRadius: 10,
-        width: '33%'
+        width: '35%'
     },
     modalView: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        zIndex: 1
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 5
+        zIndex: 1,
     },
     modalElementContainer:{
         height:220,
         backgroundColor:Colors.white,
         borderRadius:20,
         padding:16,
-    }
+    },
+    fileNameStyle: {
+        position: "absolute",
+        marginLeft: "40%",
+    },
 
 })
