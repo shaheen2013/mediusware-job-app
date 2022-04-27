@@ -25,6 +25,7 @@ const ProfileScreen = ({navigation, route}) => {
     const[updateName,setUpdateName] = useState(user?.full_name);
     const [selectedImage, setSelectedImage] = React.useState(null);
     const [modalVisible,setModalVisible] = useState(false);
+    console.log(modalVisible);
     useEffect(()=>{
         setUpdateName(user?.full_name);
     },[user?.full_name])
@@ -44,8 +45,9 @@ const ProfileScreen = ({navigation, route}) => {
 
     return (
         <SafeAreaView style={{flex: 1}}>
+            <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
             <View style={{position: 'absolute'}}>
-                <Modal isVisible={modalVisible} >
+                <Modal isVisible={modalVisible}>
                     <View style={styles.modalView}>
                         <View style={styles.modalElementContainer}>
                             <View marginB-40 row style={{justifyContent: 'space-between'}}>
@@ -55,7 +57,10 @@ const ProfileScreen = ({navigation, route}) => {
                                 </TouchableOpacity>
                             </View>
 
-                            <TouchableOpacity style={{marginVertical:8}}>
+                            <TouchableOpacity style={{marginVertical:8}} onPress={()=> {
+                                navigation.navigate('ChangePassword')
+                                setModalVisible(false)
+                            }}>
                                 <OutlineBtn title={"Change Password"}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={{marginVertical:8}}>
@@ -68,7 +73,6 @@ const ProfileScreen = ({navigation, route}) => {
                 </Modal>
             </View>
             <View flex-1>
-                <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
                 <ProfileHeader name={'Profile'} navigation={navigation} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
 
                 <View  style={{flex: 8}}>

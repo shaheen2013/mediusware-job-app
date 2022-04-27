@@ -1,10 +1,13 @@
 import React from 'react';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useIsFocused} from '@react-navigation/native';
 import {TouchableOpacity, View, Text, Colors} from "react-native-ui-lib";
-import {StyleSheet} from 'react-native'
+import {StatusBar, StyleSheet} from 'react-native'
 import WhiteLeftArrowIcon from "../../../assets/svgIcon/WhiteLeftArrowIcon";
 import LeftArrowIcon from "../../../assets/svgIcon/LeftArrowIcon";
-
+function FocusAwareStatusBar(props) {
+    const isFocused = useIsFocused();
+    return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
+}
 
 const JobDetailsHeader = ({name, navigation}) => {
     return (

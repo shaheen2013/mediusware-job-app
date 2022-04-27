@@ -10,7 +10,11 @@ import JobCard from "../components/JobCard";
 import useJobs from "../hooks/useJobs";
 import {Context as AuthContext} from "../contexts/AuthContext";
 import useCandidate from "../hooks/useCandidate";
-
+import {useIsFocused} from "@react-navigation/native";
+function FocusAwareStatusBar(props) {
+    const isFocused = useIsFocused();
+    return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
+}
 const JobsScreen = ({navigation}) => {
     const date = new Date();
     const hours = date.getHours();
@@ -40,7 +44,7 @@ const JobsScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={{flex: 1}}>
-            <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
+            <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
             <View paddingH-16 flex-1>
                 <HeaderTitle navigation={navigation}/>
                 <Text marginT-20 marginB-6 caption gray>{!user.full_name && 'Hey, '} {greetings} {`${user?.full_name?user?.full_name.split(" ")[0]:""}!`}</Text>

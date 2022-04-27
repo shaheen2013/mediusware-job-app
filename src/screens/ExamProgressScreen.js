@@ -22,9 +22,13 @@ import Mcq from "../components/ExamProgress/Mcq";
 import Written from "../components/ExamProgress/Written";
 import Viva from "../components/ExamProgress/Viva";
 import Result from "../components/ExamProgress/Result";
+import useCandidate from "../hooks/useCandidate";
+import useApply from "../hooks/useApply";
 
 
 const ExamProgress = ({route, navigation}) => {
+    const [user] = useCandidate();
+    const [apply] = useApply();
     const [activeIndex, setActiveIndex] = useState(0);
     const [completedStepIndex, setCompletedStepIndex] = useState(undefined);
     const [allTypesIndex, setAllTypesIndex] = useState(0);
@@ -59,15 +63,15 @@ const ExamProgress = ({route, navigation}) => {
         switch (activeIndex) {
             case 0:
             default:
-                return <Pending/>;
+                return <Pending title={apply?.job?.title} appliedAt={apply?.created_at} expSalary={apply?.expected_salary}/>;
             case 1:
-                return <Mcq navigation={navigation}/>;
+                return <Mcq navigation={navigation} title={apply?.job?.title}/>;
             case 2:
-                return <Written navigation={navigation}/>;
+                return <Written navigation={navigation} title={apply?.job?.title}/>;
             case 3:
-                return <Viva navigation={navigation}/>;
+                return <Viva navigation={navigation} title={apply?.job?.title}/>;
             case 4:
-                return <Result  navigation={navigation}/>;
+                return <Result  navigation={navigation} title={apply?.job?.title}/>;
         }
     };
 
@@ -150,7 +154,7 @@ const ExamProgress = ({route, navigation}) => {
                             <Text marginH-16 text style={updateLabelText(3)}>Viva</Text>
                             <Text marginH-16 text style={updateLabelText(4)}>Result</Text>
                         </View>
-                    <Text caption color={Colors.gray} marginT-20->Hello, Jack</Text>
+                    <Text caption color={Colors.gray} marginT-20->Hello, {user?.full_name ? user?.full_name.split(' ')[0]:'Jack'}</Text>
                     {renderCurrentStep()}
 
                 </View>

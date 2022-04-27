@@ -10,7 +10,7 @@ import useApply from "../hooks/useApply";
 const DashBoardScreen = ({navigation, route}) => {
     const [user] = useCandidate();
     const [apply] = useApply();
-    console.log(apply);
+    console.log(apply?.job?.title);
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{flex:1}}>
@@ -38,11 +38,11 @@ const DashBoardScreen = ({navigation, route}) => {
                             }}>
                                 <View row style={{justifyContent: 'space-between'}}>
                                     <Text gray caption>You have applied for the job</Text>
-                                    <Text gray text>20 Dec, 2022</Text>
+                                    <Text gray text>{apply?.created_at}</Text>
                                 </View>
 
-                                <Text subtitle3 gray marginV-8>SENIOR SOFTWARE ENGINEER (PHP,SQl, Laravel) </Text>
-                                <Text subtitle3 gray>Exp.Salary: <Text blue> 25,000</Text></Text>
+                                <Text subtitle3 gray marginV-8>{apply?.job?.title.toUpperCase()}</Text>
+                                <Text subtitle3 gray>Exp.Salary: <Text blue> {apply?.expected_salary}</Text></Text>
                             </ImageBackground>
                         </TouchableOpacity>
 

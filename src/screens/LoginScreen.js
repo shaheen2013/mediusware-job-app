@@ -7,6 +7,11 @@ import InputField from "../components/formComponents/InputField";
 import FilledBtn from "../components/buttons/FilledBtn";
 import {StatusBar} from "react-native";
 import {Context as AuthContext} from "../contexts/AuthContext";
+import {useIsFocused} from "@react-navigation/native";
+function FocusAwareStatusBar(props) {
+    const isFocused = useIsFocused();
+    return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
+}
 
 const LoginScreen = ({navigation, route}) => {
     const [email,setEmail] = useState('');
@@ -17,10 +22,13 @@ const LoginScreen = ({navigation, route}) => {
     const userLogin = () =>{
         login({email,password});
         navigation.navigate('BottomNavigation',{screen:'Home'});
+        setEmail('');
+        setPassword('');
     }
     return (<SafeAreaView>
         <CommonHeader name={route.name} navigation={navigation}/>
-        <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
+        <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
+        {/*<StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>*/}
         <View paddingH-16 marginT-20>
             <LoginImg/>
             <Text h5 deepGray marginT-20>Hello,{'\n'}
