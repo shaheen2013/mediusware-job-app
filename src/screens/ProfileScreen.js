@@ -180,9 +180,11 @@ const ProfileScreen = ({navigation, route}) => {
                             <View style={{height:50}} backgroundColor={Colors.white}/>
                         </View>
                         <View style={{position:'absolute',alignSelf:'center',marginTop:10}}>
-                            {user?.avatar !== null ?<Image source={{ uri: user?.avatar }} style={{height:80,width:80,borderRadius:10}}/>:<Image source={require("../../assets/images/profile.png")}/>}
+                            {selectedImage !== null ?<Image source={{ uri: selectedImage.localUri}} style={{height:80,width:80,borderRadius:10}}/>:
+                                (user?.avatar !== null ? <Image source={{ uri: user?.avatar}} style={{height:80,width:80,borderRadius:10}}/>:
+                                <Image source={require("../../assets/images/profile.png")}/>)}
                         </View>
-                        <View  style={{position:'absolute',marginTop:'15%',marginLeft:'52%'}} >
+                        <View  style={{position:'absolute',marginTop:'15%',marginLeft:'52%'}}>
                             <TouchableOpacity onPress={openImagePickerAsync}>
                                 <View backgroundColor={Colors.white} paddingV-5 paddingL-6 style={{borderRadius:15,elevation: 2,width:40}}>
                                     <Feather name="camera" size={26} color="#4D4D4D" />
