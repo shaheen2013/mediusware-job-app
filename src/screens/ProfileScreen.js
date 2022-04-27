@@ -26,7 +26,7 @@ function FocusAwareStatusBar(props) {
 }
 
 const ProfileScreen = ({navigation, route}) => {
-    const {state,tryLocalLogin} = useContext(AuthContext);
+    const {state,tryLocalLogin,logout} = useContext(AuthContext);
     const [user] = useCandidate();
     const[updateName,setUpdateName] = useState(user?.full_name);
     const [selectedImage, setSelectedImage] = React.useState(null);
@@ -128,6 +128,8 @@ const ProfileScreen = ({navigation, route}) => {
                     "Content-Type": "multipart/form-data",
                 }
             });
+            setError('');
+            setErrorMsg('');
             setISSuccess(true);
             setSuccess("Updated your profile successfully.");
             //navigation.navigate('Home');
@@ -137,10 +139,8 @@ const ProfileScreen = ({navigation, route}) => {
 
         }catch(err){
             console.log(err.response.data);
-
         }
     }
-
     return (
         <SafeAreaView style={{flex: 1}}>
             <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
@@ -161,12 +161,10 @@ const ProfileScreen = ({navigation, route}) => {
                             }}>
                                 <OutlineBtn title={"Change Password"}/>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{marginVertical:8}}>
+                            <TouchableOpacity style={{marginVertical:8}} onPress={logout}>
                                 <FilledBtn title={"Logout"}/>
                             </TouchableOpacity>
-
                         </View>
-
                     </View>
                 </Modal>
             </View>
@@ -190,7 +188,6 @@ const ProfileScreen = ({navigation, route}) => {
                                     <Feather name="camera" size={26} color="#4D4D4D" />
                                 </View>
                             </TouchableOpacity>
-
                         </View>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false} style={{paddingHorizontal: 16}}>
@@ -217,16 +214,13 @@ const ProfileScreen = ({navigation, route}) => {
                         {error === "password" && <ErrorMsg msg={errorMsg} />}
                         {isSuccess && <SuccessMsg msg={success}/>}
                     </ScrollView>
-
                 </View>
-
                 <View flex-1 paddingH-16 >
                     <TouchableOpacity onPress={updateProfile}>
                         <FilledBtn title={'Save'}/>
                     </TouchableOpacity>
                 </View>
             </View>
-
         </SafeAreaView>
     );
 };

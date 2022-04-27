@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {FlatList, StatusBar, StyleSheet,Button} from 'react-native';
 import {Text, View, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import Logo from "../../assets/svgIcon/Logo";
 import HeaderTitle from "../components/HeaderTitle";
 import SearchField from "../components/formComponents/SearchField";
 import FilterBtn from "../components/buttons/FilterBtn";
@@ -16,6 +15,7 @@ function FocusAwareStatusBar(props) {
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
 const JobsScreen = ({navigation}) => {
+    const {state}= useContext(AuthContext);
     const date = new Date();
     const hours = date.getHours();
     console.log(hours);
@@ -47,7 +47,7 @@ const JobsScreen = ({navigation}) => {
             <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
             <View paddingH-16 flex-1>
                 <HeaderTitle navigation={navigation}/>
-                <Text marginT-20 marginB-6 caption gray>{!user.full_name && 'Hey, '} {greetings} {`${user?.full_name?user?.full_name.split(" ")[0]:""}!`}</Text>
+                <Text marginT-20 marginB-6 caption gray>{!state?.token && 'Hey, '} {greetings} {`${ state?.token && user?.full_name?user?.full_name.split(" ")[0]:""}!`}</Text>
                 <View row marginB-10>
                     <Text subTitleText deepGray>Find Your</Text>
                     <Text subTitleText blue> Perfect Job</Text>

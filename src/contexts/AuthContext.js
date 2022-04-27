@@ -10,7 +10,9 @@ const authReducer = (state, action) => {
     case "add_error":
       return { ...state, errorMessage: action.payload };
       case "clear_error_msg":
-          return {...state,errorMessage:''}
+          return {...state,errorMessage:''};
+      case 'logout':
+          return {token:null,errorMessage:''}
     default:
       return state;
   }
@@ -19,7 +21,8 @@ const tryLocalLogin = dispatch =>  async () =>{
     const token = await AsyncStorage.getItem('token');
     console.log(token);
     if(token){
-        dispatch({type:'login',payload:token})
+        dispatch({type:'login',payload:token});
+
     }
 }
 
@@ -101,8 +104,9 @@ const apply = (dispatch) => async ({ job_slug, expected_salary, additional_messa
       console.log("error:", err.response.data);
     }
 };
-const logout = (dispatch) => {
-  return () => {};
+const logout = dispatch => async ()=>{
+    await AsyncStorage.removeItem('token');
+    dispatch({type:'logout'});
 };
 export const { Provider, Context } = createDataContext(
   authReducer,
