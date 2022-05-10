@@ -3,12 +3,14 @@ import React, {useEffect, useState} from 'react';
 import mediusware from "../api/mediusware";
 const useSingleJob = (slug) => {
     const [singleJob, setSingleJob] = useState({});
-    //const [errorMessage, setErrorMessage] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const showSingleJob = async () => {
+        setIsLoading(true);
         try {
             const response = await mediusware.get(`/job/${slug}`);
-            setSingleJob(response.data)
+            setSingleJob(response.data);
+            setIsLoading(false);
         }catch(err){
 
         }
@@ -18,7 +20,7 @@ const useSingleJob = (slug) => {
         showSingleJob()
     },[slug])
 
-    return [singleJob]
+    return [singleJob,isLoading]
 };
 
 export default useSingleJob;

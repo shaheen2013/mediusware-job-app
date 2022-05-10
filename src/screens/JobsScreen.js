@@ -19,7 +19,7 @@ const JobsScreen = ({navigation}) => {
     const date = new Date();
     const hours = date.getHours();
     console.log(hours);
-    const [jobs] = useJobs();
+    const [jobs,isLoading,setIsLoading] = useJobs();
     const [greetings,setGreetings] = useState('Good Morning');
     const [user] = useCandidate();
 
@@ -68,6 +68,8 @@ const JobsScreen = ({navigation}) => {
                     //keyExtractor={(item,index)=> item.key}
                     renderItem={({item}) => {
                         return <JobCard
+                            isLoading={isLoading}
+                            setIsLoading={setIsLoading}
                             job={item}
                             navigation={navigation}
                         />

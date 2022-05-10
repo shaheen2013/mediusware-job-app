@@ -32,12 +32,24 @@ const ApplyScreen = ({ navigation, route }) => {
   //const [addionalfields, setAdditionalFields] = useState([]);
   const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
   let formDataObj = new FormData();
-  const [errorMsg, setErrorMsg] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState({
+    nameError:'',
+    emailError:'',
+    phoneError:'',
+    passwordError:'',
+    rePasswordError:'',
+    expSalaryError:'',
+    cvError:'',
+    gitUrlError:'',
+    linkedinError:'',
+    experienceError:'',
+    commentError:'',
+  });
+  //const [error, setError] = useState("");
 
   // Document Picker Expo
   const pickDocument = async () => {
-    let result = await DocumentPicker.getDocumentAsync({});
+    let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
     //setResume(result);
     if (result) {
       const { name, uri } = result;
@@ -49,8 +61,19 @@ const ApplyScreen = ({ navigation, route }) => {
         type: `application/${fileType}`,
       });
       setCv(result);
-      setError("");
-      setErrorMsg("");
+      /*setErrorMsg({
+        nameError:'',
+        emailError:'',
+        phoneError:'',
+        passwordError:'',
+        rePasswordError:'',
+        cvError:'',
+        expSalaryError:'',
+        gitUrlError:'',
+        linkedinError:'',
+        experienceError:'',
+        commentError:'',
+      });*/
     }
 
     console.log("before: ", totalFormDataObj);
@@ -63,20 +86,41 @@ const ApplyScreen = ({ navigation, route }) => {
   };
 
   const registration = () => {
-    if (full_name === "") {
-      setError("name");
-      setErrorMsg("Please, Enter your Name");
-      return;
+    setErrorMsg({
+      nameError: full_name.length > 0 ? '' : 'error in name',
+      emailError: email.length > 0 ? '' : 'error in email',
+      phoneError: '',
+      passwordError: '',
+      rePasswordError: '',
+      expSalaryError: '',
+      cvError: '',
+      gitUrlError: '',
+      linkedinError: '',
+      experienceError: '',
+      commentError: '',
+    })
+    /*if (full_name === "") {
+      //console.log("name");
+      let msg = {...errorMsg};
+      msg.nameError = 'Please, Enter your Full Name!!!';
+      setErrorMsg(msg);
+      console.log("name msg: ",msg);
+
     }
     if (email === "") {
-      setError("email");
-      setErrorMsg("Please, Enter your Email Address");
-      return;
-    }
+      console.log("email",errorMsg);
+      let msg = {...errorMsg};
+      console.log("error email: ",msg);
+       msg.emailError = 'Please, Enter your Email Address!!!';
+      setErrorMsg(msg);
+      // console.log("email msg: ",msg);
+    }*/
+
+    /*
     if (!validateEmail(email)) {
-      setError("email");
-      setErrorMsg("Please, Enter Valid Email Address!!!");
-      return;
+      let msg = {...errorMsg}
+      msg.emailError = 'Please, Enter your Email Address!!!';
+      setErrorMsg(msg);
     }
     if (phone === "") {
       setError("phone");
@@ -109,12 +153,12 @@ const ApplyScreen = ({ navigation, route }) => {
       setError("re_password");
       setErrorMsg("Passwords are not matched!!!");
       return;
-    }
-    if (totalFormDataObj._parts.length < 1) {
-      setError("cv");
-      setErrorMsg("CV is Required!!!");
-      return;
-    }
+    }*/
+    /*if (totalFormDataObj._parts.length < 1) {
+      let msg = {...errorMsg}
+      msg.cvError = 'Please, Upload your CV!!!';
+      setErrorMsg(msg);
+    }*/
     formDataObj = totalFormDataObj;
     let formData = {
       full_name,
@@ -130,12 +174,25 @@ const ApplyScreen = ({ navigation, route }) => {
           : formData[key]
       );
     }
-    setError("");
-    setErrorMsg("");
-    // call register method for user registration
-    register(formDataObj, () => registerSuccess());
 
-    const registerSuccess = () => {
+    // setErrorMsg({
+    //   nameError:'',
+    //   emailError:'',
+    //   phoneError:'',
+    //   passwordError:'',
+    //   rePasswordError:'',
+    //   cvError:'',
+    //   expSalaryError:'',
+    //   gitUrlError:'',
+    //   linkedinError:'',
+    //   experienceError:'',
+    //   commentError:'',
+    // });
+
+    // call register method for user registration
+    // register(formDataObj, () => registerSuccess());
+    register(formDataObj);
+   /* const registerSuccess = () => {
       login({ email, password });
       console.log("state: ", state);
       clearErrorMsg();
@@ -150,7 +207,7 @@ const ApplyScreen = ({ navigation, route }) => {
      setRePassword("");
      setCv({});
     
-    };
+    };*/
   };
 
   const validateLinkedin = (linkedinProfile) => {
@@ -165,7 +222,7 @@ const ApplyScreen = ({ navigation, route }) => {
   };
 
   const submit = () => {
-    if (expSalary === "") {
+    /*if (expSalary === "") {
       setError("expSalary");
       setErrorMsg("Please, Enter your expected salary!!!");
       return;
@@ -186,9 +243,9 @@ const ApplyScreen = ({ navigation, route }) => {
       setErrorMsg("Linked profile is not valid!!!");
       return;
     }
-
-    setError("");
-    setErrorMsg("");
+*/
+    // setError("");
+    // setErrorMsg("");
     const successApply = () =>{
         navigation.navigate("Submission");
       
@@ -230,7 +287,7 @@ const ApplyScreen = ({ navigation, route }) => {
               </Text>
             </Text>
           </View>
-          {state.errorMessage ? <ErrorMsg msg={state.errorMessage} /> : null}
+          {/*{state.errorMessage ? <ErrorMsg msg={state.errorMessage} /> : null}*/}
           {isRegister ? (
             <Register
               full_name={full_name}
@@ -246,7 +303,7 @@ const ApplyScreen = ({ navigation, route }) => {
               cv={cv}
               setCv={setCv}
               errorMsg={errorMsg}
-              error={error}
+              //error={error}
               pickDocument={pickDocument}
             />
           ) : (
@@ -262,12 +319,12 @@ const ApplyScreen = ({ navigation, route }) => {
               experience={experience}
               setExperience={setExperience}
               errorMsg={errorMsg}
-              error={error}
+              //error={error}
             />
           )}
         </ScrollView>
         {isRegister ? (
-          <TouchableOpacity marginV-15 onPress={registration}>
+          <TouchableOpacity marginV-15 onPress={()=>registration()}>
             {/*<TouchableOpacity marginV-15 onPress={registration}>*/}
             <FilledBtn title={"Continue"} />
           </TouchableOpacity>

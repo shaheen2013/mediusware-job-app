@@ -33,9 +33,9 @@ const LoginScreen = ({navigation, route}) => {
         <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
         {/*<StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>*/}
         <View paddingH-16 marginT-20 flex-1>
-                <LoginImg/>
             <View flex-3>
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    <LoginImg/>
                     <Text h5 deepGray marginT-20>Hello,{'\n'}
                         Good to see you again!</Text>
                     <Text text gray marginB-20 marginT-8>Log in to get going with our recruitment

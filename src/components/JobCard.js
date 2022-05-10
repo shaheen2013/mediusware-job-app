@@ -2,7 +2,12 @@ import React from 'react';
 import {ImageBackground} from 'react-native';
 import {Colors, Text, View, TouchableOpacity} from 'react-native-ui-lib';
 
-const JobCard = ({job,navigation}) => {
+const JobCard = ({job,navigation,isLoading,setIsLoading}) => {
+    const openJobDetails = () =>{
+        setIsLoading(true);
+        navigation.navigate('JobsDetailsStackNavigation',{ screen: 'JobDetails',params:{slug:job.slug}});
+
+    }
     return (
         <View
             marginV-8
@@ -12,7 +17,7 @@ const JobCard = ({job,navigation}) => {
                 borderRadius: 16,
                 overflow: 'hidden'
             }}>
-            <TouchableOpacity onPress={()=>navigation.navigate('JobsDetailsStackNavigation',{ screen: 'JobDetails',params:{slug:job.slug} })}>
+            <TouchableOpacity onPress={openJobDetails}>
                 {/*<TouchableOpacity onPress={()=>navigation.navigate('JobsStackNavigation', { screen: 'JobDetails',params:{title:job.title} })}>*/}
                 <ImageBackground source={require('../../assets/images/bgJobCard.jpg')} style={{
                     padding: 16,

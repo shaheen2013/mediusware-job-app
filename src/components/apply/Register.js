@@ -20,6 +20,7 @@ const Register = ({
   errorMsg,
   error,
 }) => {
+  console.log("00000000000000000000000000",errorMsg);
   return (
     <View>
       <InputField
@@ -28,14 +29,15 @@ const Register = ({
         value={full_name}
         onChangeText={setFull_name}
       />
-      {error === "name" && <ErrorMsg msg={errorMsg} />}
+      {errorMsg.nameError.length>0 && <ErrorMsg msg={errorMsg.nameError}/> }
+      {full_name.length}
       <InputField
         title={"Email Address*"}
         placeholderText={"Enter Your Email"}
         value={email}
         onChangeText={setEmail}
       />
-      {error === "email" && <ErrorMsg msg={errorMsg} />}
+     {errorMsg.emailError.length>0 && <ErrorMsg msg={errorMsg.emailError}/>}
 
       <InputField
         title={"Phone Number"}
@@ -43,7 +45,7 @@ const Register = ({
         value={phone}
         onChangeText={setPhone}
       />
-      {error === "phone" && <ErrorMsg msg={errorMsg} />}
+      {/*{error === "phone" && <ErrorMsg msg={errorMsg} />}*/}
 
       <InputField
         isIcon={true}
@@ -52,7 +54,7 @@ const Register = ({
         value={password}
         onChangeText={setPassword}
       />
-      {error === "password" && <ErrorMsg msg={errorMsg} />}
+      {/*{error === "password" && <ErrorMsg msg={errorMsg} />}*/}
       <InputField
         isIcon={true}
         title={"Re-Type Password"}
@@ -60,7 +62,7 @@ const Register = ({
         value={rePassword}
         onChangeText={setRePassword}
       />
-      {error === "re_password" && <ErrorMsg msg={errorMsg} />}
+      {/*{error === "re_password" && <ErrorMsg msg={errorMsg} />}*/}
 
       <View>
         <Text marginB-8 text>
@@ -78,7 +80,7 @@ const Register = ({
             <Text>{cv?.name}</Text>
           </View>
         </View>
-        {error === "cv" && <ErrorMsg msg={errorMsg} />}
+        {/*{errorMsg.cvError.length && <ErrorMsg msg={errorMsg.cvError} />}*/}
       </View>
     </View>
   );
