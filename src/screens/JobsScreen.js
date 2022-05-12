@@ -15,7 +15,7 @@ function FocusAwareStatusBar(props) {
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
 const JobsScreen = ({navigation}) => {
-    const {state}= useContext(AuthContext);
+    const {state,clearErrorMsg}= useContext(AuthContext);
     const date = new Date();
     const hours = date.getHours();
     console.log(hours);

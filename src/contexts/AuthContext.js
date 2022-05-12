@@ -58,7 +58,7 @@ const register = dispatch => async (formDataObj,callback) => {
   
 };
 
-const login = (dispatch) => async ({ email, password }) => {
+const login = (dispatch) => async ({ email, password },callback) => {
     console.log(email,password);
     try {
       const response = await mediusware.post("/login/", { email, password });
@@ -68,10 +68,14 @@ const login = (dispatch) => async ({ email, password }) => {
         dispatch({type:'login',payload:tokenValue})
      // await AsyncStorage.setItem('_token',response.data.token);L
       console.log("success", response.data);
+        if(callback){
+            callback();
+        }
       //dispatch({ type: "login", payload: tokenValue });
       // navigate('Home')
     } catch (err) {
-      console.log("error:", err.response.data);
+      console.log("error:", err.response.data?.detail);
+        dispatch({ type: "add_error", payload: err.response.data?.detail });
     }
 
 };
