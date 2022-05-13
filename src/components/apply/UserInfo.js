@@ -14,8 +14,6 @@ const UserInfo = ({
   setComments,
   experience,
   setExperience,
-  // errorMsg,
-  // error,
 }) => {
   return (
     <View>
@@ -42,7 +40,6 @@ const UserInfo = ({
           </View>
         </View>
       </View>
-      {/*{error === "expSalary" && <ErrorMsg msg={errorMsg} />}*/}
       <InputField
         keyboardType="numeric"
         title={"Professional Experience (Years)*"}
@@ -50,19 +47,16 @@ const UserInfo = ({
         value={experience}
         onChangeText={setExperience}
       />
-      {/*{error === "experience" && <ErrorMsg msg={errorMsg} />}*/}
       <InputField
         title={"GitHub URL*"}
         value={gitUrl}
         onChangeText={setGitUrl}
       />
-      {/*{error === "github" && <ErrorMsg msg={errorMsg} />}*/}
       <InputField
         title={"Linkedin*"}
         value={linkedin}
         onChangeText={setLinkedin}
       />
-      {/*{error === "linkedin" && <ErrorMsg msg={errorMsg} />}*/}
       <View>
         <Text marginB-8 text>
           Do you have anything to say to us?

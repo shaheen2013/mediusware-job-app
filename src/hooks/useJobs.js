@@ -9,11 +9,9 @@ const useResult = () => {
     const showJobs = async () => {
         setIsLoading(true);
         try {
-           // console.log("isloading",isLoading);
             const response = await mediusware.get('/jobs');
             setJobs(response.data);
             setIsLoading(false);
-            //console.log("isloading2",isLoading);
         }catch(err){
             setIsLoading(false);
         }

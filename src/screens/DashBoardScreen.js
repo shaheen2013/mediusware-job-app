@@ -10,7 +10,6 @@ import useApply from "../hooks/useApply";
 const DashBoardScreen = ({navigation, route}) => {
     const [user] = useCandidate();
     const [apply] = useApply();
-    console.log(apply?.job?.title);
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{flex:1}}>

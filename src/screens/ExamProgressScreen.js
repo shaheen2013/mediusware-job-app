@@ -35,7 +35,6 @@ const ExamProgress = ({route, navigation}) => {
 
     const onActiveIndexChanged = (activeIndex) => {
         setActiveIndex(activeIndex);
-        console.log(activeIndex);
     }
 
     const activeIndexChanged = (activeIndex) => {
@@ -76,7 +75,6 @@ const ExamProgress = ({route, navigation}) => {
     };
 
     ThemeManager.setComponentTheme('Wizard', (props, context) => {
-        //console.log(context);
     });
 
     const setStepBg = (index) =>{

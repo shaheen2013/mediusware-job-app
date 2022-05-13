@@ -67,7 +67,6 @@ const ChangePasswordScreen = ({navigation, route}) => {
 
             //navigation.navigate('Home');
             setErrorMsg("");
-            console.log("reset password:",response.data);
             setISSuccess(true);
             setSuccess("Password Changed Successfully.");
             setCurrentPassword('');
@@ -77,13 +76,10 @@ const ChangePasswordScreen = ({navigation, route}) => {
                 ()=>{
                     navigation.navigate('Profile')
                 },
-
                 1500
             );
-            //navigation.navigate('Profile')
-           // setSuccess(response.data.message);
+
         }catch(err){
-            console.log(err.response.data);
             setISSuccess(false);
             let currentPasswordError = (err.response.data?.current_password !== undefined);
             if(currentPasswordError){

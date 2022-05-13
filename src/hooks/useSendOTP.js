@@ -13,11 +13,8 @@ const useSendOTP = () => {
                     Authorization: `Bearer ${state.token}`
                 }
             });
-            //setApply(response.data[0]);
-            console.log("Get User:",response.data);
 
         }catch(err){
-            console.log("error",err.response.data)
 
         }
     }

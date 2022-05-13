@@ -29,7 +29,6 @@ const LoginScreen = ({navigation, route}) => {
     const password = useRef(null);
     const {state,register,login,clearErrorMsg} = useContext(AuthContext);
     const isIcon = false;
-    console.log("Login state: ",state);
     const {
         handleChange,
         handleBlur,
@@ -50,13 +49,6 @@ const LoginScreen = ({navigation, route}) => {
         }
     });
 
-
-    // const handleSubmit = () =>{
-    //     login({email:values.email,password:values.password});
-    //     console.log(state);
-    //     //navigation.navigate('BottomNavigation',{screen:'Home'});
-    //
-    // }
     return (
         <SafeAreaView style={{flex:1}}>
         <CommonHeader name={route.name} navigation={navigation}/>
@@ -100,7 +92,6 @@ const LoginScreen = ({navigation, route}) => {
                     </TouchableOpacity>
                 </ScrollView>
             </View>
-
 
             <View flex-2>
                 <Text text gray marginT-40>If don't apply any mediusware job,then apply one <Text

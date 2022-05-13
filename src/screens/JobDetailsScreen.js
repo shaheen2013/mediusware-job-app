@@ -20,12 +20,10 @@ function FocusAwareStatusBar(props) {
 const JobDetails = ({route, navigation}) => {
     const {slug} = route.params;
     const [singleJob,isLoading] = useSingleJob(slug);
-    //console.log("isloading details: ", isLoading);
 
     if (!singleJob) {
         return null;
     }
-    //console.log(singleJob?.job_contexts && singleJob?.job_contexts[3]?.description)
 
     const removeTags = (str) => {
         return str.replace(/(<([^>]+)>)/ig, '');

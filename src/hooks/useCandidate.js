@@ -14,22 +14,13 @@ const useCandidate = () => {
                 }
             });
              setUser(response.data);
-            console.log("Get User:",response.data);
 
         }catch(err){
-            console.log("error",err.response.data)
-
         }
     }
     useEffect(()=>{
         tryLocalLogin().then(()=>showUser());
     },[state.token])
-   // const [singleJob,setSingleJob]= useState({});
-    //const [errorMessage, setErrorMessage] = useState(false);
-    // useEffect(()=>{
-    //     showUser();
-    // },[state.token])
-
     return [user]
 };
 

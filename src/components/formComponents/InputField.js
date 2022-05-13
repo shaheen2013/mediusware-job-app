@@ -12,43 +12,39 @@ const InputField = forwardRef(({
                                    value,
                                    onChangeText,
                                    keyboardType,
-                                   autoCompleteType,
-                                   editable,
-                                   onBlur
+                                   autoComplete,
+                                   onBlur,
+                                   autoCorrect,
+                                   spellCheck,
+                                   autoCapitalize,
+                                   editable
+
                                }, ref) => {
     const validationColor = !touched ? Colors.borderColor : error ? '#FF5A5F' : Colors.borderColor;
     const [visibleText, setVisibleText] = useState(true);
-    //const [focus, setFocus] = useState(false);
-    // const handleFocus = () => {
-    //     setFocus(true);
-    // };
-    // const handleBlur = () => {
-    //     setFocus(false);
-    // };
-    // const customStyle = focus
-    //     ? {...styles.textInputStyle, borderColor: Colors.blue}
-    //     : {...styles.textInputStyle, borderColor: Colors.borderColor};
     return (
         <View>
             <Text marginV-8 text>
                 {title}
             </Text>
-            <View row style={{...styles.textInputStyle,borderColor:validationColor}}>
+            <View row style={{...styles.textInputStyle, borderColor: validationColor}}>
                 <TextInput
                     style={{
                         flex: 1,
                         fontFamily: "Montserrat_400Regular",
                     }}
-                    autoCompleteType={autoCompleteType}
                     editable={editable}
                     keyboardType={keyboardType}
                     onBlur={onBlur}
                     value={value}
                     onChangeText={onChangeText}
-                    autoCapitalize={"none"}
-                    autoCorrect={false}
+                    autoCorrect={autoCorrect}
+                    spellCheck={spellCheck}
                     placeholder={placeholderText}
+                    autoCapitalize={autoCapitalize}
+                    autoComplete={autoComplete}
                     secureTextEntry={isIcon ? visibleText : false}
+
                 />
                 {isIcon && (
                     <TouchableOpacity

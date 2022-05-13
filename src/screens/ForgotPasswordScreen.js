@@ -39,14 +39,10 @@ const ForgotPasswordScreen = ({navigation,route}) => {
                     }
                 });
                 setErrorMsg("");
-                console.log("sendOTP:",response.data);
                 setEmail('');
                 navigation.navigate('ResetPassword');
-
             }catch(err){
-                console.log(err.response.data);
                 let emailError = (err.response.data?.email !== undefined);
-                console.log(emailError);
                 setError("email");
                 emailError && setErrorMsg("Your given email is not found in candidate list, please insert a valid email address!!!");
             }

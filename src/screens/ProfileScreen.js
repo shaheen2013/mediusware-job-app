@@ -64,7 +64,6 @@ const ProfileScreen = ({navigation, route}) => {
             type: `image/${fileType}`,
         });
         setTotalFormDataObj(formDataObj);
-        console.log("after: ",totalFormDataObj);
     };
 
     // Document Picker Expo
@@ -82,11 +81,8 @@ const ProfileScreen = ({navigation, route}) => {
             });
             setCv(result);
         }
-
-        console.log("before: ", totalFormDataObj);
         setTotalFormDataObj(formDataObj);
-        console.log("after: ",totalFormDataObj);
-        //console.log(formDataObj);
+
     };
 
     // update profile post api
@@ -120,7 +116,6 @@ const ProfileScreen = ({navigation, route}) => {
                     : formData[key]
             );
         }
-        console.log(formDataObj);
         try {
             const response = await mediusware.post('/candidate/', formDataObj,{
                 headers: {
@@ -132,13 +127,11 @@ const ProfileScreen = ({navigation, route}) => {
             setErrorMsg('');
             setISSuccess(true);
             setSuccess("Updated your profile successfully.");
-            //navigation.navigate('Home');
-            console.log("update profile:",response.data);
             setPassword('');
             setCv({});
 
         }catch(err){
-            console.log(err.response.data);
+
         }
     }
     return (

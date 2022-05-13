@@ -67,9 +67,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
                     Authorization: `Bearer ${state.token}`
                 }
             });
-            //navigation.navigate('Home');
             setErrorMsg("");
-            console.log("reset password:",response.data);
             setISSuccess(true);
             setSuccess(response.data.message);
             setEmail('');
@@ -77,7 +75,6 @@ const ResetPasswordScreen = ({navigation, route}) => {
             setRePassword('');
             setOtp('');
         }catch(err){
-            console.log(err.response.data);
             setISSuccess(false);
             let emailError = (err.response.data?.email !== undefined);
             let otpError = (err.response.data?.otp !== undefined);

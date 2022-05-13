@@ -19,7 +19,6 @@ const authReducer = (state, action) => {
 };
 const tryLocalLogin = dispatch =>  async () =>{
     const token = await AsyncStorage.getItem('token');
-    console.log(token);
     if(token){
         dispatch({type:'login',payload:token});
 
@@ -43,50 +42,32 @@ const register = dispatch => async (formDataObj,callback) => {
       if(callback){
           callback();
       }
-      
-      console.log("success", response.data);
     } catch (err) {
-      // let payloadMsg;
-      // let emailError = (err.response.data?.email !== undefined);
-      // let phoneError = (err.response.data?.phone !== undefined);
-      // emailError && (payloadMsg = "Candidate with this email already exists!!!");
-      // phoneError &&  (payloadMsg = "Candidate with this phone number already exists!!!");
-      // dispatch({ type: "add_error", payload: payloadMsg });
-    //   console.log("error:", err.response.data);
-    //   console.log("error email:", err.response.data.email.length);
+      let payloadMsg;
+      let emailError = (err.response.data?.email !== undefined);
+      let phoneError = (err.response.data?.phone !== undefined);
+      emailError && (payloadMsg = "Candidate with this email already exists!!!");
+      phoneError &&  (payloadMsg = "Candidate with this phone number already exists!!!");
+      dispatch({ type: "add_error", payload: payloadMsg });
     }
   
 };
 
 const login = (dispatch) => async ({ email, password },callback) => {
-    console.log(email,password);
     try {
       const response = await mediusware.post("/login/", { email, password });
         tokenValue = response.data._token;
-        console.log(tokenValue);
         await AsyncStorage.setItem("token", tokenValue);
         dispatch({type:'login',payload:tokenValue})
-     // await AsyncStorage.setItem('_token',response.data.token);L
-      console.log("success", response.data);
         if(callback){
             callback();
         }
-      //dispatch({ type: "login", payload: tokenValue });
-      // navigate('Home')
     } catch (err) {
-      console.log("error:", err.response.data?.detail);
         dispatch({ type: "add_error", payload: err.response.data?.detail });
     }
 
 };
 const apply = (dispatch) => async ({ job_slug, expected_salary, additional_message, additional_fields }, callback) => {
-    console.log(tokenValue);
-    console.log(
-      job_slug,
-      expected_salary,
-      additional_message,
-      additional_fields
-    );
     try {
       const response = await mediusware.post(
         "https://hr.mediusware.xyz/api/apply/",
@@ -102,10 +83,7 @@ const apply = (dispatch) => async ({ job_slug, expected_salary, additional_messa
       if (callback) {
         callback();
       }
-
-      console.log(response);
     } catch (err) {
-      console.log("error:", err.response.data);
     }
 };
 const logout = dispatch => async ()=>{

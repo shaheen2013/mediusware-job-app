@@ -16,16 +16,15 @@ const registrationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
   password: Yup.string()
-      .min(6, 'Password should be at least 6 character long!')
+      .min(6, 'Must be 6 character Long!')
       .required('Required'),
   rePassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
+      .oneOf([Yup.ref('password'), null], 'Passwords must be matched').required('Required'),
 });
 
 const ApplyScreen = ({ navigation, route }) => {
   const { state, register, login, apply, clearErrorMsg } =
     useContext(AuthContext);
-    //clearErrorMsg();
   const { title, job_slug } = route.params;
   const isIcon = false;
   const [cv, setCv] = useState({});
@@ -37,7 +36,7 @@ const ApplyScreen = ({ navigation, route }) => {
   const [comments, setComments] = useState("");
   const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
   let formDataObj = new FormData();
-  //const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const password = useRef(null);
   const email = useRef(null);
   const rePassword = useRef(null);
@@ -53,7 +52,37 @@ const ApplyScreen = ({ navigation, route }) => {
     validationSchema: registrationSchema,
     initialValues: {full_name:'', email: '',phone:'', password: '',rePassword:''},
     onSubmit: (values) =>{
-     console.log(values);
+      if (totalFormDataObj._parts.length < 1) {
+        setErrorMsg('Please, Upload your CV!')
+      }
+      formDataObj = totalFormDataObj;
+      let formData = {
+        full_name:values.full_name,
+        phone:values.phone,
+        email:values.email,
+        password:values.password,
+      };
+      for (let key in formData) {
+        formDataObj.append(
+            key,
+            Array.isArray(formData[key])
+                ? JSON.stringify(formData[key])
+                : formData[key]
+        );
+      }
+      register(formDataObj, () => {
+        navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug});
+        login({ email:values.email, password:values.password });
+        clearErrorMsg();
+        setTotalFormDataObj(new FormData());
+        values.full_name = "";
+        values.email = "";
+        values.phone = "";
+        values.password = '';
+        values.rePassword= "";
+        setCv({});
+      });
+
     }
   });
 
@@ -61,9 +90,8 @@ const ApplyScreen = ({ navigation, route }) => {
   // Document Picker Expo
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
-    console.log(result);
-    //setResume(result);
     if (result.type !== "cancel") {
+      setErrorMsg("");
       const { name, uri } = result;
       const uriParts = name.split(".");
       const fileType = uriParts[uriParts.length - 1];
@@ -75,115 +103,9 @@ const ApplyScreen = ({ navigation, route }) => {
       setCv(result);
     }
 
-    console.log("before: ", totalFormDataObj);
     setTotalFormDataObj(formDataObj);
-    // console.log("after: ",totalFormDataObj);
-    //console.log(formDataObj);
+
   };
-
-  /*const validateEmail = (email) => {
-    return email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/);
-  };*/
-
-  /*const registration = () => {
-   /!* if (totalFormDataObj._parts.length < 1) {
-      let msg = {...errorMsg}
-      msg.cvError = 'Please, Upload your CV!!!';
-      setErrorMsg(msg);
-    }*!/
-    formDataObj = totalFormDataObj;
-    let formData = {
-      full_name:values.full_name,
-      phone:values.phone,
-      email:values.email,
-      password:values.password,
-    };
-    for (let key in formData) {
-      formDataObj.append(
-        key,
-        Array.isArray(formData[key])
-          ? JSON.stringify(formData[key])
-          : formData[key]
-      );
-    }*/
-
-    //register(formDataObj, () => registerSuccess());
-    //register(formDataObj);
-   /* const registerSuccess = () => {
-      login({ email, password });
-      console.log("state: ", state);
-      clearErrorMsg();
-      console.log("after state: ", state);
-      setIsRegister(false);
-      setTotalFormDataObj(new FormData());
-      // clear all data
-     setFull_name("");
-     setEmail("");
-     setPhone("");
-     setPassword("");
-     setRePassword("");
-     setCv({});
-
-    };*/
-  //};
-
-  /*const validateLinkedin = (linkedinProfile) => {
-    return linkedinProfile.match(
-      /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/
-    );
-  };
-  const validateGithub = (githubProfile) => {
-    return githubProfile.match(
-      /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim
-    );
-  };*/
-
-  const submit = () => {
-    /*if (expSalary === "") {
-      setError("expSalary");
-      setErrorMsg("Please, Enter your expected salary!!!");
-      return;
-    }
-    if (expSalary === "") {
-      setError("experience");
-      setErrorMsg("Please, Enter your professional experience years!!!");
-      return;
-    }
-    if (!validateGithub(gitUrl)) {
-      setError("github");
-      setErrorMsg("Github Profile link is not valid!!!");
-      return;
-    }
-
-    if (!validateLinkedin(linkedin)) {
-      setError("linkedin");
-      setErrorMsg("Linked profile is not valid!!!");
-      return;
-    }
-*/
-    // setError("");
-    // setErrorMsg("");
-    /*const successApply = () =>{
-        navigation.navigate("Submission");
-      
-        setComments("");
-        setGitUrl("");
-        setLinkedin("");
-        setExpSalary("");
-        setExperience("");
-    }*/
-    //setAdditionalFields([gitUrl,5,linkedin]);
-   /* apply(
-      {
-        job_slug,
-        expected_salary: expSalary,
-        additional_message: comments,
-        additional_fields: [gitUrl, experience, linkedin],
-      },
-      () => successApply()
-    );*/
-  };
-
   return (
       <SafeAreaView style={{flex: 1}}>
         <View flex-1>
@@ -199,9 +121,16 @@ const ApplyScreen = ({ navigation, route }) => {
                 <Text text gray marginB-20>If already have Mediusware job account then please <Text
                     onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>
               </View>
+              <TextInput
+                  style={{display:'none'}}
+              />
+
               <InputField
                   title={"Full Name*"}
                   placeholderText={"Enter Your Name"}
+                  autoCapitalize={"words"}
+                  autoComplete={"off"}
+                  autoCorrect={false}
                   value={values.full_name}
                   onChangeText={handleChange('full_name')}
                   onBlur={handleBlur('full_name')}
@@ -210,9 +139,10 @@ const ApplyScreen = ({ navigation, route }) => {
                   onSubmitEditing={() => email.current?.focus()}
               />
 
+
               <InputField
                   ref={email}
-                  autoCompleteType={'email'}
+                  autoComplete={'email'}
                   keyboardType={'email-address'}
                   title={'Email Address'}
                   placeholderText={'email@email.com'}
@@ -221,6 +151,7 @@ const ApplyScreen = ({ navigation, route }) => {
                   onBlur={handleBlur('email')}
                   error={errors.email}
                   touched={touched.email}
+                  autoCapitalize={"none"}
                   onSubmitEditing={() => phone.current?.focus()}
               />
 
@@ -267,6 +198,7 @@ const ApplyScreen = ({ navigation, route }) => {
                   onBlur={handleBlur('password')}
                   error={errors.password}
                   touched={touched.password}
+                  autoCapitalize={"none"}
                   onSubmitEditing={() => handleSubmit()}
               />
 
@@ -280,17 +212,16 @@ const ApplyScreen = ({ navigation, route }) => {
                   onBlur={handleBlur('rePassword')}
                   error={errors.rePassword}
                   touched={touched.rePassword}
+                  autoCapitalize={"none"}
                   onSubmitEditing={() => handleSubmit()}
               />
-
-
               <View>
                 <Text marginB-8 text>
                   CV/Resume*
                 </Text>
                 <View style={styles.uploadContainer}>
                   <View style={styles.uploadStyle}>
-                    <TouchableOpacity paddingH-8 paddingV-3 onPress={pickDocument}>
+                    <TouchableOpacity paddingH-8 paddingV-4 onPress={pickDocument}>
                       <Text blue subtitle3>
                         Choose File
                       </Text>
@@ -300,6 +231,7 @@ const ApplyScreen = ({ navigation, route }) => {
                     <Text>{cv?.name}</Text>
                   </View>
                 </View>
+                <Text text style={{color:'#FF5A5F'}}>{errorMsg}</Text>
               </View>
             </View>
           </ScrollView>
@@ -309,81 +241,7 @@ const ApplyScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    // <SafeAreaView style={{ flex: 1 }}>
-    //   <View style={{ flex: 1 }}>
-    //     <CommonHeader name={route.name} navigation={navigation} />
-    //     <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-    //   </View>
-    //
-    //   <View paddingH-16 style={{ flex: 12 }}>
-    //     <ScrollView showsVerticalScrollIndicator={false}>
-    //       <Text subtitle4 blue marginB-10>
-    //         {title}
-    //       </Text>
-    //       <View>
-    //         <Text text gray marginB-20>
-    //           If already have Mediusware job account then please{" "}
-    //           <Text onPress={() => navigation.navigate("Login")} blue>
-    //             Login
-    //           </Text>
-    //         </Text>
-    //       </View>
-    //       {/*{state.errorMessage ? <ErrorMsg msg={state.errorMessage} /> : null}*/}
-    //       {isRegister ? (
-    //         <Register
-    //           full_name={full_name}
-    //           setFull_name={setFull_name}
-    //           phone={phone}
-    //           setPhone={setPhone}
-    //           email={email}
-    //           setEmail={setEmail}
-    //           password={password}
-    //           setPassword={setPassword}
-    //           rePassword={rePassword}
-    //           setRePassword={setRePassword}
-    //           cv={cv}
-    //           setCv={setCv}
-    //           //error={error}
-    //           pickDocument={pickDocument}
-    //         />
-    //       ) : (
-    //         <UserInfo
-    //           expSalary={expSalary}
-    //           setExpSalary={setExpSalary}
-    //           gitUrl={gitUrl}
-    //           setGitUrl={setGitUrl}
-    //           linkedin={linkedin}
-    //           setLinkedin={setLinkedin}
-    //           comments={comments}
-    //           setComments={setComments}
-    //           experience={experience}
-    //           setExperience={setExperience}
-    //           //error={error}
-    //         />
-    //       )}
-    //     </ScrollView>
-    //     {isRegister ? (
-    //       <TouchableOpacity marginV-15 onPress={()=>registration()}>
-    //         {/*<TouchableOpacity marginV-15 onPress={registration}>*/}
-    //         <FilledBtn title={"Continue"} />
-    //       </TouchableOpacity>
-    //     ) : (
-    //       <View row marginV-15>
-    //         <TouchableOpacity
-    //           flex-1
-    //           marginR-10
-    //           onPress={() => setIsRegister(true)}
-    //         >
-    //           <BlueOutlineBtn title={"Back"} />
-    //         </TouchableOpacity>
-    //         <TouchableOpacity flex-1 onPress={submit}>
-    //           {/*<TouchableOpacity flex-1 onPress={() => navigation.navigate('Submission')}>*/}
-    //           <FilledBtn title={"Submit"} />
-    //         </TouchableOpacity>
-    //       </View>
-    //     )}
-    //   </View>
-    // </SafeAreaView>
+
   );
 };
 
@@ -403,7 +261,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: 8,
     borderRadius: 10,
-    width: "33%",
+    alignSelf:'flex-start',
   },
   fileNameStyle: {
     position: "absolute",
@@ -413,9 +271,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderTopLeftRadius: 10,
     borderWidth: 1,
+    borderRightWidth: 0,
     height: 48,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
+    paddingVertical: 11,
+    paddingLeft: 16,
+    paddingRight:0,
   },
   phoneNumberContainer: {
     borderBottomRightRadius: 10,
@@ -424,7 +284,8 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     height: 48,
     paddingVertical: 14,
-    paddingHorizontal: 16,
+    paddingRight: 16,
+    paddingLeft:0,
     flex: 6,
   }
 });

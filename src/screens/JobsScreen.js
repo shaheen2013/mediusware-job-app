@@ -18,7 +18,6 @@ const JobsScreen = ({navigation}) => {
     const {state,clearErrorMsg}= useContext(AuthContext);
     const date = new Date();
     const hours = date.getHours();
-    console.log(hours);
     const [jobs,isLoading,setIsLoading] = useJobs();
     const [greetings,setGreetings] = useState('Good Morning');
     const [user] = useCandidate();
