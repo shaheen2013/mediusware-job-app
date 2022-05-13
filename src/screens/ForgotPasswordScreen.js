@@ -6,7 +6,6 @@ import InputField from "../components/formComponents/InputField";
 import PasswordImg from "../../assets/svgIcon/PasswordImg";
 import FilledBtn from "../components/buttons/FilledBtn";
 import OutlineBtn from "../components/buttons/OutlineBtn";
-import {StatusBar} from "react-native";
 import {Context as AuthContext} from "../contexts/AuthContext";
 import mediusware from "../api/mediusware";
 import ErrorMsg from "../components/ErrorMsg";

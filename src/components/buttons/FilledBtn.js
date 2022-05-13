@@ -5,13 +5,13 @@ const FilledBtn = ({title}) => {
     return (
         <View
             style={{
-                backgroundColor: Colors.primaryColor,
+                backgroundColor: Colors.blue,
                 height: 50,
                 width: '100%',
                 borderRadius: 10
             }}
             paddingV-15>
-            <Text primaryBtnText white center>{title}</Text>
+            <Text btn_text white center>{title}</Text>
         </View>);
 };
 

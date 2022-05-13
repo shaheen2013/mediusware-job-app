@@ -2,14 +2,9 @@ import React, {useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import JobsScreen from "../screens/JobsScreen";
-import ExamProgress from "../screens/ExamProgressScreen";
-import StackNavigation from "./StackNavigation";
-import DrawerNavigation from "./DrawerNavigation";
-import JobsStackNavigation from "./StackNavigators/JobsStackNavigation";
 import DashboardStackNavigation from "./StackNavigators/DashboardStackNavigation";
 import ProfileStackNavigation from "./StackNavigators/ProfileStackNavigation";
 import HomeIcon from "../../assets/svgIcon/HomeIcon";
-import { Feather } from '@expo/vector-icons';
 import HomeFillIcon from "../../assets/svgIcon/HomeFillIcon";
 import DashBoardIcon from "../../assets/svgIcon/DashBoardIcon";
 import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
@@ -45,13 +40,6 @@ const BottomNavigation = () => {
                     focused ? <HomeFillIcon/>:<HomeIcon/>
                 )
             }}/>
-           {/* <Tab.Screen name="DashboardStackNavigation" component={DashboardStackNavigation} options={{
-                tabBarLabel: 'DASHBOARD',
-                tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
-                tabBarIcon: ({focused}) => (
-                    focused  ?<DashBoardIcon/>:<DashBoardOutlineIcon/>
-                )
-            }}/>*/}
             {state?.token ?( <Tab.Screen name="DashboardStackNavigation" component={DashboardStackNavigation} options={{
                     tabBarLabel: 'DASHBOARD',
                     tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},

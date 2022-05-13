@@ -12,7 +12,7 @@ const OutlineBtn = ({title}) => {
             borderWidth: 1
         }}
         paddingV-14>
-        <Text primaryBtnText primaryColor center>{title}</Text>
+        <Text btn_text primaryColor center>{title}</Text>
     </View>);
 };
 
