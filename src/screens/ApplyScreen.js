@@ -20,6 +20,7 @@ const registrationSchema = Yup.object().shape({
       .required('Required'),
   rePassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must be matched').required('Required'),
+  file: Yup.mixed().required('File  Required')
 });
 
 const ApplyScreen = ({ navigation, route }) => {
@@ -28,12 +29,6 @@ const ApplyScreen = ({ navigation, route }) => {
   const { title, job_slug } = route.params;
   const isIcon = false;
   const [cv, setCv] = useState({});
-  const [isRegister, setIsRegister] = useState(true);
-  const [expSalary, setExpSalary] = useState("");
-  const [gitUrl, setGitUrl] = useState("");
-  const [experience, setExperience] = useState("");
-  const [linkedin, setLinkedin] = useState("");
-  const [comments, setComments] = useState("");
   const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
   let formDataObj = new FormData();
   const [errorMsg, setErrorMsg] = useState("");
@@ -50,12 +45,16 @@ const ApplyScreen = ({ navigation, route }) => {
     touched
   } = useFormik({
     validationSchema: registrationSchema,
-    initialValues: {full_name:'', email: '',phone:'', password: '',rePassword:''},
+    initialValues: {full_name:'', email: '',phone:'', password: '',rePassword:'',file:null},
     onSubmit: (values) =>{
+      console.log(values);
       if (totalFormDataObj._parts.length < 1) {
-        setErrorMsg('Please, Upload your CV!')
+        //setErrorMsg('Please, Upload your CV!')
       }
+      //setErrorMsg('')
       formDataObj = totalFormDataObj;
+      values.file=formDataObj;
+      console.log("file:",values.file);
       let formData = {
         full_name:values.full_name,
         phone:values.phone,
@@ -80,13 +79,14 @@ const ApplyScreen = ({ navigation, route }) => {
         values.phone = "";
         values.password = '';
         values.rePassword= "";
-        setCv({});
+        values.file=null;
       });
 
     }
   });
 
-  const validationColor = !touched ? Colors.borderColor : errors?.phone ? '#FF5A5F' : Colors.borderColor;
+  const phoneValidateColor = !touched ? Colors.borderColor : errors?.phone ? '#FF5A5F' : Colors.borderColor;
+  const cvValidateColor = !touched ? Colors.borderColor : errors?.file ? '#FF5A5F' : Colors.borderColor;
   // Document Picker Expo
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
@@ -100,11 +100,10 @@ const ApplyScreen = ({ navigation, route }) => {
         name,
         type: `application/${fileType}`,
       });
+      values.file=formDataObj;
       setCv(result);
     }
-
     setTotalFormDataObj(formDataObj);
-
   };
   return (
       <SafeAreaView style={{flex: 1}}>
@@ -122,6 +121,7 @@ const ApplyScreen = ({ navigation, route }) => {
                     onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>
               </View>
               <TextInput
+                  keyboardType={'email-address'}
                   style={{display:'none'}}
               />
 
@@ -160,10 +160,10 @@ const ApplyScreen = ({ navigation, route }) => {
                   Phone Number
                 </Text>
                 <View row>
-                  <View style={{...styles.phoneContainer, borderColor: validationColor}}>
+                  <View style={{...styles.phoneContainer, borderColor: phoneValidateColor}}>
                     <Text text lightGray>+880</Text>
                   </View>
-                  <View style={{...styles.phoneNumberContainer,borderColor:validationColor}}>
+                  <View style={{...styles.phoneNumberContainer,borderColor:phoneValidateColor}}>
                     <TextInput
                         ref={phone}
                         keyboardType={"numeric"}
@@ -219,9 +219,15 @@ const ApplyScreen = ({ navigation, route }) => {
                 <Text marginB-8 text>
                   CV/Resume*
                 </Text>
-                <View style={styles.uploadContainer}>
+                <View style={{...styles.uploadContainer,borderColor: cvValidateColor}}>
                   <View style={styles.uploadStyle}>
-                    <TouchableOpacity paddingH-8 paddingV-4 onPress={pickDocument}>
+                    <TouchableOpacity paddingH-8 paddingV-4
+                                      onPress={pickDocument}
+                                      touched={touched.file}
+                                      error={errors.file}
+                                      onChangeText={handleChange('file')}
+                                      onBlur={handleBlur('file')}
+                    >
                       <Text blue subtitle3>
                         Choose File
                       </Text>
@@ -231,7 +237,12 @@ const ApplyScreen = ({ navigation, route }) => {
                     <Text>{cv?.name}</Text>
                   </View>
                 </View>
-                <Text text style={{color:'#FF5A5F'}}>{errorMsg}</Text>
+                {errors?.file? (
+                    <Text style={{color: 'red'}} marginV-4 text>{errors.file}</Text>
+                ) : (
+                    <></>
+                )}
+                {/*<Text text style={{color:'#FF5A5F'}}>{errorMsg}</Text>*/}
               </View>
             </View>
           </ScrollView>
@@ -247,12 +258,11 @@ const ApplyScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   uploadContainer: {
-    borderColor: "#E9E9E9",
     borderRadius: 10,
     borderWidth: 1,
     height: 48,
     paddingHorizontal: 16,
-    marginBottom: 15,
+    marginBottom: 7,
     position: "relative",
   },
   uploadStyle: {

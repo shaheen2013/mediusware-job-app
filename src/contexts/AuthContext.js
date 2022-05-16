@@ -43,6 +43,7 @@ const register = dispatch => async (formDataObj,callback) => {
           callback();
       }
     } catch (err) {
+        console.log(err.response.data);
       let payloadMsg;
       let emailError = (err.response.data?.email !== undefined);
       let phoneError = (err.response.data?.phone !== undefined);

@@ -11,55 +11,70 @@ import mediusware from "../api/mediusware";
 import ErrorMsg from "../components/ErrorMsg";
 import {ScrollView} from "react-native";
 import SuccessMsg from "../components/SuccessMsg";
+import * as Yup from "yup";
+import {useFormik} from "formik";
+
+const resetPasswordSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Required'),
+    otp: Yup.number().required('Required'),
+    password: Yup.string()
+        .min(6, 'Must be 6 character Long!')
+        .required('Required'),
+    rePassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must be matched').required('Required'),
+});
 
 const ResetPasswordScreen = ({navigation, route}) => {
     const {state,tryLocalLogin} = useContext(AuthContext);
-    const [email,setEmail] = useState('');
-    const [otp,setOtp] = useState('');
-    const [password,setPassword] = useState('');
-    const[rePassword,setRePassword] = useState('');
+    // const [email,setEmail] = useState('');
+    // const [otp,setOtp] = useState('');
+    // const [password,setPassword] = useState('');
+    // const[rePassword,setRePassword] = useState('');
     const [errorMsg, setErrorMsg] = useState("");
     const [error, setError] = useState("");
     const[success,setSuccess ] = useState("");
     const[isSuccess,setISSuccess ] = useState(false);
     const isIcon = false;
 
-    const validateEmail = (email) => {
-        return email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/);
-    };
+    const {
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched
+    } = useFormik({
+        validationSchema: resetPasswordSchema,
+        initialValues: { email: '', otp:'',password: '',rePassword:''},
+        onSubmit: async (values) =>{
+            try {
+                const response = await mediusware.post('/reset-password/', {email:values.email,otp:values.otp,password:values.password},{
+                    headers: {
+                        Authorization: `Bearer ${state.token}`
+                    }
+                });
+                setErrorMsg("");
+                setISSuccess(true);
+                setSuccess(response.data.message);
 
-    const resetPassword = async () => {
-        if (email === "") {
-            setError("email");
-            setErrorMsg("Please, Enter your Email Address");
-            return;
-        }
-        if (!validateEmail(email)) {
-            setError("email");
-            setErrorMsg("Please, Enter Valid Email Address!!!");
-            return;
-        }
-        if (otp === "") {
-            setError("otp");
-            setErrorMsg("Please, Enter your OTP");
-            return;
-        }
-        if (password === "") {
-            setError("password");
-            setErrorMsg("Please, Enter your Password");
-            return;
-        }
+            }catch(err){
+                setISSuccess(false);
+                let emailError = (err.response.data?.email !== undefined);
+                let otpError = (err.response.data?.otp !== undefined);
+                if(emailError){
+                    setError("email");
+                    setErrorMsg("Your given email is not found in candidate list, please insert a valid email address!!!");
+                }
+                if(otpError){
+                    setError("otp");
+                    setErrorMsg("OTP is not correct or expire!!!");
+                }
 
-        if (password.length < 6) {
-            setError("password");
-            setErrorMsg("Password Should be more than 6 character long");
-            return;
+            }
         }
-        if (password !== rePassword) {
-            setError("re_password");
-            setErrorMsg("Passwords are not matched!!!");
-            return;
-        }
+    });
+
+    /*const resetPassword = async () => {
 
         try {
             const response = await mediusware.post('/reset-password/', {email,otp,password},{
@@ -88,7 +103,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
             }
 
         }
-    }
+    }*/
     return(
     <SafeAreaView style={{flex:1}}>
         <CommonHeader name={'Reset Password'} navigation={navigation}/>
@@ -100,14 +115,56 @@ const ResetPasswordScreen = ({navigation, route}) => {
                     please fill the form bellow and hit enter to reset your password</Text>
                     {isSuccess && <SuccessMsg msg={success}/>}
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <InputField title={'Email Address'} placeholderText={'email@email.com'} value={email} onChangeText={setEmail}/>
-                    {error === "email" && <ErrorMsg msg={errorMsg} />}
-                    <InputField title={'OTP'} placeholderText={'OTP Code'} value={otp} onChangeText={setOtp}/>
-                    {error === "otp" && <ErrorMsg msg={errorMsg} />}
-                    <InputField isIcon={true} title={'Password'} placeholderText={'New Password'} value={password} onChangeText={setPassword}/>
-                    {error === "password" && <ErrorMsg msg={errorMsg} />}
-                    <InputField isIcon={true} title={'Re-Type Password'} placeholderText={'Re-Type New Password'} value={rePassword} onChangeText={setRePassword}/>
-                    {error === "re_password" && <ErrorMsg msg={errorMsg} />}
+                    <InputField
+                        autoCapitalize={'none'}
+                        autoCompleteType={'email'}
+                        keyboardType={'email-address'}
+                        title={'Email Address'}
+                        placeholderText={'email@email.com'}
+                        value={values.email}
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        error={errors.email}
+                        touched={touched.email}
+                    />
+                    <InputField
+                        title={'OTP'}
+                        placeholderText={'OTP Code'}
+                        value={values.otp}
+                        autoCapitalize={'none'}
+                        autoCompleteType={'email'}
+                        keyboardType={'numeric'}
+                        value={values.otp}
+                        onChangeText={handleChange('otp')}
+                        onBlur={handleBlur('otp')}
+                        error={errors.otp}
+                        touched={touched.otp}
+                    />
+                    <InputField
+                        isIcon={true}
+                        title={'Password'}
+                        placeholderText={'New Password'}
+                        value={values.password}
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        error={errors.password}
+                        touched={touched.password}
+                        autoCapitalize={"none"}
+
+                    />
+                    <InputField
+                        isIcon={true}
+                        title={'Re-Type Password'}
+                        placeholderText={'Re-Type New Password'}
+                        value={values.rePassword}
+                        onChangeText={handleChange('rePassword')}
+                        onBlur={handleBlur('rePassword')}
+                        error={errors.rePassword}
+                        touched={touched.rePassword}
+                        autoCapitalize={"none"}
+
+                    />
+
                 </ScrollView>
             </View>
 
@@ -116,7 +173,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
                     <TouchableOpacity onPress={() => navigation.navigate('Login')} flex-1 marginR-10>
                         <OutlineBtn title={'Login'}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={resetPassword} flex-3>
+                    <TouchableOpacity onPress={handleSubmit} flex-3>
                         <FilledBtn title={'Reset Password'}/>
                     </TouchableOpacity>
                 </View>
