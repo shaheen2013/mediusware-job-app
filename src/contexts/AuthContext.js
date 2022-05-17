@@ -10,9 +10,9 @@ const authReducer = (state, action) => {
     case "add_error":
       return { ...state, errorMessage: action.payload };
       case "clear_error_msg":
-          return {...state,errorMessage:''};
+          return {...state,errorMessage:{}};
       case 'logout':
-          return {token:null,errorMessage:''}
+          return {token:null,errorMessage:{}}
     default:
       return state;
   }
@@ -44,12 +44,12 @@ const register = dispatch => async (formDataObj,callback) => {
       }
     } catch (err) {
         console.log(err.response.data);
-      let payloadMsg;
-      let emailError = (err.response.data?.email !== undefined);
-      let phoneError = (err.response.data?.phone !== undefined);
-      emailError && (payloadMsg = "Candidate with this email already exists!!!");
-      phoneError &&  (payloadMsg = "Candidate with this phone number already exists!!!");
-      dispatch({ type: "add_error", payload: payloadMsg });
+      // let payloadMsg;
+      // let emailError = (err.response.data?.email !== undefined);
+      // let phoneError = (err.response.data?.phone !== undefined);
+      // emailError && (payloadMsg = "Candidate with this email already exists!!!");
+      // phoneError &&  (payloadMsg = "Candidate with this phone number already exists!!!");
+      // dispatch({ type: "add_error", payload: payloadMsg });
     }
   
 };
@@ -57,14 +57,16 @@ const register = dispatch => async (formDataObj,callback) => {
 const login = (dispatch) => async ({ email, password },callback) => {
     try {
       const response = await mediusware.post("/login/", { email, password });
+      console.log(response.data , 'login response');
         tokenValue = response.data._token;
         await AsyncStorage.setItem("token", tokenValue);
-        dispatch({type:'login',payload:tokenValue})
+        dispatch({type:'login',payload:tokenValue});
         if(callback){
             callback();
         }
     } catch (err) {
-        dispatch({ type: "add_error", payload: err.response.data?.detail });
+        console.log("login error: ",err.response.data?.detail);
+        dispatch({ type: "add_error", payload: {error:err.response.data?.detail} });
     }
 
 };
@@ -94,5 +96,5 @@ const logout = dispatch => async ()=>{
 export const { Provider, Context } = createDataContext(
   authReducer,
   { login, logout, register, apply,clearErrorMsg,tryLocalLogin},
-  { token: null, errorMessage: "" }
+  { token: null, errorMessage: {} }
 );

@@ -10,22 +10,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import InputField from "../components/formComponents/InputField";
 
-let phoneRegExp = /^[0-9]{10}$/;
-const registrationSchema = Yup.object().shape({
-  full_name:Yup.string().required('Required'),
-  email: Yup.string().email('Invalid email').required('Required'),
-  phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
-  password: Yup.string()
-      .min(6, 'Must be 6 character Long!')
-      .required('Required'),
-  rePassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must be matched').required('Required'),
-  file: Yup.mixed().required('File  Required')
-});
+
 
 const ApplyScreen = ({ navigation, route }) => {
   const { state, register, login, apply, clearErrorMsg } =
     useContext(AuthContext);
+  console.log("Apply: ",state.errorMessage);
   const { title, job_slug } = route.params;
   const isIcon = false;
   const [cv, setCv] = useState({});
@@ -36,6 +26,20 @@ const ApplyScreen = ({ navigation, route }) => {
   const email = useRef(null);
   const rePassword = useRef(null);
   const phone = useRef(null);
+
+  let phoneRegExp = /^[0-9]{10}$/;
+  const registrationSchema = Yup.object().shape({
+    full_name:Yup.string().required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
+    password: Yup.string()
+        .min(6, 'Must be 6 character Long!')
+        .required('Required'),
+    rePassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must be matched').required('Required'),
+    file: Yup.mixed().required('File  Required')
+  });
+
   const{
     handleChange,
     handleBlur,
@@ -47,11 +51,6 @@ const ApplyScreen = ({ navigation, route }) => {
     validationSchema: registrationSchema,
     initialValues: {full_name:'', email: '',phone:'', password: '',rePassword:'',file:null},
     onSubmit: (values) =>{
-      console.log(values);
-      if (totalFormDataObj._parts.length < 1) {
-        //setErrorMsg('Please, Upload your CV!')
-      }
-      //setErrorMsg('')
       formDataObj = totalFormDataObj;
       values.file=formDataObj;
       console.log("file:",values.file);
@@ -80,6 +79,7 @@ const ApplyScreen = ({ navigation, route }) => {
         values.password = '';
         values.rePassword= "";
         values.file=null;
+        setCv({});
       });
 
     }
@@ -88,10 +88,10 @@ const ApplyScreen = ({ navigation, route }) => {
   const phoneValidateColor = !touched ? Colors.borderColor : errors?.phone ? '#FF5A5F' : Colors.borderColor;
   const cvValidateColor = !touched ? Colors.borderColor : errors?.file ? '#FF5A5F' : Colors.borderColor;
   // Document Picker Expo
-  const pickDocument = async () => {
+  const pickDocument = async (handleChange) => {
     let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
     if (result.type !== "cancel") {
-      setErrorMsg("");
+      handleChange(result.uri);
       const { name, uri } = result;
       const uriParts = name.split(".");
       const fileType = uriParts[uriParts.length - 1];
@@ -120,17 +120,15 @@ const ApplyScreen = ({ navigation, route }) => {
                 <Text text gray marginB-20>If already have Mediusware job account then please <Text
                     onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>
               </View>
-              <TextInput
-                  keyboardType={'email-address'}
-                  style={{display:'none'}}
-              />
 
               <InputField
                   title={"Full Name*"}
                   placeholderText={"Enter Your Name"}
                   autoCapitalize={"words"}
+                  keyboardType={'email-address'}
                   autoComplete={"off"}
                   autoCorrect={false}
+                  spellCheck={false}
                   value={values.full_name}
                   onChangeText={handleChange('full_name')}
                   onBlur={handleBlur('full_name')}
@@ -138,7 +136,6 @@ const ApplyScreen = ({ navigation, route }) => {
                   touched={touched.full_name}
                   onSubmitEditing={() => email.current?.focus()}
               />
-
 
               <InputField
                   ref={email}
@@ -160,14 +157,13 @@ const ApplyScreen = ({ navigation, route }) => {
                   Phone Number
                 </Text>
                 <View row>
-                  <View style={{...styles.phoneContainer, borderColor: phoneValidateColor}}>
+                  <View style={{...styles.phoneContainer, borderColor: phoneValidateColor,flexDirection:'column',justifyContent:'center'}}>
                     <Text text lightGray>+880</Text>
                   </View>
-                  <View style={{...styles.phoneNumberContainer,borderColor:phoneValidateColor}}>
+                  <View style={{...styles.phoneNumberContainer,borderColor:phoneValidateColor,flexDirection:'column',justifyContent:'center'}}>
                     <TextInput
                         ref={phone}
                         keyboardType={"numeric"}
-                        value={phone}
                         value={values.phone}
                         onChangeText={handleChange('phone')}
                         onBlur={handleBlur('phone')}
@@ -177,6 +173,7 @@ const ApplyScreen = ({ navigation, route }) => {
                         autoCorrect={false}
                         style={{
                           fontFamily: "Montserrat_400Regular",
+                          fontsize:14,
                         }}
                     />
                   </View>
@@ -222,7 +219,7 @@ const ApplyScreen = ({ navigation, route }) => {
                 <View style={{...styles.uploadContainer,borderColor: cvValidateColor}}>
                   <View style={styles.uploadStyle}>
                     <TouchableOpacity paddingH-8 paddingV-4
-                                      onPress={pickDocument}
+                                      onPress={()=>pickDocument(handleChange('file'))}
                                       touched={touched.file}
                                       error={errors.file}
                                       onChangeText={handleChange('file')}
@@ -242,7 +239,6 @@ const ApplyScreen = ({ navigation, route }) => {
                 ) : (
                     <></>
                 )}
-                {/*<Text text style={{color:'#FF5A5F'}}>{errorMsg}</Text>*/}
               </View>
             </View>
           </ScrollView>
@@ -283,7 +279,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     height: 48,
-    paddingVertical: 11,
+    textAlign:'center',
     paddingLeft: 16,
     paddingRight:0,
   },
@@ -293,7 +289,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderLeftWidth: 0,
     height: 48,
-    paddingVertical: 14,
+    textAlign:'center',
     paddingRight: 16,
     paddingLeft:0,
     flex: 6,

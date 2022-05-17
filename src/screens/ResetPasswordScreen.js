@@ -26,10 +26,6 @@ const resetPasswordSchema = Yup.object().shape({
 
 const ResetPasswordScreen = ({navigation, route}) => {
     const {state,tryLocalLogin} = useContext(AuthContext);
-    // const [email,setEmail] = useState('');
-    // const [otp,setOtp] = useState('');
-    // const [password,setPassword] = useState('');
-    // const[rePassword,setRePassword] = useState('');
     const [errorMsg, setErrorMsg] = useState("");
     const [error, setError] = useState("");
     const[success,setSuccess ] = useState("");
@@ -74,36 +70,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
         }
     });
 
-    /*const resetPassword = async () => {
 
-        try {
-            const response = await mediusware.post('/reset-password/', {email,otp,password},{
-                headers: {
-                    Authorization: `Bearer ${state.token}`
-                }
-            });
-            setErrorMsg("");
-            setISSuccess(true);
-            setSuccess(response.data.message);
-            setEmail('');
-            setPassword('');
-            setRePassword('');
-            setOtp('');
-        }catch(err){
-            setISSuccess(false);
-            let emailError = (err.response.data?.email !== undefined);
-            let otpError = (err.response.data?.otp !== undefined);
-            if(emailError){
-                setError("email");
-                setErrorMsg("Your given email is not found in candidate list, please insert a valid email address!!!");
-            }
-            if(otpError){
-                setError("otp");
-                setErrorMsg("OTP is not correct or expire!!!");
-            }
-
-        }
-    }*/
     return(
     <SafeAreaView style={{flex:1}}>
         <CommonHeader name={'Reset Password'} navigation={navigation}/>

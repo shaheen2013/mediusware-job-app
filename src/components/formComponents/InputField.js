@@ -17,7 +17,8 @@ const InputField = forwardRef(({
                                    autoCorrect,
                                    spellCheck,
                                    autoCapitalize,
-                                   editable
+                                   editable,
+                                   importantForAutofill
 
                                }, ref) => {
     const validationColor = !touched ? Colors.borderColor : error ? '#FF5A5F' : Colors.borderColor;
@@ -33,7 +34,7 @@ const InputField = forwardRef(({
                         flex: 1,
                         fontFamily: "Montserrat_400Regular",
                     }}
-                    editable={editable}
+                    //editable={editable}
                     keyboardType={keyboardType}
                     onBlur={onBlur}
                     value={value}
