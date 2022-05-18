@@ -31,6 +31,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-animate-loading-button": "^1.0.3",
     "react-native-calendars": "^1.1281.0",
     "react-native-easy-toast": "^2.0.0",
     "react-native-expo-fancy-alerts": "^2.1.0",

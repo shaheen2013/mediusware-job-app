@@ -11,24 +11,29 @@ import {useIsFocused} from "@react-navigation/native";
 import {Screen} from "react-native-screens";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
-
+import Toast from 'react-native-toast-message';
+//import AnimatedFilledBtn from "../components/buttons/AnimatedFilledBtn";
+import { Ionicons } from '@expo/vector-icons';
+import AnimatedFilledBtn from "../components/buttons/AnimatedFilledBtn";
 const toastConfig = {
     tomatoToast: ({ text1, props }) => (
         <View
             style={{ height: 50,
                 width: '100%',
                 backgroundColor: Colors.borderColor,
-                borderRadius:20,flex:1,
+                borderRadius:10,flex:1,
+                flexDirection:'row',
                 justifyContent:'center',
                 alignItems:'center',
-                opacity:1
+                opacity:1,
+                borderLeftWidth:5,
+                borderLeftColor:Colors.warningColor,
         }}>
+            <Ionicons name="warning" size={24} color={Colors.warningColor} />
             <Text subtitle1 warningColor>{text1}</Text>
         </View>
     )
 };
-
 
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -46,9 +51,8 @@ const LoginScreen = ({navigation, route}) => {
     const password = useRef(null);
     const {state,register,login,clearErrorMsg} = useContext(AuthContext);
     const [error,setError] = useState('');
-    const [loder,setBtnDisabled] = useState(false);
     const isIcon = false;
-    console.log("component: ",state?.errorMessage?.error);
+    console.log(state);
     const {
         handleChange,
         handleBlur,
@@ -59,8 +63,9 @@ const LoginScreen = ({navigation, route}) => {
     } = useFormik({
         validationSchema: LoginSchema,
         initialValues: { email: '', password: '' },
-        onSubmit: (values) =>{
-            login({email:values.email,password:values.password},()=>{
+        onSubmit:  (values) =>{
+
+             login({email:values.email,password:values.password},()=>{
                     clearErrorMsg();
                     navigation.navigate('BottomNavigation',{screen:'Home'});
                     values.email = '';
@@ -78,7 +83,7 @@ const LoginScreen = ({navigation, route}) => {
     const showToast = () => {
         state?.errorMessage?.error && Toast.show({
             type: 'tomatoToast',
-            text1: `${state?.errorMessage?.error}`
+            text1: ` ${state?.errorMessage?.error}`
         })
     }
 
@@ -86,16 +91,14 @@ const LoginScreen = ({navigation, route}) => {
         <SafeAreaView style={{flex:1}}>
         <CommonHeader name={route.name} navigation={navigation}/>
         <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
-        {/*<StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>*/}
         <View paddingH-16 marginT-20 flex-1>
-            <View flex-9>
+            <View flex-5>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <LoginImg/>
                     <Text h5 deepGray marginT-20>Hello,{'\n'}
                         Good to see you again!</Text>
                     <Text text gray marginB-20 marginT-8>Log in to get going with our recruitment
                         process!</Text>
-
 
                     {/*<Text text style={{color:'#FF5A5F'}}>{state?.errorMessage?.error}</Text>*/}
                     <InputField
@@ -128,28 +131,26 @@ const LoginScreen = ({navigation, route}) => {
                     <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                         <Text blue text style={{alignSelf: 'flex-end'}}>Forgot Password?</Text>
                     </TouchableOpacity>
+
                 </ScrollView>
-
-            </View>
-
-            <View flex-4 marginB-20>
                 <Toast
                     config={toastConfig}
                     visibilityTime={3000}
-                    position='bottom'
-
+                    position='top'
                 />
-                <Text text gray marginT-40>If don't apply any mediusware job,then apply one <Text
-                    onPress={() => navigation.navigate('BottomNavigation',{screen:'Home'})} blue>Job</Text></Text>
-                <TouchableOpacity marginV-20 onPress={()=>{
-                   handleSubmit()
-                }}>
-                    <FilledBtn title={'Login'}/>
-                </TouchableOpacity>
 
             </View>
 
+            <View flex-2 marginB-40>
+                <Text text gray marginT-40>If don't apply any mediusware job,then apply one <Text
+                    onPress={() => navigation.navigate('BottomNavigation',{screen:'Home'})} blue>Job</Text></Text>
+                <TouchableOpacity marginV-20 disabled={state?.loader}  onPress={()=>{
+                   handleSubmit()
+                }}>
+                    <FilledBtn title={'Login'} isLoading={state?.loader}/>
+                </TouchableOpacity>
 
+            </View>
         </View>
     </SafeAreaView>
     );

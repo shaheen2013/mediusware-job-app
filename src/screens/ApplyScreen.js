@@ -1,5 +1,5 @@
 import * as DocumentPicker from "expo-document-picker";
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {ScrollView, StatusBar, StyleSheet, TextInput} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Text, TouchableOpacity, View } from "react-native-ui-lib";
@@ -9,8 +9,8 @@ import { Context as AuthContext } from "../contexts/AuthContext";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import InputField from "../components/formComponents/InputField";
-
-
+import Toast from 'react-native-toast-message';
+import {Ionicons} from "@expo/vector-icons";
 
 const ApplyScreen = ({ navigation, route }) => {
   const { state, register, login, apply, clearErrorMsg } =
@@ -39,6 +39,29 @@ const ApplyScreen = ({ navigation, route }) => {
         .oneOf([Yup.ref('password'), null], 'Passwords must be matched').required('Required'),
     file: Yup.mixed().required('File  Required')
   });
+
+  const toastConfig = {
+    tomatoToast: ({ text1,props }) => (
+        <View
+            style={{ height: 80,
+              backgroundColor: Colors.borderColor,
+              borderRadius:10,
+              flex:1,
+              flexDirection:'row',
+              justifyContent:'center',
+              alignItems:'center',
+              opacity:1,
+              borderLeftWidth:5,
+              borderLeftColor:Colors.warningColor,
+              marginHorizontal:16,
+              paddingHorizontal:16
+            }}>
+            <Ionicons name="warning" size={40} color={Colors.warningColor} />
+            <Text subtitle1 warningColor>{text1}</Text>
+
+        </View>
+    )
+  };
 
   const{
     handleChange,
@@ -85,6 +108,34 @@ const ApplyScreen = ({ navigation, route }) => {
     }
   });
 
+  useEffect(() => {
+    showToast()
+    clearErrorMsg();
+  }, [state?.errorMessage?.email,state?.errorMessage?.phone])
+
+
+  const showToast = () => {
+    if(state?.errorMessage?.email && state?.errorMessage?.phone){
+      Toast.show({
+        type: 'tomatoToast',
+        text1: 'Candidate with this email address and phone number Already Exists',
+      })
+    }
+    else if(state?.errorMessage?.email && !state?.errorMessage?.phone){
+      Toast.show({
+        type: 'tomatoToast',
+        text1: 'Candidate with this email address Already Exists',
+      })
+    }
+    else if(state?.errorMessage?.phone && !state?.errorMessage?.email){
+      Toast.show({
+        type: 'tomatoToast',
+        text1: ` Candidate with this phone number  Already Exists`,
+      })
+    }
+
+  }
+
   const phoneValidateColor = !touched ? Colors.borderColor : errors?.phone ? '#FF5A5F' : Colors.borderColor;
   const cvValidateColor = !touched ? Colors.borderColor : errors?.file ? '#FF5A5F' : Colors.borderColor;
   // Document Picker Expo
@@ -111,7 +162,6 @@ const ApplyScreen = ({ navigation, route }) => {
           <CommonHeader name={"Apply"} navigation={navigation}/>
           <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
         </View>
-
         <View paddingH-16 flex-12>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View flex-8>
@@ -120,7 +170,6 @@ const ApplyScreen = ({ navigation, route }) => {
                 <Text text gray marginB-20>If already have Mediusware job account then please <Text
                     onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>
               </View>
-
               <InputField
                   title={"Full Name*"}
                   placeholderText={"Enter Your Name"}
@@ -242,9 +291,18 @@ const ApplyScreen = ({ navigation, route }) => {
               </View>
             </View>
           </ScrollView>
-          <TouchableOpacity marginV-15 onPress={handleSubmit}>
+
+          <Toast
+              config={toastConfig}
+              visibilityTime={3000}
+              position='top'
+          />
+
+          <TouchableOpacity marginV-15 disabled={state?.loader} onPress={()=>{
+            handleSubmit()
+          }}>
             {/*<TouchableOpacity marginV-15 onPress={registration}>*/}
-            <FilledBtn title={"Continue"} />
+            <FilledBtn title={"Continue"} isLoading={state?.loader}/>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

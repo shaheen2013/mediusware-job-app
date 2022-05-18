@@ -12,11 +12,16 @@ const authReducer = (state, action) => {
       case "clear_error_msg":
           return {...state,errorMessage:{}};
       case 'logout':
-          return {token:null,errorMessage:{}}
+          return {token:null,errorMessage:{}};
+      case 'set_loader':
+          return {...state,loader:true}
+      case 'clear_loader':
+          return {...state,loader:false}
     default:
       return state;
   }
 };
+
 const tryLocalLogin = dispatch =>  async () =>{
     const token = await AsyncStorage.getItem('token');
     if(token){
@@ -28,7 +33,16 @@ const tryLocalLogin = dispatch =>  async () =>{
 const clearErrorMsg = dispatch => () =>{
     dispatch({type:'clear_error_msg'})
 }
+const settingLoader = dispatch => () =>{
+    dispatch({type:'set_loader'})
+}
+
+const clearLoader = dispatch => () =>{
+    dispatch({type:'clear_loader'})
+}
+
 const register = dispatch => async (formDataObj,callback) => {
+    dispatch({type:'set_loader'});
     try {
       const response = await mediusware.post(
         "/register-candidate/",
@@ -42,19 +56,21 @@ const register = dispatch => async (formDataObj,callback) => {
       if(callback){
           callback();
       }
+        dispatch({type:'clear_loader'});
     } catch (err) {
         console.log(err.response.data);
-      // let payloadMsg;
-      // let emailError = (err.response.data?.email !== undefined);
-      // let phoneError = (err.response.data?.phone !== undefined);
-      // emailError && (payloadMsg = "Candidate with this email already exists!!!");
-      // phoneError &&  (payloadMsg = "Candidate with this phone number already exists!!!");
-      // dispatch({ type: "add_error", payload: payloadMsg });
+      let emailError = (err.response.data?.email !== undefined);
+      let phoneError = (err.response.data?.phone !== undefined);
+      emailError && (emailError = "Candidate with this email already exists!");
+      phoneError &&  (phoneError = "Candidate with this phone number already exists!");
+      dispatch({ type: "add_error", payload: {email:emailError,phone:phoneError} });
+      dispatch({type:'clear_loader'});
     }
   
 };
 
 const login = (dispatch) => async ({ email, password },callback) => {
+    dispatch({type:'set_loader'});
     try {
       const response = await mediusware.post("/login/", { email, password });
       console.log(response.data , 'login response');
@@ -64,13 +80,16 @@ const login = (dispatch) => async ({ email, password },callback) => {
         if(callback){
             callback();
         }
+        dispatch({type:'clear_loader'});
     } catch (err) {
         console.log("login error: ",err.response.data?.detail);
         dispatch({ type: "add_error", payload: {error:err.response.data?.detail} });
+        dispatch({type:'clear_loader'});
     }
 
 };
 const apply = (dispatch) => async ({ job_slug, expected_salary, additional_message, additional_fields }, callback) => {
+    dispatch({type:'set_loader'});
     try {
       const response = await mediusware.post(
         "https://hr.mediusware.xyz/api/apply/",
@@ -86,6 +105,7 @@ const apply = (dispatch) => async ({ job_slug, expected_salary, additional_messa
       if (callback) {
         callback();
       }
+      dispatch({type:'clear_loader'});
     } catch (err) {
     }
 };
@@ -96,5 +116,5 @@ const logout = dispatch => async ()=>{
 export const { Provider, Context } = createDataContext(
   authReducer,
   { login, logout, register, apply,clearErrorMsg,tryLocalLogin},
-  { token: null, errorMessage: {} }
+  { token: null, errorMessage: {},loader:false }
 );
