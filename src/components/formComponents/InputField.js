@@ -34,7 +34,7 @@ const InputField = forwardRef(({
                         flex: 1,
                         fontFamily: "Montserrat_400Regular",
                     }}
-                    //editable={editable}
+                    editable={editable}
                     keyboardType={keyboardType}
                     onBlur={onBlur}
                     value={value}

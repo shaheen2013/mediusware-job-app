@@ -7,7 +7,7 @@ import FilledBtn from "../components/buttons/FilledBtn";
 import {useIsFocused} from "@react-navigation/native";
 import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
 import ProfileHeader from "../components/ProfileHeader";
-import { Feather } from '@expo/vector-icons';
+import {AntDesign, Feather, Ionicons} from '@expo/vector-icons';
 import InputField from "../components/formComponents/InputField";
 import useCandidate from "../hooks/useCandidate";
 import * as ImagePicker from 'expo-image-picker';
@@ -19,11 +19,65 @@ import mediusware from "../api/mediusware";
 import {Context as AuthContext} from "../contexts/AuthContext";
 import ErrorMsg from "../components/ErrorMsg";
 import SuccessMsg from "../components/SuccessMsg";
+import ErrorToast from "../components/ErrorToast";
+import SuccessToast from "../components/SuccessToast";
+import * as Yup from "yup";
+import {useFormik} from "formik";
+import Toast from "react-native-toast-message";
 
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
+
+const toastConfig = {
+    tomatoToast: ({ text1, props }) => (
+        <View
+            style={{ height: 80,
+                backgroundColor: Colors.borderColor,
+                borderRadius:10,
+                flex:1,
+                flexDirection:'row',
+                justifyContent:'center',
+                alignItems:'center',
+                opacity:1,
+                borderLeftWidth:5,
+                borderLeftColor:Colors.warningColor,
+                marginHorizontal:16,
+                paddingHorizontal:16,
+
+            }}>
+            <Ionicons name="warning" size={40} color={Colors.warningColor} />
+            <Text subtitle1 warningColor>{text1}</Text>
+        </View>
+    ),
+    successToast: ({ text1, props }) => (
+        <View
+            style={{ height: 80,
+                backgroundColor: Colors.borderColor,
+                borderRadius:10,
+                flex:1,
+                flexDirection:'row',
+                justifyContent:'center',
+                alignItems:'center',
+                opacity:1,
+                borderLeftWidth:5,
+                borderLeftColor:'green',
+                marginHorizontal:16,
+                paddingHorizontal:16,
+            }}>
+            <AntDesign name="checkcircle" size={40} color="green" />
+            <Text subtitle1 style={{color:'green'}}>{text1}</Text>
+        </View>
+    ),
+};
+
+const profileSchema = Yup.object().shape({
+    full_name:Yup.string().required('Required'),
+    password: Yup.string()
+        .min(6, 'Must be 6 character Long!')
+        .required('Required')
+});
 
 const ProfileScreen = ({navigation, route}) => {
     const {state,tryLocalLogin,logout} = useContext(AuthContext);
@@ -33,16 +87,79 @@ const ProfileScreen = ({navigation, route}) => {
     const [cv, setCv] = useState({});
     const [password,setPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState("");
-    const [error, setError] = useState("");
-    const[success,setSuccess ] = useState("");
     const[isSuccess,setISSuccess ] = useState(false);
     const [modalVisible,setModalVisible] = useState(false);
-    const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
+    // const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
     let formDataObj = new FormData();
+    const [file , setFile] = useState({})
+    const [image , setImage] = useState({})
+    const[loading,setLoading] = useState(false);
 
-    useEffect(()=>{
-        setUpdateName(user?.full_name);
-    },[user?.full_name])
+    const{
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched
+    } = useFormik({
+        validationSchema: profileSchema,
+        initialValues: {full_name:user?.full_name, email: user?.email, password: ''},
+        enableReinitialize: true,
+        onSubmit: async (values) =>{
+            //formDataObj = totalFormDataObj;
+            values.file = file
+            values.image = image
+            formDataObj.append('avatar' , {
+                "name": "avatar.jpg",
+                "type": "image/jpg",
+                "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rakibulalam9200%252FMW-Job-App/ImagePicker/e6efe245-f9c6-461a-bd70-8c4e546bed5e.jpg",
+            })
+            formDataObj.append('cv' , {
+                "name": "Rakibul_Alam_181-16-285_Resume-1.pdf",
+                "type": "application/pdf",
+                "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rakibulalam9200%252FMW-Job-App/DocumentPicker/570a25cc-4834-4a54-8f6f-ddb3903adcd9.pdf",
+            })
+
+            let formData = {
+                full_name:values.full_name,
+                email:values.email,
+                current_password:values.password,
+                // cv:values.file,
+                // avatar:values.image,
+            };
+            console.log(formDataObj , 'formDataObj')
+            for (let key in formData) {
+                formDataObj.append(
+                    key,
+                    Array.isArray(formData[key])
+                        ? JSON.stringify(formData[key])
+                        : formData[key]
+                );
+            }
+            setLoading(true);
+            console.log(formDataObj , 'formDataObj123456')
+            try {
+                const response = await mediusware.post('/candidate/', formDataObj,{
+                    headers: {
+                        Authorization: `Bearer ${state.token}`,
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
+                console.log('response' , response.data);
+                values.password="";
+                setErrorMsg('');
+                setISSuccess(true);
+                setLoading(false);
+            }catch(err){
+                console.log(err.response.data);
+                setErrorMsg(err?.response?.data?.current_password);
+                setLoading(false);
+                setISSuccess(false);
+
+            }
+        }
+    });
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -58,85 +175,76 @@ const ProfileScreen = ({navigation, route}) => {
         const uri = pickerResult.uri;
         const uriParts = uri.split('.');
         const fileType = uriParts[uriParts.length - 1];
-        formDataObj.append('avatar', {
+        console.log(formDataObj , 'formDataObj image')
+        setImage({
             uri,
             name: `avatar.${fileType}`,
             type: `image/${fileType}`,
-        });
-        setTotalFormDataObj(formDataObj);
+        })
+        // formDataObj.append('avatar', {
+        //     uri,
+        //     name: `avatar.${fileType}`,
+        //     type: `image/${fileType}`,
+        // });
+        console.log(formDataObj);
+        // setTotalFormDataObj(formDataObj);
+        //totalFormDataObj.append(formDataObj);
     };
 
     // Document Picker Expo
     const pickDocument = async () => {
-        let result = await DocumentPicker.getDocumentAsync({});
-        //setResume(result);
-        if (result) {
+       // console.log("afte picking image: ",totalFormDataObj)
+        let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
+        console.log(formDataObj , 'pickDocument image')
+        if (result.type !== "cancel") {
+
             const { name, uri } = result;
             const uriParts = name.split(".");
             const fileType = uriParts[uriParts.length - 1];
-            formDataObj.append("cv", {
+            setFile({
                 uri,
                 name,
                 type: `application/${fileType}`,
-            });
+            })
+            // formDataObj.append("cv", {
+            //     uri,
+            //     name,
+            //     type: `application/${fileType}`,
+            // });
             setCv(result);
         }
-        setTotalFormDataObj(formDataObj);
-
+        console.log(formDataObj);
+        //setTotalFormDataObj(formDataObj);
     };
 
-    // update profile post api
-    const updateProfile = async () => {
-        if (password === "") {
-            setError("password");
-            setErrorMsg("Please, Enter your Password");
-            return;
-        }
+    useEffect(() => {
+        showToast();
+        setErrorMsg( "");
+    }, [errorMsg])
 
-        if (password.length < 6) {
-            setError("password");
-            setErrorMsg("Password Should be more than 6 character long");
-            return;
-        }
-        if (updateName === "") {
-            setError("name");
-            setErrorMsg("Name field should not be empty");
-            return;
-        }
-        formDataObj = totalFormDataObj;
-        let formData = {
-            full_name:updateName,
-            current_password:password,
-        };
-        for (let key in formData) {
-            formDataObj.append(
-                key,
-                Array.isArray(formData[key])
-                    ? JSON.stringify(formData[key])
-                    : formData[key]
-            );
-        }
-        try {
-            const response = await mediusware.post('/candidate/', formDataObj,{
-                headers: {
-                    Authorization: `Bearer ${state.token}`,
-                    "Content-Type": "multipart/form-data",
-                }
-            });
-            setError('');
-            setErrorMsg('');
-            setISSuccess(true);
-            setSuccess("Updated your profile successfully.");
-            setPassword('');
-            setCv({});
-
-        }catch(err){
-
-        }
+    const showToast = () => {
+        errorMsg && Toast.show({
+            type: 'tomatoToast',
+            text1: ` ${errorMsg}`
+        })
     }
+
+    useEffect(() => {
+        successShow();
+        setISSuccess(false);
+    }, [isSuccess])
+
+    const successShow = () => {
+        isSuccess && Toast.show({
+            type: 'successToast',
+            text1: ` Updated Profile Successfully`
+        })
+    }
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
+            {/*Modal for setting */}
             <View style={{position: 'absolute'}}>
                 <Modal isVisible={modalVisible}>
                     <View style={styles.modalView}>
@@ -161,10 +269,11 @@ const ProfileScreen = ({navigation, route}) => {
                     </View>
                 </Modal>
             </View>
+
             <View flex-1>
                 <ProfileHeader name={'Profile'} navigation={navigation} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
 
-                <View  style={{flex: 8}}>
+                <View  style={{flex: 6}}>
                     <View style={{position:'relative'}}>
                         <View>
                             <View style={{height:50}} backgroundColor={Colors.blue}/>
@@ -183,10 +292,30 @@ const ProfileScreen = ({navigation, route}) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <ScrollView showsVerticalScrollIndicator={false} style={{paddingHorizontal: 16}}>
-                        <InputField title={'Name*'}  value={updateName} onChangeText={setUpdateName}/>
-                        {error === "name" && <ErrorMsg msg={errorMsg} />}
-                        <InputField title={'Email*'} placeholderText={'Your Email'} value={user?.email} editable={false}/>
+
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{paddingHorizontal: 16}}>
+                        <InputField
+                            title={'Name*'}
+                            autoCapitalize={"words"}
+                            keyboardType={'email-address'}
+                            autoComplete={"off"}
+                            autoCorrect={false}
+                            spellCheck={false}
+                            value={values.full_name}
+                            onChangeText={handleChange('full_name')}
+                            onBlur={handleBlur('full_name')}
+                            error={errors.full_name}
+                            touched={touched.full_name}
+                        />
+
+                        <InputField
+                            title={'Email*'}
+                            keyboardType={'email-address'}
+                            value={user?.email}
+                            editable={false}
+                        />
                         <View>
                             <Text marginB-8 text>CV/Resume*</Text>
                             <View style={styles.uploadContainer}>
@@ -203,16 +332,30 @@ const ProfileScreen = ({navigation, route}) => {
                             </View>
                             <Text marginB-16 small_text blue onPress={()=>Linking.openURL(`${user?.cv}`)}>Current CV/Resume*</Text>
                         </View>
-                        <InputField isIcon={true} title={'Current Password'} placeholderText={''} value={password} onChangeText={setPassword}/>
-                        {error === "password" && <ErrorMsg msg={errorMsg} />}
-                        {isSuccess && <SuccessMsg msg={success}/>}
+                        <InputField
+                            isIcon={true}
+                            title={'Current Password'}
+                            placeholderText={''}
+                            value={values.password}
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            error={errors.password}
+                            touched={touched.password}
+                            autoCapitalize={"none"}
+                        />
+
                     </ScrollView>
                 </View>
                 <View flex-1 paddingH-16 >
-                    <TouchableOpacity onPress={updateProfile}>
-                        <FilledBtn title={'Save'}/>
+                    <TouchableOpacity disabled={loading} onPress={handleSubmit}>
+                        <FilledBtn title={'Save'} isLoading={loading}/>
                     </TouchableOpacity>
                 </View>
+                <Toast
+                    config={toastConfig}
+                    visibilityTime={3000}
+                    position='top'
+                />
             </View>
         </SafeAreaView>
     );
@@ -230,12 +373,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     uploadStyle: {
-        borderColor: '#E9E9E9',
+        borderColor: "#E9E9E9",
         height: 32,
         borderWidth: 1,
         marginVertical: 8,
         borderRadius: 10,
-        width: '35%'
+        alignSelf:'flex-start',
     },
     modalView: {
         flex: 1,

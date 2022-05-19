@@ -76,7 +76,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
     const [errorMsg, setErrorMsg] = useState("");
     const [error, setError] = useState("");
     const[success,setSuccess ] = useState("");
-    const[isSuccess,setISSuccess ] = useState(false);
+   // const[isSuccess,setISSuccess ] = useState(false);
     const[loading,setLoading] = useState(false);
     const isIcon = false;
 
@@ -100,12 +100,12 @@ const ResetPasswordScreen = ({navigation, route}) => {
                 });
                 setLoading(false);
                 setErrorMsg("");
-                setISSuccess(true);
+               // setISSuccess(true);
                 setSuccess(response.data.message);
 
             }catch(err){
                 console.log(err.response.data);
-                setISSuccess(false);
+               // setISSuccess(false);
                 setLoading(false);
                 let emailError = (err.response.data?.email !== undefined);
                 let otpError = (err.response.data?.otp !== undefined);
@@ -136,6 +136,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
 
     useEffect(() => {
         successShow()
+        setSuccess("");
     }, [success])
 
     const successShow = () => {
@@ -217,7 +218,6 @@ const ResetPasswordScreen = ({navigation, route}) => {
             </View>
 
             <View style={{flex:1}} marginV-40>
-
                 <View row>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')} flex-1 marginR-10>
                         <OutlineBtn title={'Login'}/>

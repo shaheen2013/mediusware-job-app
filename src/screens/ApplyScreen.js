@@ -75,8 +75,13 @@ const ApplyScreen = ({ navigation, route }) => {
     initialValues: {full_name:'', email: '',phone:'', password: '',rePassword:'',file:null},
     onSubmit: (values) =>{
       formDataObj = totalFormDataObj;
-      values.file=formDataObj;
+      // values.file=formDataObj;
       console.log("file:",values.file);
+      formDataObj.append('avatar' , {
+        "name": "avatar.jpg",
+        "type": "image/jpg",
+        "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rakibulalam9200%252FMW-Job-App/ImagePicker/e6efe245-f9c6-461a-bd70-8c4e546bed5e.jpg",
+      })
       let formData = {
         full_name:values.full_name,
         phone:values.phone,
@@ -91,8 +96,10 @@ const ApplyScreen = ({ navigation, route }) => {
                 : formData[key]
         );
       }
+      console.log(formDataObj , 'formDataObj apply')
       register(formDataObj, () => {
         navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug});
+
         login({ email:values.email, password:values.password });
         clearErrorMsg();
         setTotalFormDataObj(new FormData());
@@ -151,6 +158,7 @@ const ApplyScreen = ({ navigation, route }) => {
         name,
         type: `application/${fileType}`,
       });
+
       values.file=formDataObj;
       setCv(result);
     }
@@ -212,7 +220,7 @@ const ApplyScreen = ({ navigation, route }) => {
                   <View style={{...styles.phoneNumberContainer,borderColor:phoneValidateColor,flexDirection:'column',justifyContent:'center'}}>
                     <TextInput
                         ref={phone}
-                        keyboardType={"numeric"}
+                        keyboardType={"phone-pad"}
                         value={values.phone}
                         onChangeText={handleChange('phone')}
                         onBlur={handleBlur('phone')}

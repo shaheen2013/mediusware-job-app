@@ -106,7 +106,11 @@ const apply = (dispatch) => async ({ job_slug, expected_salary, additional_messa
         callback();
       }
       dispatch({type:'clear_loader'});
+        console.log(response.data);
     } catch (err) {
+        console.log(err.response.data);
+        dispatch({ type: "add_error", payload: {message:err.response.data?.message} });
+        dispatch({type:'clear_loader'});
     }
 };
 const logout = dispatch => async ()=>{
