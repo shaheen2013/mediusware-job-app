@@ -33,6 +33,7 @@ const tryLocalLogin = dispatch =>  async () =>{
 const clearErrorMsg = dispatch => () =>{
     dispatch({type:'clear_error_msg'})
 }
+
 const settingLoader = dispatch => () =>{
     dispatch({type:'set_loader'})
 }
@@ -86,8 +87,8 @@ const login = (dispatch) => async ({ email, password },callback) => {
         dispatch({ type: "add_error", payload: {error:err.response.data?.detail} });
         dispatch({type:'clear_loader'});
     }
-
 };
+
 const apply = (dispatch) => async ({ job_slug, expected_salary, additional_message, additional_fields }, callback) => {
     dispatch({type:'set_loader'});
     try {
@@ -119,6 +120,6 @@ const logout = dispatch => async ()=>{
 };
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { login, logout, register, apply,clearErrorMsg,tryLocalLogin},
+  { login, logout, register, apply, clearErrorMsg, tryLocalLogin},
   { token: null, errorMessage: {},loader:false }
 );

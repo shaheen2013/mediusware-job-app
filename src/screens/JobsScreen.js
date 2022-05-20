@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState,useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {FlatList, StatusBar, StyleSheet,Button} from 'react-native';
+import {RefreshControl,FlatList, StatusBar, StyleSheet,Button} from 'react-native';
 import {Text, View, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import HeaderTitle from "../components/HeaderTitle";
 import SearchField from "../components/formComponents/SearchField";
@@ -14,14 +14,15 @@ function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
+
+
 const JobsScreen = ({navigation}) => {
     const {state,clearErrorMsg}= useContext(AuthContext);
     const date = new Date();
     const hours = date.getHours();
     const [jobs,isLoading,setIsLoading] = useJobs();
     const [greetings,setGreetings] = useState('Good Morning');
-    const [user] = useCandidate();
-
+    const [user,onRefresh,refreshing] = useCandidate();
 
     useEffect(()=>{
         if(hours >=5 && hours <12){
@@ -61,6 +62,11 @@ const JobsScreen = ({navigation}) => {
                 </View>
                 <Text marginV-10 subtitle1 deepGray>Mediusware Jobs</Text>
                 <FlatList
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh} />
+                    }
                     showsVerticalScrollIndicator={false}
                     data={jobs}
                     keyExtractor={(item)=> item.title}

@@ -15,6 +15,7 @@ import {
 } from '@expo-google-fonts/montserrat';
 import DrawerNavigation from "./src/navigations/DrawerNavigation";
 import {Provider as AuthProvider} from './src/contexts/AuthContext';
+import {Provider as UserProvider} from './src/contexts/UserContext';
 
 
 const navTheme = {
@@ -77,11 +78,13 @@ export default function App() {
     } else {
         return (
             <AuthProvider>
-                <SafeAreaProvider>
-                    <NavigationContainer theme={navTheme}>
-                        <DrawerNavigation/>
-                    </NavigationContainer>
-                </SafeAreaProvider>
+                <UserProvider>
+                    <SafeAreaProvider>
+                        <NavigationContainer theme={navTheme}>
+                            <DrawerNavigation/>
+                        </NavigationContainer>
+                    </SafeAreaProvider>
+                </UserProvider>
             </AuthProvider>
         );
     }

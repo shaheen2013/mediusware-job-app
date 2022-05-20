@@ -1,6 +1,6 @@
 import React,{useContext} from 'react';
 import { Feather,MaterialCommunityIcons  } from '@expo/vector-icons';
-import {useWindowDimensions, StyleSheet} from 'react-native';
+import {useWindowDimensions, StyleSheet, RefreshControl} from 'react-native';
 import {Colors, Text, View, TouchableOpacity, Image} from 'react-native-ui-lib'
 import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
 import MediuswareIcon from "../../assets/svgIcon/MediuswareIcon";
@@ -13,11 +13,15 @@ import LogoutIcon from "../../assets/svgIcon/LogoutIcon";
 
 
 const CustomDrawerContent = (props) => {
-    const [user] = useCandidate();
+    const [user,onRefresh,refreshing] = useCandidate();
     const {state,logout} = useContext(AuthContext);
     return (
         <View style={{flex:1,backgroundColor:'#F3F7FB',paddingHorizontal:16}}>
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView {...props} refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh} />
+            }>
                 <View>
                     <View style={{marginTop:8}}>
                         <View row marginB-30 style={{position: 'relative'}}>

@@ -17,6 +17,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import * as DocumentPicker from "expo-document-picker";
 import mediusware from "../api/mediusware";
 import {Context as AuthContext} from "../contexts/AuthContext";
+import {Context as UserContext} from "../contexts/UserContext";
 import ErrorMsg from "../components/ErrorMsg";
 import SuccessMsg from "../components/SuccessMsg";
 import ErrorToast from "../components/ErrorToast";
@@ -81,6 +82,7 @@ const profileSchema = Yup.object().shape({
 
 const ProfileScreen = ({navigation, route}) => {
     const {state,tryLocalLogin,logout} = useContext(AuthContext);
+    //const {userState,updateUser,clearErrorMsg} = useContext(UserContext);
     const [user] = useCandidate();
     const[updateName,setUpdateName] = useState(user?.full_name);
     const [selectedImage, setSelectedImage] = React.useState(null);
@@ -89,7 +91,6 @@ const ProfileScreen = ({navigation, route}) => {
     const [errorMsg, setErrorMsg] = useState("");
     const[isSuccess,setISSuccess ] = useState(false);
     const [modalVisible,setModalVisible] = useState(false);
-    // const [totalFormDataObj, setTotalFormDataObj] = useState(new FormData());
     let formDataObj = new FormData();
     const [file , setFile] = useState({})
     const [image , setImage] = useState({})
@@ -104,29 +105,15 @@ const ProfileScreen = ({navigation, route}) => {
         touched
     } = useFormik({
         validationSchema: profileSchema,
-        initialValues: {full_name:user?.full_name, email: user?.email, password: ''},
+        initialValues: {full_name: user?.full_name, email: user?.email, password: ''},
         enableReinitialize: true,
         onSubmit: async (values) =>{
-            //formDataObj = totalFormDataObj;
-            values.file = file
-            values.image = image
-            formDataObj.append('avatar' , {
-                "name": "avatar.jpg",
-                "type": "image/jpg",
-                "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rakibulalam9200%252FMW-Job-App/ImagePicker/e6efe245-f9c6-461a-bd70-8c4e546bed5e.jpg",
-            })
-            formDataObj.append('cv' , {
-                "name": "Rakibul_Alam_181-16-285_Resume-1.pdf",
-                "type": "application/pdf",
-                "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rakibulalam9200%252FMW-Job-App/DocumentPicker/570a25cc-4834-4a54-8f6f-ddb3903adcd9.pdf",
-            })
-
+            formDataObj.append('cv',file);
+            formDataObj.append('avatar',image);
             let formData = {
                 full_name:values.full_name,
                 email:values.email,
                 current_password:values.password,
-                // cv:values.file,
-                // avatar:values.image,
             };
             console.log(formDataObj , 'formDataObj')
             for (let key in formData) {
@@ -138,7 +125,6 @@ const ProfileScreen = ({navigation, route}) => {
                 );
             }
             setLoading(true);
-            console.log(formDataObj , 'formDataObj123456')
             try {
                 const response = await mediusware.post('/candidate/', formDataObj,{
                     headers: {
@@ -146,7 +132,6 @@ const ProfileScreen = ({navigation, route}) => {
                         "Content-Type": "multipart/form-data",
                     }
                 });
-                console.log('response' , response.data);
                 values.password="";
                 setErrorMsg('');
                 setISSuccess(true);
@@ -156,8 +141,8 @@ const ProfileScreen = ({navigation, route}) => {
                 setErrorMsg(err?.response?.data?.current_password);
                 setLoading(false);
                 setISSuccess(false);
-
             }
+
         }
     });
 
@@ -181,19 +166,12 @@ const ProfileScreen = ({navigation, route}) => {
             name: `avatar.${fileType}`,
             type: `image/${fileType}`,
         })
-        // formDataObj.append('avatar', {
-        //     uri,
-        //     name: `avatar.${fileType}`,
-        //     type: `image/${fileType}`,
-        // });
         console.log(formDataObj);
-        // setTotalFormDataObj(formDataObj);
-        //totalFormDataObj.append(formDataObj);
+
     };
 
     // Document Picker Expo
     const pickDocument = async () => {
-       // console.log("afte picking image: ",totalFormDataObj)
         let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
         console.log(formDataObj , 'pickDocument image')
         if (result.type !== "cancel") {
@@ -206,15 +184,9 @@ const ProfileScreen = ({navigation, route}) => {
                 name,
                 type: `application/${fileType}`,
             })
-            // formDataObj.append("cv", {
-            //     uri,
-            //     name,
-            //     type: `application/${fileType}`,
-            // });
             setCv(result);
         }
         console.log(formDataObj);
-        //setTotalFormDataObj(formDataObj);
     };
 
     useEffect(() => {
