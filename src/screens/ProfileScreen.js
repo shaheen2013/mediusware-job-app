@@ -83,7 +83,6 @@ const profileSchema = Yup.object().shape({
 const ProfileScreen = ({navigation, route}) => {
     const {state,tryLocalLogin,logout,login} = useContext(AuthContext);
     const {state:{user,loader,errorMessage,success},updateUser,clearErrorMsg,getUser,clearSuccess} = useContext(UserContext);
-    console.log(success,'success message');
     const [selectedImage, setSelectedImage] = React.useState(null);
     const [cv, setCv] = useState({});
     const[isSuccess,setISSuccess ] = useState(false);

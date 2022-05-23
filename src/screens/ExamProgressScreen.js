@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import {ScrollView, StatusBar} from 'react-native';
 import CommonHeader from "../components/CommonHeader";
 import {
@@ -24,11 +24,12 @@ import Viva from "../components/ExamProgress/Viva";
 import Result from "../components/ExamProgress/Result";
 import useCandidate from "../hooks/useCandidate";
 import useApply from "../hooks/useApply";
+import {Context as UserContext} from "../contexts/UserContext";
 
 
 const ExamProgress = ({route, navigation}) => {
-    const [user] = useCandidate();
-    const [apply] = useApply();
+    const {state:{user}} = useContext(UserContext);
+    const [apply,loader] = useApply();
     const [activeIndex, setActiveIndex] = useState(0);
     const [completedStepIndex, setCompletedStepIndex] = useState(undefined);
     const [allTypesIndex, setAllTypesIndex] = useState(0);
@@ -62,7 +63,7 @@ const ExamProgress = ({route, navigation}) => {
         switch (activeIndex) {
             case 0:
             default:
-                return <Pending loader={loader} title={apply?.job?.title} appliedAt={apply?.created_at} expSalary={apply?.expected_salary}/>;
+                return <Pending/>;
             case 1:
                 return <Mcq navigation={navigation} title={apply?.job?.title}/>;
             case 2:
@@ -152,7 +153,7 @@ const ExamProgress = ({route, navigation}) => {
                             <Text marginH-16 text style={updateLabelText(3)}>Viva</Text>
                             <Text marginH-16 text style={updateLabelText(4)}>Result</Text>
                         </View>
-                    <Text caption color={Colors.gray} marginT-20->Hello, {user?.full_name ? user?.full_name.split(' ')[0]:'Jack'}</Text>
+                    <Text caption color={Colors.gray} marginT-20->Hello, {user?.user?.full_name ? user?.user?.full_name.split(' ')[0]:'Jack'}</Text>
                     {renderCurrentStep()}
 
                 </View>
