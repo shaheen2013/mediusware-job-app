@@ -1,9 +1,5 @@
 import mediusware from "../api/mediusware";
 import createDataContext from "./createDataContext";
-import {Context as AuthContext} from "./AuthContext";
-// import {useContext} from "react";
-//
-// const {state,tryLocalLogin,logout} = useContext(AuthContext);
 
 const userReducer = (userState, action) => {
     switch (action.type) {
@@ -17,10 +13,22 @@ const userReducer = (userState, action) => {
             return {...userState,loader:true}
         case 'clear_loader':
             return {...userState,loader:false}
+        case 'set_success':
+            return {...userState,success:true}
+        case 'clear_success':
+            return {...userState,success:false}
         default:
             return userState;
     }
 };
+
+const settingSuccess = dispatch => () =>{
+    dispatch({type:'set_success'})
+}
+
+const clearSuccess = dispatch => () =>{
+    dispatch({type:'clear_success'})
+}
 
 const clearErrorMsg = dispatch => () =>{
     dispatch({type:'clear_error_msg'})
@@ -33,7 +41,7 @@ const clearLoader = dispatch => () =>{
     dispatch({type:'clear_loader'})
 }
 
-const updateUser = dispatch => async (formDataObj,token,callback,) => {
+const updateUser = dispatch => async (formDataObj,token,callback) => {
     dispatch({type:'set_loader'});
     try {
         const response = await mediusware.post('/candidate/', formDataObj,{
@@ -44,11 +52,15 @@ const updateUser = dispatch => async (formDataObj,token,callback,) => {
         });
         console.log(response.data);
         dispatch({ type: "editUser", payload: {user:response.data}});
+        dispatch({type:'set_success'})
         if(callback){
             callback();
         }
         dispatch({type:'clear_loader'});
+        dispatch({type:'clear_error_msg'});
     } catch (err) {
+        console.log("context error for update: ",err?.response?.data);
+        dispatch({type:'clear_success'});
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.current_password}});
         dispatch({type:'clear_loader'});
     }
@@ -73,6 +85,6 @@ const getUser = dispatch => async (token, callback) => {
 
 export const { Provider, Context } = createDataContext(
     userReducer,
-    {updateUser,clearErrorMsg,getUser},
-    {user:{},errorMessage: {},loader:false }
+    {updateUser,clearErrorMsg,getUser,clearSuccess},
+    {user:{},errorMessage: {},loader:false,success:false }
 );

@@ -81,19 +81,16 @@ const profileSchema = Yup.object().shape({
 });
 
 const ProfileScreen = ({navigation, route}) => {
-    const {state,tryLocalLogin,logout} = useContext(AuthContext);
-    //const {userState,updateUser,clearErrorMsg} = useContext(UserContext);
-    const [user] = useCandidate();
-    const[updateName,setUpdateName] = useState(user?.full_name);
+    const {state,tryLocalLogin,logout,login} = useContext(AuthContext);
+    const {state:{user,loader,errorMessage,success},updateUser,clearErrorMsg,getUser,clearSuccess} = useContext(UserContext);
+    console.log(success,'success message');
     const [selectedImage, setSelectedImage] = React.useState(null);
     const [cv, setCv] = useState({});
-    const [password,setPassword] = useState('');
-    const [errorMsg, setErrorMsg] = useState("");
     const[isSuccess,setISSuccess ] = useState(false);
     const [modalVisible,setModalVisible] = useState(false);
     let formDataObj = new FormData();
-    const [file , setFile] = useState({})
-    const [image , setImage] = useState({})
+    const [file , setFile] = useState(null)
+    const [image , setImage] = useState(null)
     const[loading,setLoading] = useState(false);
 
     const{
@@ -105,14 +102,19 @@ const ProfileScreen = ({navigation, route}) => {
         touched
     } = useFormik({
         validationSchema: profileSchema,
-        initialValues: {full_name: user?.full_name, email: user?.email, password: ''},
+        initialValues: {full_name: user?.user?.full_name, email: user?.user?.email, password: '',cv:user?.user?.cv,avatar:user?.user?.avatar},
         enableReinitialize: true,
         onSubmit: async (values) =>{
-            formDataObj.append('cv',file);
-            formDataObj.append('avatar',image);
+            if(file !== null){
+                formDataObj.append('cv',file);
+            }
+
+            if(image !== null){
+                formDataObj.append('avatar',image);
+            }
             let formData = {
                 full_name:values.full_name,
-                email:values.email,
+                email:values?.email,
                 current_password:values.password,
             };
             console.log(formDataObj , 'formDataObj')
@@ -124,25 +126,11 @@ const ProfileScreen = ({navigation, route}) => {
                         : formData[key]
                 );
             }
-            setLoading(true);
-            try {
-                const response = await mediusware.post('/candidate/', formDataObj,{
-                    headers: {
-                        Authorization: `Bearer ${state.token}`,
-                        "Content-Type": "multipart/form-data",
-                    }
-                });
-                values.password="";
-                setErrorMsg('');
-                setISSuccess(true);
-                setLoading(false);
-            }catch(err){
-                console.log(err.response.data);
-                setErrorMsg(err?.response?.data?.current_password);
-                setLoading(false);
-                setISSuccess(false);
-            }
-
+            updateUser(formDataObj,state?.token, () => {
+                clearErrorMsg();
+                values.password = '';
+                setCv({});
+            });
         }
     });
 
@@ -175,7 +163,6 @@ const ProfileScreen = ({navigation, route}) => {
         let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
         console.log(formDataObj , 'pickDocument image')
         if (result.type !== "cancel") {
-
             const { name, uri } = result;
             const uriParts = name.split(".");
             const fileType = uriParts[uriParts.length - 1];
@@ -189,25 +176,30 @@ const ProfileScreen = ({navigation, route}) => {
         console.log(formDataObj);
     };
 
+    useEffect(()=>{
+        tryLocalLogin().then(()=>getUser(state?.token));
+    },[state?.token])
+
+
     useEffect(() => {
         showToast();
-        setErrorMsg( "");
-    }, [errorMsg])
+        clearErrorMsg();
+    }, [errorMessage?.error])
 
     const showToast = () => {
-        errorMsg && Toast.show({
+        errorMessage?.error && Toast.show({
             type: 'tomatoToast',
-            text1: ` ${errorMsg}`
+            text1: ` ${errorMessage?.error}`
         })
     }
 
     useEffect(() => {
         successShow();
-        setISSuccess(false);
-    }, [isSuccess])
+        clearSuccess();
+    }, [success])
 
     const successShow = () => {
-        isSuccess && Toast.show({
+        success && Toast.show({
             type: 'successToast',
             text1: ` Updated Profile Successfully`
         })
@@ -253,7 +245,7 @@ const ProfileScreen = ({navigation, route}) => {
                         </View>
                         <View style={{position:'absolute',alignSelf:'center',marginTop:10}}>
                             {selectedImage !== null ?<Image source={{ uri: selectedImage.localUri}} style={{height:80,width:80,borderRadius:10}}/>:
-                                (user?.avatar !== null ? <Image source={{ uri: user?.avatar}} style={{height:80,width:80,borderRadius:10}}/>:
+                                (user?.user?.avatar !== null ? <Image source={{ uri: user?.user?.avatar}} style={{height:80,width:80,borderRadius:10}}/>:
                                 <Image source={require("../../assets/images/profile.png")}/>)}
                         </View>
                         <View  style={{position:'absolute',marginTop:'15%',marginLeft:'52%'}}>
@@ -285,7 +277,7 @@ const ProfileScreen = ({navigation, route}) => {
                         <InputField
                             title={'Email*'}
                             keyboardType={'email-address'}
-                            value={user?.email}
+                            value={values.email}
                             editable={false}
                         />
                         <View>
@@ -302,7 +294,7 @@ const ProfileScreen = ({navigation, route}) => {
                                     <Text>{cv?.name}</Text>
                                 </View>
                             </View>
-                            <Text marginB-16 small_text blue onPress={()=>Linking.openURL(`${user?.cv}`)}>Current CV/Resume*</Text>
+                            <Text marginB-16 small_text blue onPress={()=>Linking.openURL(`${user?.user?.cv}`)}>Current CV/Resume*</Text>
                         </View>
                         <InputField
                             isIcon={true}
@@ -319,8 +311,8 @@ const ProfileScreen = ({navigation, route}) => {
                     </ScrollView>
                 </View>
                 <View flex-1 paddingH-16 >
-                    <TouchableOpacity disabled={loading} onPress={handleSubmit}>
-                        <FilledBtn title={'Save'} isLoading={loading}/>
+                    <TouchableOpacity disabled={loader} onPress={handleSubmit}>
+                        <FilledBtn title={'Save'} isLoading={loader}/>
                     </TouchableOpacity>
                 </View>
                 <Toast

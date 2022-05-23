@@ -6,7 +6,9 @@ import {Context as AuthContext} from "../contexts/AuthContext";
 const useApply = () => {
     const{state,tryLocalLogin} = useContext(AuthContext);
     const [apply, setApply] = useState({});
+    const[loader,setLoader] = useState(false);
     const showUser = async () => {
+        setLoader(true);
         try {
             const response = await mediusware.get('/apply/', {
                 headers: {
@@ -14,19 +16,15 @@ const useApply = () => {
                 }
             });
             setApply(response.data[0]);
+            setLoader(false);
         }catch(err){
+            setLoader(false);
         }
     }
     useEffect(()=>{
         tryLocalLogin().then(()=>showUser());
     },[state.token])
-    // const [singleJob,setSingleJob]= useState({});
-    //const [errorMessage, setErrorMessage] = useState(false);
-    // useEffect(()=>{
-    //     showUser();
-    // },[state.token])
-
-    return [apply]
+    return [apply,loader]
 };
 
 export default useApply;

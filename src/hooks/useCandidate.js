@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState,useCallback} from 'react';
-
 import mediusware from "../api/mediusware";
 import {Context as AuthContext} from "../contexts/AuthContext";
 
@@ -33,7 +32,7 @@ const useCandidate = () => {
 
 
     useEffect(()=>{
-        tryLocalLogin().then(()=>showUser());
+        tryLocalLogin().then()
     },[state.token])
 
     return [user,onRefresh,refreshing]

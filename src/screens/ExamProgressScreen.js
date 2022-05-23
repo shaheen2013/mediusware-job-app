@@ -62,7 +62,7 @@ const ExamProgress = ({route, navigation}) => {
         switch (activeIndex) {
             case 0:
             default:
-                return <Pending title={apply?.job?.title} appliedAt={apply?.created_at} expSalary={apply?.expected_salary}/>;
+                return <Pending loader={loader} title={apply?.job?.title} appliedAt={apply?.created_at} expSalary={apply?.expected_salary}/>;
             case 1:
                 return <Mcq navigation={navigation} title={apply?.job?.title}/>;
             case 2:

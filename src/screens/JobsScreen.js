@@ -8,6 +8,7 @@ import FilterBtn from "../components/buttons/FilterBtn";
 import JobCard from "../components/JobCard";
 import useJobs from "../hooks/useJobs";
 import {Context as AuthContext} from "../contexts/AuthContext";
+import {Context as UserContext} from "../contexts/UserContext";
 import useCandidate from "../hooks/useCandidate";
 import {useIsFocused} from "@react-navigation/native";
 function FocusAwareStatusBar(props) {
@@ -17,12 +18,17 @@ function FocusAwareStatusBar(props) {
 
 
 const JobsScreen = ({navigation}) => {
-    const {state,clearErrorMsg}= useContext(AuthContext);
+    const {state,clearErrorMsg,tryLocalLogin,login}= useContext(AuthContext);
+    const {state:{user},getUser} = useContext(UserContext);
     const date = new Date();
     const hours = date.getHours();
     const [jobs,isLoading,setIsLoading] = useJobs();
     const [greetings,setGreetings] = useState('Good Morning');
-    const [user,onRefresh,refreshing] = useCandidate();
+    //const [user,onRefresh,refreshing] = useCandidate();
+
+    useEffect(()=>{
+        tryLocalLogin().then(()=>getUser(state?.token));
+    },[state?.token])
 
     useEffect(()=>{
         if(hours >=5 && hours <12){
@@ -47,7 +53,7 @@ const JobsScreen = ({navigation}) => {
             <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
             <View paddingH-16 flex-1>
                 <HeaderTitle navigation={navigation}/>
-                <Text marginT-20 marginB-6 caption gray>{!state?.token && 'Hey, '} {greetings} {`${ state?.token && user?.full_name?user?.full_name.split(" ")[0]:""}!`}</Text>
+                <Text marginT-20 marginB-6 caption gray>{!state?.token && 'Hey, '} {greetings} {`${ state?.token && user?.user?.full_name?user?.user?.full_name.split(" ")[0]:""}!`}</Text>
                 <View row marginB-10>
                     <Text subTitleText deepGray>Find Your</Text>
                     <Text subTitleText blue> Perfect Job</Text>
@@ -62,11 +68,11 @@ const JobsScreen = ({navigation}) => {
                 </View>
                 <Text marginV-10 subtitle1 deepGray>Mediusware Jobs</Text>
                 <FlatList
-                    refreshControl={
+                   /* refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh} />
-                    }
+                    }*/
                     showsVerticalScrollIndicator={false}
                     data={jobs}
                     keyExtractor={(item)=> item.title}
