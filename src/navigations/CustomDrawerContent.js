@@ -1,10 +1,9 @@
 import React, {useContext, useEffect} from 'react';
 import { Feather,MaterialCommunityIcons  } from '@expo/vector-icons';
-import {useWindowDimensions, StyleSheet, RefreshControl} from 'react-native';
+import {StyleSheet, RefreshControl} from 'react-native';
 import {Colors, Text, View, TouchableOpacity, Image} from 'react-native-ui-lib'
 import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
 import MediuswareIcon from "../../assets/svgIcon/MediuswareIcon";
-import useCandidate from "../hooks/useCandidate";
 import {Context as AuthContext} from "../contexts/AuthContext";
 import {Context as UserContext} from "../contexts/UserContext";
 import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
@@ -14,23 +13,16 @@ import LogoutIcon from "../../assets/svgIcon/LogoutIcon";
 
 
 const CustomDrawerContent = (props) => {
-    //const [user,onRefresh,refreshing] = useCandidate();
-    const {state,logout,tryLocalLogin} = useContext(AuthContext);
+    const {state:{token},logout,tryLocalLogin} = useContext(AuthContext);
     const {state:{user},getUser} = useContext(UserContext);
+
     useEffect(()=>{
-        getUser(state?.token);
+        getUser(token);
     },[user?.user?.avatar,user?.user?.full_name,user?.user?.cv])
+
     return (
         <View style={{flex:1,backgroundColor:'#F3F7FB',paddingHorizontal:16}}>
-            <DrawerContentScrollView {...props}
-                   /*                  refreshControl={
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh} />
-
-
-            }*/
-            >
+            <DrawerContentScrollView {...props}>
                 <View>
                     <View style={{marginTop:8}}>
                         <View row marginB-30 style={{position: 'relative'}}>
@@ -46,18 +38,18 @@ const CustomDrawerContent = (props) => {
                         </View>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             {
-                                (state?.token && user?.user?.avatar) ? <Image source={{ uri: user?.user?.avatar}} style={{height:60,width:60,borderRadius:10}}/>:
+                                (token && user?.user?.avatar) ? <Image source={{ uri: user?.user?.avatar}} style={{height:60,width:60,borderRadius:10}}/>:
                                     <View style={styles.userIconStyle}>
                                         <Feather name="user" size={36} color="black"/>
                                     </View>
                             }
                             <View marginL-10 style={{flexShrink: 1}}>
                                 <View style={{flexDirection:'row'}}>
-                                    <Text style={{fontSize: 20, fontFamily: 'Montserrat_500Medium',flexShrink: 1}}>{state?.token ? user?.user?.full_name:"Guest User"}</Text>
+                                    <Text style={{fontSize: 20, fontFamily: 'Montserrat_500Medium',flexShrink: 1}}>{token ? user?.user?.full_name:"Guest User"}</Text>
                                 </View>
 
                                 {
-                                    state?.token? <View style={{flexShrink: 1}}>
+                                    token? <View style={{flexShrink: 1}}>
                                             <Text gray text multiline={true} style={{flexShrink:1}}>{user?.user?.email}</Text>
                                         </View>
                                         :
@@ -75,7 +67,7 @@ const CustomDrawerContent = (props) => {
                                 }
                             </View>
                         </View>
-                        {state?.token && <View marginT-40 style={{flexDirection:'column',justifyContent:'space-between'}}>
+                        {token && <View marginT-40 style={{flexDirection:'column',justifyContent:'space-between'}}>
                             <View>
                                 <DrawerItem label={"Dashboard"} style={{marginBottom: -10, marginLeft: 0}}
                                             labelStyle={{color: Colors.gray, fontSize: 16, fontFamily: 'Montserrat_500Medium'}}
@@ -108,7 +100,7 @@ const CustomDrawerContent = (props) => {
                 </View>
             </DrawerContentScrollView>
             {
-                state?.token && (
+                token && (
                     <View style={{justifyContent:'flex-end'}}>
                         <DrawerItem label={"Logout"} style={{marginBottom: 20, marginLeft: 0}}
                                     labelStyle={{color: Colors.gray, fontSize: 16, fontFamily: 'Montserrat_500Medium'}}

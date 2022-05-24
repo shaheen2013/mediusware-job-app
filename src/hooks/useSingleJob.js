@@ -11,6 +11,7 @@ const useSingleJob = (slug) => {
             const response = await mediusware.get(`/job/${slug}`);
             setSingleJob(response.data);
             setIsLoading(false);
+
         }catch(err){
 
         }

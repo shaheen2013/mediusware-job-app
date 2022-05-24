@@ -16,6 +16,7 @@ import {
 import DrawerNavigation from "./src/navigations/DrawerNavigation";
 import {Provider as AuthProvider} from './src/contexts/AuthContext';
 import {Provider as UserProvider} from './src/contexts/UserContext';
+import {Provider as AssessmentProvider} from './src/contexts/AssessmentContext';
 
 
 const navTheme = {
@@ -79,11 +80,13 @@ export default function App() {
         return (
             <AuthProvider>
                 <UserProvider>
-                    <SafeAreaProvider>
-                        <NavigationContainer theme={navTheme}>
-                            <DrawerNavigation/>
-                        </NavigationContainer>
-                    </SafeAreaProvider>
+                    <AssessmentProvider>
+                        <SafeAreaProvider>
+                            <NavigationContainer theme={navTheme}>
+                                <DrawerNavigation/>
+                            </NavigationContainer>
+                        </SafeAreaProvider>
+                    </AssessmentProvider>
                 </UserProvider>
             </AuthProvider>
         );

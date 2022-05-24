@@ -18,8 +18,8 @@ const DashBoardScreen = ({navigation, route}) => {
                 <View paddingH-16>
                     <Text caption color={Colors.gray} marginT-20->Hello, {user?.user?.full_name?user?.user?.full_name.split(' ')[0]:'Jack'}</Text>
                     <View row marginB-10 marginT-6>
-                        <Text subTitleText deepGray>Welcome to</Text>
-                        <Text subTitleText blue> Candidate Dashboard!</Text>
+                        <Text subtitle1 deepGray>Welcome to</Text>
+                        <Text subtitle1 blue> Candidate Dashboard!</Text>
                     </View>
                     <Text text deepGray>Check out our latest events and offers and keep learning everyday!</Text>
                     <Text subtitle1 deepGray marginT-20 marginB-10>Applied Job</Text>

@@ -12,17 +12,12 @@ import {
     TextField,
     ThemeManager
 } from "react-native-ui-lib";
-import InputField from "../components/formComponents/InputField";
-import FilledBtn from "../components/buttons/FilledBtn";
 import {SafeAreaView} from "react-native-safe-area-context";
-import ProgressBtn from "../components/buttons/ProgressBtn";
-import {getBackgroundColor} from "react-native/Libraries/LogBox/UI/LogBoxStyle";
 import Pending from "../components/ExamProgress/Pending";
 import Mcq from "../components/ExamProgress/Mcq";
 import Written from "../components/ExamProgress/Written";
 import Viva from "../components/ExamProgress/Viva";
 import Result from "../components/ExamProgress/Result";
-import useCandidate from "../hooks/useCandidate";
 import useApply from "../hooks/useApply";
 import {Context as UserContext} from "../contexts/UserContext";
 
@@ -65,7 +60,12 @@ const ExamProgress = ({route, navigation}) => {
             default:
                 return <Pending/>;
             case 1:
-                return <Mcq navigation={navigation} title={apply?.job?.title}/>;
+                return <Mcq
+                    navigation={navigation}
+                    title={apply?.job?.title}
+                    time={apply?.candidate_assessment && apply?.candidate_assessment[0]?.assessment?.duration}
+                    score={apply?.candidate_assessment && apply?.candidate_assessment[0]?.score}
+                />;
             case 2:
                 return <Written navigation={navigation} title={apply?.job?.title}/>;
             case 3:

@@ -1,27 +1,19 @@
 import React, {useEffect, useState,useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity, Colors, Image} from 'react-native-ui-lib';
-import CommonHeader from "../components/CommonHeader";
 import {StatusBar, ScrollView, StyleSheet,Linking,Button} from "react-native";
 import FilledBtn from "../components/buttons/FilledBtn";
 import {useIsFocused} from "@react-navigation/native";
-import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
 import ProfileHeader from "../components/ProfileHeader";
 import {AntDesign, Feather, Ionicons} from '@expo/vector-icons';
 import InputField from "../components/formComponents/InputField";
-import useCandidate from "../hooks/useCandidate";
 import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
 import OutlineBtn from "../components/buttons/OutlineBtn";
 import { EvilIcons } from '@expo/vector-icons';
 import * as DocumentPicker from "expo-document-picker";
-import mediusware from "../api/mediusware";
 import {Context as AuthContext} from "../contexts/AuthContext";
 import {Context as UserContext} from "../contexts/UserContext";
-import ErrorMsg from "../components/ErrorMsg";
-import SuccessMsg from "../components/SuccessMsg";
-import ErrorToast from "../components/ErrorToast";
-import SuccessToast from "../components/SuccessToast";
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import Toast from "react-native-toast-message";
@@ -81,7 +73,7 @@ const profileSchema = Yup.object().shape({
 });
 
 const ProfileScreen = ({navigation, route}) => {
-    const {state,tryLocalLogin,logout,login} = useContext(AuthContext);
+    const {state:{token},tryLocalLogin,logout,login} = useContext(AuthContext);
     const {state:{user,loader,errorMessage,success},updateUser,clearErrorMsg,getUser,clearSuccess} = useContext(UserContext);
     const [selectedImage, setSelectedImage] = React.useState(null);
     const [cv, setCv] = useState({});
@@ -125,7 +117,7 @@ const ProfileScreen = ({navigation, route}) => {
                         : formData[key]
                 );
             }
-            updateUser(formDataObj,state?.token, () => {
+            updateUser(formDataObj,token, () => {
                 clearErrorMsg();
                 values.password = '';
                 setCv({});
@@ -176,8 +168,8 @@ const ProfileScreen = ({navigation, route}) => {
     };
 
     useEffect(()=>{
-        tryLocalLogin().then(()=>getUser(state?.token));
-    },[state?.token])
+        tryLocalLogin().then(()=>getUser(token));
+    },[token])
 
 
     useEffect(() => {

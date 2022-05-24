@@ -93,7 +93,6 @@ const ApplyScreen = ({ navigation, route }) => {
       console.log(formDataObj , 'formDataObj apply')
       register(formDataObj, () => {
         navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug});
-
         login({ email:values.email, password:values.password });
         clearErrorMsg();
         setTotalFormDataObj(new FormData());

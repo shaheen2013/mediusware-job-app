@@ -4,7 +4,7 @@ import {ImageBackground} from "react-native";
 import ScoreIcon from "../../../assets/svgIcon/ScoreIcon";
 import PassScoreIcon from "../../../assets/svgIcon/PassScoreIcon";
 import ClockIcon from "../../../assets/svgIcon/ClockIcon";
-const ExamCard = ({title,text}) => {
+const ExamCard = ({title,text,score,duration,passScore}) => {
     return (
         <View
             marginT-10
@@ -26,21 +26,21 @@ const ExamCard = ({title,text}) => {
                             <ScoreIcon/>
                             <Text subtitle1 deepGray marginL-5>Score:</Text>
                         </View>
-                        <Text subtitle1 blue flex-3>24</Text>
+                        <Text subtitle1 blue flex-3>{score}</Text>
                     </View>
                     <View row marginT-10>
                         <View row flex-2 style={{alignItems:'center'}}>
                             <ClockIcon/>
                             <Text subtitle1 deepGray marginL-5>Duration:</Text>
                         </View>
-                        <Text subtitle1 blue flex-3>40 Minute</Text>
+                        <Text subtitle1 blue flex-3>{duration} Minute</Text>
                     </View>
                     <View row marginT-10>
                         <View row flex-2 style={{alignItems:'center'}}>
                             <PassScoreIcon/>
                             <Text subtitle1 deepGray marginL-5>Pass Score:</Text>
                         </View>
-                        <Text subtitle1 blue flex-3>22</Text>
+                        <Text subtitle1 blue flex-3>{passScore}</Text>
                     </View>
 
                 </ImageBackground>

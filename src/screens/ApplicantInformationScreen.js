@@ -16,13 +16,13 @@ import Toast from 'react-native-toast-message';
 let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
 let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
 let experience = /^[0-9][0-9]?$|^100$/;
-let validateExpSalary = /^(?:[0-9][0-9]{0,4}(?:\.\d{1,2})?|100000|100000.00)$/;
+let validateExpSalary = /^(?:[0-9][0-9]{0,6}(?:\.\d{1,2})?|100000|100000.00)$/;
 const applySchema = Yup.object().shape({
     expSalary: Yup.string().matches(validateExpSalary, 'Expected Salary is not valid').required('Required'),
     linkedin: Yup.string().matches(validateLinkedin, 'Linkedin Profile is not valid').required('Required'),
     gitUrl: Yup.string().matches(validateGithub, 'Github Profile is not valid').required('Required'),
     experience: Yup.string().matches(experience, 'Invalid Experience').required('Required'),
-    //comments: Yup.string().required('Required')
+    comments: Yup.string().required('Required')
 });
 
 const toastConfig = {
@@ -184,7 +184,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                     value={values.comments}
                                     onChangeText={handleChange('comments')}
                                     onBlur={handleBlur('comments')}
-                                    //error={errors.comments}
+                                    error={errors.comments}
                                     touched={touched.comments}
                                     multiline={true}
                                     numberOfLines={10}
