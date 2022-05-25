@@ -5,18 +5,18 @@ import {ActivityIndicator} from "react-native";
 import useCandidate from "../../hooks/useCandidate";
 import useApply from "../../hooks/useApply";
 
-const Pending = () => {
+const Pending = ({navigation,title,appliedAt,expSalary}) => {
     const [apply,loader] = useApply();
-    console.log('loader: ',loader);
+   // console.log(apply);
     return (
         <View marginT-20>
             <Point title={"Status"} text={"Pending"}/>
             {
                 loader? <ActivityIndicator size={30} color={Colors.blue} style={{height: 30}}/>
                 :<View>
-                    <Point title={"Job Title"} text={apply?.job?.title}/>
-                    <Point title={"Applied at"} text={apply?.created_at}/>
-                    <Point title={"Exp. Salary"} text={apply?.expected_salary}/>
+                    <Point title={"Job Title"} text={title}/>
+                    <Point title={"Applied at"} text={appliedAt}/>
+                    <Point title={"Exp. Salary"} text={expSalary}/>
                 </View>
             }
 

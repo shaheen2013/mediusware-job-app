@@ -9,7 +9,6 @@ import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeade
 import JobDetailsInfo from "../components/JobDetailsComponents/JobDetailsInfo";
 import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
 import VirtualizedView from "../components/VirtualizedView";
-import useJobs from "../hooks/useJobs";
 import useSingleJob from "../hooks/useSingleJob";
 import {isLoading} from "expo-font";
 function FocusAwareStatusBar(props) {

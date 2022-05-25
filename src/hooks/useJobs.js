@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import mediusware from "../api/mediusware";
 const useResult = () => {
     const [jobs, setJobs] = useState([]);
-    const [singleJob,setSingleJob]= useState({});
     const [refreshing, setRefreshing] = useState(true);
     const[isLoading,setIsLoading] = useState(false);
     //const [errorMessage, setErrorMessage] = useState(false);
@@ -12,7 +11,7 @@ const useResult = () => {
     }
 
     const showJobs = async () => {
-        setRefreshing(true)
+        setRefreshing(true);
         setIsLoading(true);
         try {
             const response = await mediusware.get('/jobs');

@@ -3,7 +3,8 @@ import {Colors, Text, View,TouchableOpacity} from 'react-native-ui-lib';
 import Point from "./Point";
 import FilledBtn from "../buttons/FilledBtn";
 import AlertOutlineBtn from "../buttons/AlertOutlineBtn";
-const Mcq = ({navigation,title,time,score}) => {
+const Mcq = ({navigation,title,time,score,id}) => {
+    console.log('assessment ID: ',id);
     return (
         <View marginT-10>
             <Point title={"Exam Title"} text={`${title}- MCQ`}/>
@@ -11,7 +12,7 @@ const Mcq = ({navigation,title,time,score}) => {
             <Point title={"Exam Time"} text={time}/>
             <Point title={"Your Score"} text={score}/>
             <View marginT-40>
-                <TouchableOpacity onPress={()=>navigation.navigate('ExamStackNavigation',{screen:'MCQ'})}>
+                <TouchableOpacity onPress={()=>navigation.navigate('ExamStackNavigation',{screen:'MCQ',params:{id:id}})}>
                     <FilledBtn title={"Go to Exam"}/>
                 </TouchableOpacity>
                 <AlertOutlineBtn title={"Exam instruction"}/>

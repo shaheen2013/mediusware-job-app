@@ -7,15 +7,24 @@ const assessmentReducer = (state, action) => {
             return { ...state, assessment:action.payload};
         case "quiz_question":
             return { ...state, quiz:action.payload};
+        case "add_error":
+            return { ...state, errorMsg: action.payload };
+        case "clear_error_msg":
+            return {...state,errorMsg:{}};
         default:
             return state;
     }
 };
 
 
-const getAssessment = dispatch => async (token, callback) => {
+const clearErrorMsg = dispatch => () =>{
+    dispatch({type:'clear_error_msg'})
+}
+
+
+const getAssessment = dispatch => async (token,assessmentId,callback) => {
     try {
-        const response = await mediusware.get('/assessment/', {
+        const response = await mediusware.get(`/assessment/${assessmentId}/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -31,16 +40,37 @@ const getAssessment = dispatch => async (token, callback) => {
     }
 };
 
-const startExam = dispatch => async (token,assessmentId) => {
+const startExam = dispatch => async (token,assessmentId,callback) => {
     try {
         const response = await mediusware.put(`/assessment/${assessmentId}/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log(response.data);
+        if(callback){
+            callback();
+        }
+        //console.log(response.data);
     } catch (err) {
-        console.log(err?.response?.data);
+        console.log(err?.response?.data?.admin_only,"error message...");
+        dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
+    }
+};
+
+const startReExam = dispatch => async (token,assessmentId,callback) => {
+    try {
+        const response = await mediusware.get(`/assessment/${assessmentId}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        if(callback){
+            callback();
+        }
+        //console.log(response.data);
+    } catch (err) {
+        console.log(err?.response?.data,"error message...");
+        //dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
 };
 
@@ -61,6 +91,6 @@ const getQuizQuestion = dispatch => async (token,assessmentId) => {
 
 export const { Provider, Context } = createDataContext(
     assessmentReducer,
-    {getAssessment,getQuizQuestion,startExam},
-    {assessment:{},quiz:{}}
+    {getAssessment,getQuizQuestion,startExam, clearErrorMsg,startReExam},
+    {assessment:{},quiz:{},errorMsg: {}}
 );

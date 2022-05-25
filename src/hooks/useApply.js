@@ -4,27 +4,36 @@ import mediusware from "../api/mediusware";
 import {Context as AuthContext} from "../contexts/AuthContext";
 
 const useApply = () => {
-    const{state,tryLocalLogin} = useContext(AuthContext);
-    const [apply, setApply] = useState({});
+    const{state:{token},tryLocalLogin} = useContext(AuthContext);
+    const [apply, setApply] = useState([]);
     const[loader,setLoader] = useState(false);
-    const showUser = async () => {
+    const [refreshing, setRefreshing] = useState(true);
+
+    const onRefresh =  () => {
+        showApply();
+    }
+
+    const showApply = async () => {
+        setRefreshing(true);
         setLoader(true);
         try {
             const response = await mediusware.get('/apply/', {
                 headers: {
-                    Authorization: `Bearer ${state.token}`
+                    Authorization: `Bearer ${token}`
                 }
             });
-            setApply(response.data[0]);
+            setApply(response.data);
+            setRefreshing(false);
             setLoader(false);
         }catch(err){
+            setRefreshing(false);
             setLoader(false);
         }
     }
     useEffect(()=>{
-        tryLocalLogin().then(()=>showUser());
-    },[state.token])
-    return [apply,loader]
+        tryLocalLogin().then(()=>showApply());
+    },[token])
+    return [apply,loader,refreshing,onRefresh]
 };
 
 export default useApply;

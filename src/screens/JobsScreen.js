@@ -24,7 +24,6 @@ const JobsScreen = ({navigation}) => {
     const hours = date.getHours();
     const [jobs,isLoading,setIsLoading,onRefresh,refreshing] = useJobs();
     const [greetings,setGreetings] = useState('Good Morning');
-    //const [user,onRefresh,refreshing] = useCandidate();
 
     useEffect(()=>{
         tryLocalLogin().then(()=>getUser(token));

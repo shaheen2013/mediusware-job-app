@@ -18,16 +18,21 @@ import Mcq from "../components/ExamProgress/Mcq";
 import Written from "../components/ExamProgress/Written";
 import Viva from "../components/ExamProgress/Viva";
 import Result from "../components/ExamProgress/Result";
-import useApply from "../hooks/useApply";
 import {Context as UserContext} from "../contexts/UserContext";
+import useApply from "../hooks/useApply";
 
 
 const ExamProgress = ({route, navigation}) => {
     const {state:{user}} = useContext(UserContext);
-    const [apply,loader] = useApply();
+    const [apply,loader,refreshing,onRefresh] = useApply();
+    const {id} = route.params;
     const [activeIndex, setActiveIndex] = useState(0);
     const [completedStepIndex, setCompletedStepIndex] = useState(undefined);
     const [allTypesIndex, setAllTypesIndex] = useState(0);
+    let singleApply;
+    if(apply.length !==0){
+         singleApply = apply.find(app => app.unique_id === id);
+    }
 
     const onActiveIndexChanged = (activeIndex) => {
         setActiveIndex(activeIndex);
@@ -58,13 +63,19 @@ const ExamProgress = ({route, navigation}) => {
         switch (activeIndex) {
             case 0:
             default:
-                return <Pending/>;
+                return <Pending
+                    navigation={navigation}
+                    title={singleApply?.job?.title}
+                    appliedAt={singleApply?.created_at}
+                    expSalary={singleApply?.expected_salary}
+                />;
             case 1:
                 return <Mcq
-                    navigation={navigation}
-                    title={apply?.job?.title}
-                    time={apply?.candidate_assessment && apply?.candidate_assessment[0]?.assessment?.duration}
-                    score={apply?.candidate_assessment && apply?.candidate_assessment[0]?.score}
+                     navigation={navigation}
+                     title={singleApply?.job?.title}
+                     time={singleApply?.candidate_assessment && singleApply?.candidate_assessment[0]?.assessment?.duration}
+                     score={singleApply?.candidate_assessment && singleApply?.candidate_assessment[0]?.score}
+                     id={singleApply?.candidate_assessment && singleApply?.candidate_assessment[0]?.unique_id}
                 />;
             case 2:
                 return <Written navigation={navigation} title={apply?.job?.title}/>;

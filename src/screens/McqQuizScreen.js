@@ -24,7 +24,7 @@ const McqQuizScreen = ({navigation, route}) => {
             <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
             <View paddingH-16 marginT-20 style={{flex:1}}>
                 <View flex-9>
-                    <Text subtitle1 deepGray marginB-10>{assessment?.assessment && assessment?.assessment[0]?.candidate_job?.job?.title}- MCQ</Text>
+                    <Text subtitle1 deepGray marginB-10>{assessment?.assessment?.candidate_job?.job?.title}- MCQ</Text>
                     <Quiz
                         title={quiz?.quiz?.title}
                         answer1={quiz?.quiz?.answers && quiz?.quiz?.answers[0]?.title}
