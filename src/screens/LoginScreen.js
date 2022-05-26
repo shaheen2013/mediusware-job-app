@@ -12,9 +12,7 @@ import {Screen} from "react-native-screens";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Toast from 'react-native-toast-message';
-//import AnimatedFilledBtn from "../components/buttons/AnimatedFilledBtn";
 import { Ionicons } from '@expo/vector-icons';
-import AnimatedFilledBtn from "../components/buttons/AnimatedFilledBtn";
 const toastConfig = {
     tomatoToast: ({ text1, props }) => (
         <View
@@ -49,10 +47,9 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = ({navigation, route}) => {
     const password = useRef(null);
-    const {state,register,login,clearErrorMsg} = useContext(AuthContext);
+    const {state:{token,errorMessage,loader},register,login,clearErrorMsg} = useContext(AuthContext);
     const [error,setError] = useState('');
     const isIcon = false;
-    console.log(state);
     const {
         handleChange,
         handleBlur,
@@ -78,12 +75,12 @@ const LoginScreen = ({navigation, route}) => {
     useEffect(() => {
         showToast()
         clearErrorMsg();
-    }, [state?.errorMessage?.error, state?.token])
+    }, [errorMessage?.error,token])
 
     const showToast = () => {
-        state?.errorMessage?.error && Toast.show({
+        errorMessage?.error && Toast.show({
             type: 'tomatoToast',
-            text1: ` ${state?.errorMessage?.error}`
+            text1: ` ${errorMessage?.error}`
         })
     }
 
@@ -144,10 +141,10 @@ const LoginScreen = ({navigation, route}) => {
             <View flex-2 marginB-40>
                 <Text text gray marginT-40>If don't apply any mediusware job,then apply one <Text
                     onPress={() => navigation.navigate('BottomNavigation',{screen:'Home'})} blue>Job</Text></Text>
-                <TouchableOpacity marginV-20 disabled={state?.loader}  onPress={()=>{
+                <TouchableOpacity marginV-20 disabled={loader}  onPress={()=>{
                    handleSubmit()
                 }}>
-                    <FilledBtn title={'Login'} isLoading={state?.loader}/>
+                    <FilledBtn title={'Login'} isLoading={loader}/>
                 </TouchableOpacity>
 
             </View>

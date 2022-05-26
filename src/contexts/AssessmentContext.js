@@ -70,22 +70,26 @@ const startReExam = dispatch => async (token,assessmentId,callback) => {
         //console.log(response.data);
     } catch (err) {
         console.log(err?.response?.data,"error message...");
-        //dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
+        dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
 };
 
 
-const getQuizQuestion = dispatch => async (token,assessmentId) => {
+const getQuizQuestion = dispatch => async (token,assessmentId,callback) => {
     try {
         const response = await mediusware.get(`/assessment/${assessmentId}/question/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
+        if(callback){
+            callback();
+        }
         console.log(response.data);
         dispatch({ type: "quiz_question", payload: {quiz:response.data}});
     } catch (err) {
         console.log(err?.response?.data);
+        dispatch({ type: "add_error", payload: {error:err?.response?.data?.time_up}});
     }
 };
 

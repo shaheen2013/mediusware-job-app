@@ -4,6 +4,7 @@ import {StyleSheet, TextInput} from "react-native";
 import {Colors, Text, TouchableOpacity, View} from "react-native-ui-lib";
 
 const InputField = forwardRef(({
+                                    key,
                                    title,
                                    placeholderText,
                                    isIcon,
@@ -18,7 +19,8 @@ const InputField = forwardRef(({
                                    spellCheck,
                                    autoCapitalize,
                                    editable,
-                                   importantForAutofill
+                                   importantForAutofill,
+
 
                                }, ref) => {
     const validationColor = !touched ? Colors.borderColor : error ? '#FF5A5F' : Colors.borderColor;
@@ -34,6 +36,7 @@ const InputField = forwardRef(({
                         flex: 1,
                         fontFamily: "Montserrat_400Regular",
                     }}
+                    key={key}
                     editable={editable}
                     keyboardType={keyboardType}
                     onBlur={onBlur}

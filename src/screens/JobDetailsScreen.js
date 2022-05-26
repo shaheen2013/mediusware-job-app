@@ -1,6 +1,6 @@
 import { Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import { StatusBar,ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
@@ -11,6 +11,7 @@ import JobResponsibility from "../components/JobDetailsComponents/JobResponsibil
 import VirtualizedView from "../components/VirtualizedView";
 import useSingleJob from "../hooks/useSingleJob";
 import {isLoading} from "expo-font";
+import {Context as AuthContext} from "../contexts/AuthContext";
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
@@ -19,6 +20,7 @@ function FocusAwareStatusBar(props) {
 const JobDetails = ({route, navigation}) => {
     const {slug} = route.params;
     const [singleJob,isLoading] = useSingleJob(slug);
+    const {state:{token}} = useContext(AuthContext);
 
     if (!singleJob) {
         return null;
@@ -36,6 +38,14 @@ const JobDetails = ({route, navigation}) => {
         points = points.map(point => point.replace('&nbsp;', ''));
         points = points.filter(point => point.length > 1);
         return points;
+    }
+
+    const navigateApply= () =>{
+        if(token){
+            navigation.navigate('ApplicantInformation',{title:singleJob?.title,job_slug:slug});
+        }else{
+            navigation.navigate('Apply',{title:singleJob?.title,job_slug:slug});
+        }
     }
 
     return (
@@ -100,8 +110,7 @@ const JobDetails = ({route, navigation}) => {
                         }
 
                         <View style={{position: 'absolute', width: '98%', top: '91.5%'}}>
-                            <TouchableOpacity marginH-16 marginV-10 onPress={() => navigation.navigate('Apply',{title:singleJob?.title,job_slug:slug})}
-                                              style={{resizeMode: 'contain'}}>
+                            <TouchableOpacity marginH-16 marginV-10 onPress={navigateApply}>
                                 <FilledBtn title={"Apply Now"}/>
                             </TouchableOpacity>
                         </View>

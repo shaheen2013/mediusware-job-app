@@ -47,15 +47,18 @@ const MCQScreen = ({navigation, route}) => {
     const startingExam = () =>{
            if(assessment?.assessment?.exam_started_at){
                startReExam(token,id, ()=>{
-                   getQuizQuestion(token,id);
-                   clearErrorMsg();
-                   navigation.navigate('McqQuiz');
+                   getQuizQuestion(token,id,()=>{
+                       clearErrorMsg();
+                       navigation.navigate('McqQuiz');
+                   });
                })
            }else{
                startExam(token,id, ()=>{
-                   getQuizQuestion(token,id);
-                   clearErrorMsg();
-                   navigation.navigate('McqQuiz');
+                   getQuizQuestion(token,id),()=>{
+                       clearErrorMsg();
+                       navigation.navigate('McqQuiz');
+                   };
+
                })
            }
 

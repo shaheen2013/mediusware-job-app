@@ -90,8 +90,10 @@ const ApplyScreen = ({ navigation, route }) => {
                 : formData[key]
         );
       }
-      console.log(formDataObj , 'formDataObj apply')
-      register(formDataObj, () => {
+      console.log(formDataObj , 'formDataObj apply');
+      navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug,registerData:formDataObj,loginData:{email:values.email, password:values.password}});
+     /* register(formDataObj, () => {
+       // navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug,registerData:formDataObj,loginData:{email:values.email, password:values.password}});
         navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug});
         login({ email:values.email, password:values.password });
         clearErrorMsg();
@@ -103,7 +105,7 @@ const ApplyScreen = ({ navigation, route }) => {
         values.rePassword= "";
         values.file=null;
         setCv({});
-      });
+      });*/
 
     }
   });

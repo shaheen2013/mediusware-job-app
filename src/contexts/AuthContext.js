@@ -109,7 +109,7 @@ const apply = (dispatch) => async ({ job_slug, expected_salary, additional_messa
       dispatch({type:'clear_loader'});
         console.log(response.data);
     } catch (err) {
-        console.log(err.response.data);
+        console.log(err.response.data,'response error');
         dispatch({ type: "add_error", payload: {message:err.response.data?.message} });
         dispatch({type:'clear_loader'});
     }
