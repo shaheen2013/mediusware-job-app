@@ -16,7 +16,7 @@ import LoginStackNavigation from "./StackNavigators/LoginStackNavigation";
 
 const Tab = createBottomTabNavigator();
 const BottomNavigation = () => {
-    const {state}= useContext(AuthContext);
+    const {state:{token}}= useContext(AuthContext);
     return (
         <Tab.Navigator
             tabBarStyle={styles.customTabBarStyle}
@@ -33,44 +33,32 @@ const BottomNavigation = () => {
                 }
             }}>
 
-            <Tab.Screen name="Home" component={JobsScreen} options={{
+
+             <Tab.Screen name="Home" component={JobsScreen} options={{
                 tabBarLabel: 'HOME',
                 tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
                 tabBarIcon: ({focused}) => (
-                    focused ? <HomeFillIcon/>:<HomeIcon/>
+                    focused ? <HomeFillIcon/> : <HomeIcon/>
                 )
             }}/>
-            {state?.token ?( <Tab.Screen name="DashboardStackNavigation" component={DashboardStackNavigation} options={{
-                    tabBarLabel: 'DASHBOARD',
-                    tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
-                    tabBarIcon: ({focused}) => (
-                        focused  ?<DashBoardIcon/>:<DashBoardOutlineIcon/>
-                    )
-                }}/>):
-                (<Tab.Screen name="LoginStackNavigation2" component={LoginStackNavigation} options={{
-                    tabBarLabel: 'DASHBOARD',
-                    tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
-                    tabBarIcon: ({focused}) => (
-                        focused  ?<DashBoardIcon/>:<DashBoardOutlineIcon/>
-                    )
-                }}/>)
-            }
+                <Tab.Screen name="DashboardStackNavigation" component={DashboardStackNavigation} options={{
+                tabBarLabel: 'DASHBOARD',
+                tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
+                tabBarIcon: ({focused}) => (
+                focused  ?<DashBoardIcon/>:<DashBoardOutlineIcon/>
+                )
+            }}/>
 
-            {state?.token ?(<Tab.Screen name="ProfileStackNavigation" component={ProfileStackNavigation} options={{
+                <Tab.Screen name="ProfileStackNavigation" component={ProfileStackNavigation} options={{
                 tabBarLabel: 'Profile',
                 tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
                 tabBarIcon: ({focused}) => (
-                    focused ? <ProfileFilledIcon/> : <ProfileIcon/>
+                focused ? <ProfileFilledIcon/> : <ProfileIcon/>
                 )
-            }}/>):
-                (<Tab.Screen name="LoginStackNavigation" component={LoginStackNavigation} options={{
-                    tabBarLabel: 'Profile',
-                    tabBarLabelStyle: {fontSize: 12, fontFamily: 'Montserrat_400Regular'},
-                    tabBarIcon: ({focused}) => (
-                        focused ? <ProfileFilledIcon/> : <ProfileIcon/>
-                    )
-                }}/>)
-            }
+            }}/>
+
+
+
         </Tab.Navigator>
 
     );

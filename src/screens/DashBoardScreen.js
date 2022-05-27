@@ -26,10 +26,14 @@ const DashBoardScreen = ({navigation, route}) => {
                     </View>
                     <Text text deepGray>Check out our latest events and offers and keep learning everyday!</Text>
                         <Text subtitle1 deepGray marginT-20 marginB-10>Applied Job</Text>
-                        <VirtualizedList refreshing = {refreshing} onRefresh={onRefresh}>
                             <FlatList
-
-                                // showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                    <RefreshControl
+                                        colors={[Colors.blue]}
+                                        refreshing={refreshing}
+                                        onRefresh={onRefresh}/>
+                                }
+                                showsVerticalScrollIndicator={false}
                                 data={apply}
                                 keyExtractor={(item) => item.unique_id}
                                 //keyExtractor={(item,index)=> item.key}
@@ -39,7 +43,7 @@ const DashBoardScreen = ({navigation, route}) => {
                                         navigation={navigation}
                                     />
                                 }}/>
-                            <View style={{marginBottom: 10}}>
+                           {/* <View style={{marginBottom: 10}}>
                                 <Text deepGray subtitle1 marginT-20 marginB-10>Calendar</Text>
                                 <Calendar
                                     style={{borderColor: Colors.borderColor, borderRadius: 10, borderWidth: 1}}
@@ -72,8 +76,8 @@ const DashBoardScreen = ({navigation, route}) => {
                                         textDayHeaderFontSize: 16
                                     }}
                                 />
-                            </View>
-                        </VirtualizedList>
+                            </View>*/}
+
 
                 </View>
 

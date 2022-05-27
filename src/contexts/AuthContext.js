@@ -67,7 +67,6 @@ const register = dispatch => async (formDataObj,callback) => {
       dispatch({ type: "add_error", payload: {email:emailError,phone:phoneError} });
       dispatch({type:'clear_loader'});
     }
-  
 };
 
 const login = (dispatch) => async ({ email, password },callback) => {
@@ -89,16 +88,16 @@ const login = (dispatch) => async ({ email, password },callback) => {
     }
 };
 
-const apply = (dispatch) => async ({ job_slug, expected_salary, additional_message, additional_fields }, callback) => {
+const apply = (dispatch) => async (token,obj,callback) => {
     dispatch({type:'set_loader'});
+
     try {
       const response = await mediusware.post(
-        "https://hr.mediusware.xyz/api/apply/",
-        { job_slug, expected_salary, additional_message, additional_fields },
+        "https://hr.mediusware.xyz/api/apply/",obj,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenValue}`,
+            Authorization: `Bearer ${token}`,
             "cache-control": "no-cache",
           },
         }
@@ -107,7 +106,7 @@ const apply = (dispatch) => async ({ job_slug, expected_salary, additional_messa
         callback();
       }
       dispatch({type:'clear_loader'});
-        console.log(response.data);
+        console.log('RESPONSE',response.data);
     } catch (err) {
         console.log(err.response.data,'response error');
         dispatch({ type: "add_error", payload: {message:err.response.data?.message} });

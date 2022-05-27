@@ -14,8 +14,9 @@ const JobsDetailsStackNavigation = () => {
         screenOptions={{
             headerShown: false
         }}
-        initialRouteName="JobDetails"
+        initialRouteName="Home"
     >
+        <Stack.Screen name="Home" component={JobsScreen}/>
         <Stack.Screen name="JobDetails" component={JobDetailsScreen}/>
         <Stack.Screen name="Apply" component={ApplyScreen}/>
         <Stack.Screen name="ApplicantInformation" component={ApplicantInformationScreen}/>

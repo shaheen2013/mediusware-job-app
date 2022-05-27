@@ -33,16 +33,10 @@ const JobsScreen = ({navigation}) => {
         if(hours >=5 && hours <12){
             setGreetings('Good Morning');
         }
-        if(hours >= 12 && hours< 14){
-            setGreetings('Good Noon');
-        }
-        if(hours >= 14 && hours< 18){
+        if(hours >= 12 && hours< 18){
             setGreetings('Good Afternoon');
         }
-        if(hours >= 19 || hours < 5) {
-            setGreetings('Good Night');
-        }
-        if(hours >=18 && hours < 19){
+        if(hours >= 18 || hours < 5) {
             setGreetings('Good Evening');
         }
     },[])

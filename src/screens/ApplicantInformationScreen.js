@@ -2,10 +2,16 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import CommonHeader from "../components/CommonHeader";
-import InputField from "../components/formComponents/InputField";
-import OutlineBtn from "../components/buttons/OutlineBtn";
 import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView} from "react-native";
+import {
+    StatusBar,
+    StyleSheet,
+    TextInput,
+    KeyboardAvoidingView,
+    ScrollView,
+    FlatList,
+    RefreshControl
+} from "react-native";
 import {Feather, Ionicons} from "@expo/vector-icons";
 import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
 import {Context as AuthContext} from "../contexts/AuthContext";
@@ -14,10 +20,11 @@ import * as Yup from 'yup';
 import Toast from 'react-native-toast-message';
 import useSingleJob from "../hooks/useSingleJob";
 
-/*
+
+
 let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
 let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
-let experience = /^[0-9][0-9]?$|^100$/;*/
+let experience = /^[0-9][0-9]?$|^100$/;
 let validateExpSalary = /^(?:[0-9][0-9]{0,6}(?:\.\d{1,2})?|100000|100000.00)$/;
 
 const toastConfig = {
@@ -50,7 +57,10 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     const isIcon = false;
     const [expSalary,setExpSalary] = useState("");
     const [comment,setComment] = useState("");
-    const [additionalFields,setAdditionalFields] = useState([]);
+    const [additionalFields,setAdditionalFields] = useState([singleJob?.additional_fields]);
+    const [text, setText] = useState([]);
+    //console.log(token);
+
 
 
     const onChangeValue = () => {
@@ -62,15 +72,14 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         console.log(singleJob?.additional_fields[i].title, "Additional Fields Title: ");
     }*/
 
-    /*const applySchema = Yup.object().shape({
+    const applySchema = Yup.object().shape({
         expSalary: Yup.string().matches(validateExpSalary, 'Expected Salary is not valid').required('Required'),
+       // linkedin: Yup.string().matches(validateLinkedin, 'Linkedin Profile is not valid').required('Required'),
+       // gitUrl: Yup.string().matches(validateGithub, 'Github Profile is not valid').required('Required'),
+       // experience: Yup.string().matches(experience, 'Invalid Experience').required('Required'),
 
-      /!*  linkedin: Yup.string().matches(validateLinkedin, 'Linkedin Profile is not valid').required('Required'),
-        gitUrl: Yup.string().matches(validateGithub, 'Github Profile is not valid').required('Required'),
-        experience: Yup.string().matches(experience, 'Invalid Experience').required('Required'),*!/
-
-    });*/
-    /*const {
+    });
+    const {
         handleChange,
         handleBlur,
         handleSubmit,
@@ -79,63 +88,79 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         touched
     } = useFormik({
         validationSchema: applySchema,
-        initialValues: {expSalary: '', experience: '', gitUrl: '', linkedin: '',comment: ''},
+        initialValues: {expSalary: '',comment: ''},
         onSubmit: (values) => {
+                /*const formData = {
+                    job_slug,
+                    expected_salary: values.expSalary,
+                    additional_message: values.comment,
+                    additional_fields: text
+                }*/
             if(token){
-                console.log('hit token');
-                const formData = {
+                apply(token,{
                     job_slug,
                     expected_salary: values.expSalary,
                     additional_message: values.comment,
-                    additional_fields: [values.experience,values.gitUrl,values.linkedin]
-                }
-
-                apply({
-                    job_slug,
-                    expected_salary: values.expSalary,
-                    additional_message: values.comment,
-                    additional_fields: [values.experience,values.gitUrl,values.linkedin]
+                    additional_fields: text
                 }, () => {
                     navigation.navigate('Submission');
                     clearErrorMsg();
                     values.expSalary = "";
-                    values.experience = "";
-                    values.gitUrl = "";
-                    values.linkedin = "";
                     values.comment = "";
                 });
             }else{
-                console.log('hit else')
-                register(registerData,()=>{
-                    login(loginData);
-                    apply({
-                        job_slug,
-                        expected_salary: values.expSalary,
-                        additional_message: values.comment,
-                        additional_fields: [values.gitUrl,values.experience,values.linkedin]
-                    }, () => {
-                        navigation.navigate('Submission');
-                        clearErrorMsg();
-                        values.expSalary = "";
-                        values.experience = "";
-                        values.gitUrl = "";
-                        values.linkedin = "";
-                        values.comment = "";
+                register(registerData,()=> {
+                    login(loginData,()=>{
+                        if(token){
+                            apply(token,{
+                                job_slug,
+                                expected_salary: values.expSalary,
+                                additional_message: values.comment,
+                                additional_fields: text
+                            }, () => {
+                                navigation.navigate('Submission');
+                                clearErrorMsg();
+                                values.expSalary = "";
+                                values.comment = "";
+                            });
+                        }
                     });
                 })
             }
-        }
-    });*/
-    //const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;
-    //const comValidationColor = !touched ? Colors.borderColor : errors?.comment ? '#FF5A5F' : Colors.borderColor;
 
-    const handleApply = () =>{
-        if(token){
+        }
+    });
+
+
+
+
+    const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;
+    /*const comValidationColor = !touched ? Colors.borderColor : errors?.comment ? '#FF5A5F' : Colors.borderColor;
+    const additionalGitColor  = !touched ? Colors.borderColor : errors?.gitUrl ? '#FF5A5F' : Colors.borderColor;
+    const additionalLinkedinColor  = !touched ? Colors.borderColor : errors?.linkedin ? '#FF5A5F' : Colors.borderColor;
+    const additionalExpColor  = !touched ? Colors.borderColor : errors?.experience ? '#FF5A5F' : Colors.borderColor;*/
+
+    /*const handleApply = () =>{
+        console.log('token in APP',token);
+
+        apply(token,{
+            job_slug:job_slug,
+            expected_salary: expSalary,
+            additional_message: comment,
+            additional_fields: text,
+        }, () => {
+            navigation.navigate('Submission');
+            clearErrorMsg();
+            setExpSalary("");
+            setComment("");
+        });
+       // console.log(text);
+        /!*if(token){
             apply({
                 job_slug,
                 expected_salary: expSalary,
                 additional_message: comment,
-                additional_fields: []
+                additional_fields: text
             }, () => {
                 navigation.navigate('Submission');
                 clearErrorMsg();
@@ -149,7 +174,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     job_slug,
                     expected_salary: expSalary,
                     additional_message: comment,
-                    additional_fields: []
+                    additional_fields: text
                 }, () => {
                     navigation.navigate('Submission');
                     clearErrorMsg();
@@ -157,8 +182,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     setComment("");
                 });
             })
-        }
-    }
+        }*!/
+    }*/
 
     useEffect(() => {
         showToast()
@@ -191,17 +216,22 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                         <View marginB-16>
                             <Text marginB-8 text>What is your expected salary?*</Text>
                             <View row>
-                                <View style={{...styles.currencyContainer,borderColor:Colors.borderColor}}>
+                                <View style={{...styles.currencyContainer,borderColor:validationColor}}>
                                     <Text>BDT</Text>
                                 </View>
-                                <View style={{...styles.salaryContainer,borderColor:Colors.borderColor}}>
+                                <View style={{...styles.salaryContainer,borderColor:validationColor}}>
                                     <TextInput
                                         keyboardType="numeric"
                                         autoCapitalize={"none"}
                                         autoCorrect={false}
                                         autoComplete={"off"}
-                                        value={expSalary}
-                                        onChangeText={setExpSalary}
+                                        value={values.expSalary}
+                                        onChangeText={handleChange('expSalary')}
+                                        onBlur={handleBlur('expSalary')}
+                                        error={errors.expSalary}
+                                        touched={touched.expSalary}
+                                        /*value={expSalary}
+                                        onChangeText={setExpSalary}*/
                                         style={{
                                             fontFamily: "Montserrat_400Regular",
                                         }}
@@ -209,8 +239,36 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                     />
                                 </View>
                             </View>
-
+                            {errors.expSalary ? (
+                                <Text style={{color: 'red'}} marginV-4 text>{errors.expSalary}</Text>
+                            ) : (
+                                <></>
+                            )}
                         </View>
+
+                      {/*  <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={singleJob?.additional_fields}
+                            //keyExtractor={(index)=> index}
+                            keyExtractor={(item,index)=> item.key}
+                            renderItem={({item,index}) => {
+                                return <View>
+                                            <Text marginV-8 text>{`${item?.title} ${item?.required ? '*':''}`}</Text>
+                                            <View style={{...styles.textInputField,borderColor:Colors.borderColor}}>
+                                                <TextInput
+                                                    autoComplete={"off"}
+                                                    autoCorrect={false}
+                                                    onChangeText={text=> console.log(text)}
+                                                    text={text}
+                                                    value={text[index]}
+                                                    style={{
+                                                        textAlignVertical: 'top',
+                                                        fontFamily: 'Montserrat_400Regular'
+                                                    }}
+                                                />
+                                    </View>
+                                </View>
+                            }}/>*/}
 
                         {
                             singleJob?.additional_fields?.map((field,index)=>(
@@ -220,10 +278,17 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                         <TextInput
                                             autoComplete={"off"}
                                             autoCorrect={false}
-                                            onChangeText={}
+                                            value={text[index]}
+                                            onChangeText={(t) => {
+                                                setText((text) => {
+                                                    const newText = [...text];
+                                                    newText[index] = t;
+                                                    return newText;
+                                                });
+                                            }}
                                             style={{
-                                                textAlignVertical: 'top',
-                                                fontFamily: 'Montserrat_400Regular'
+                                                flex: 1,
+                                                fontFamily: "Montserrat_400Regular",
                                             }}
                                         />
                                     </View>
@@ -235,8 +300,17 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                             <Text marginV-8 text>Do you have anything to say to us?</Text>
                             <View style={{...styles.textInputStyle,borderColor:Colors.borderColor}}>
                                 <TextInput
+                                    keyboardType="email-address"
                                     autoComplete={"off"}
                                     autoCorrect={false}
+                                    value={values.comments}
+                                    onChangeText={handleChange('comment')}
+                                    onBlur={handleBlur('comment')}
+                                    error={errors.comment}
+                                    touched={touched.comment}
+                                    multiline={true}
+                                    numberOfLines={10}
+                                    onSubmitEditing={() => handleSubmit()}
                                     value={comment}
                                     onChangeText={setComment}
                                     style={{
@@ -257,7 +331,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     <TouchableOpacity flex-1 marginR-10 onPress={() => navigation.navigate('Apply')}>
                         <BlueOutlineBtn title={'Back'}/>
                     </TouchableOpacity>
-                    <TouchableOpacity flex-1 disabled={loader} onPress={handleApply} >
+                    <TouchableOpacity flex-1 disabled={loader} onPress={handleSubmit} >
                         <FilledBtn title={'Submit'} isLoading={loader}/>
                     </TouchableOpacity>
                 </View>
