@@ -13,7 +13,7 @@ const DrawerNavigation = () => {
                 headerShown: false
             }}
             drawerContent={(props) => <CustomDrawerContent {...props} />}>
-            <Drawer.Screen name="Home" component={JobsStackNavigation}/>
+            <Drawer.Screen name="JobStack" component={JobsStackNavigation}/>
             <Drawer.Screen name="LoginStackNavigation" component={LoginStackNavigation}/>
         </Drawer.Navigator>
     );

@@ -33,7 +33,7 @@ const useApply = () => {
     useEffect(()=>{
         tryLocalLogin().then(()=>showApply());
     },[token])
-    return [apply,loader,refreshing,onRefresh]
+    return [apply,loader,onRefresh,refreshing]
 };
 
 export default useApply;

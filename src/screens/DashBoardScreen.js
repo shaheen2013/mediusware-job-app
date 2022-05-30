@@ -13,7 +13,7 @@ import VirtualizedList from "../components/VirtualizedList ";
 
 const DashBoardScreen = ({navigation, route}) => {
     const {state:{user}} = useContext(UserContext);
-    const [apply,refreshing,onRefresh] = useApply();
+    const [apply,loader,onRefresh,refreshing] = useApply();
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{flex:1}}>
@@ -31,7 +31,7 @@ const DashBoardScreen = ({navigation, route}) => {
                                     <RefreshControl
                                         colors={[Colors.blue]}
                                         refreshing={refreshing}
-                                        onRefresh={onRefresh}/>
+                                        onRefresh={onRefresh} />
                                 }
                                 showsVerticalScrollIndicator={false}
                                 data={apply}

@@ -59,7 +59,14 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     const [comment,setComment] = useState("");
     const [additionalFields,setAdditionalFields] = useState([singleJob?.additional_fields]);
     const [text, setText] = useState([]);
-    //console.log(token);
+    //const [isToken,setIsToken] = useState('');
+    useEffect(()=>{
+        if(token?.length > 0){
+            applyProcess();
+        }
+    },[token])
+
+    console.log('token ....',token);
 
 
 
@@ -111,19 +118,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
             }else{
                 register(registerData,()=> {
                     login(loginData,()=>{
-                        if(token){
-                            apply(token,{
-                                job_slug,
-                                expected_salary: values.expSalary,
-                                additional_message: values.comment,
-                                additional_fields: text
-                            }, () => {
-                                navigation.navigate('Submission');
-                                clearErrorMsg();
-                                values.expSalary = "";
-                                values.comment = "";
-                            });
-                        }
+                           applyProcess();
+
                     });
                 })
             }
@@ -131,7 +127,33 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         }
     });
 
+   /* apply(isToken,{
+        job_slug,
+        expected_salary: values.expSalary,
+        additional_message: values.comment,
+        additional_fields: text
+    }, () => {
+        navigation.navigate('Submission');
+        clearErrorMsg();
+        values.expSalary = "";
+        values.comment = "";
+    });*/
 
+
+
+    const applyProcess = () => {
+        apply(token,{
+            job_slug,
+            expected_salary: values.expSalary,
+            additional_message: values.comment,
+            additional_fields: text
+        }, () => {
+            navigation.navigate('Submission');
+            clearErrorMsg();
+            values.expSalary = "";
+            values.comment = "";
+        });
+    }
 
 
     const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;

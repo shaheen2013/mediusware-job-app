@@ -3,7 +3,7 @@ import {Feather} from '@expo/vector-icons';
 import {TextInput, StyleSheet} from 'react-native';
 import {Text, View, TouchableOpacity, TextField} from 'react-native-ui-lib';
 
-const SearchField = () => {
+const SearchField = ({searchText,searchFilter}) => {
     return (
         <View style={styles.textInputStyle} row>
             <TouchableOpacity
@@ -15,6 +15,7 @@ const SearchField = () => {
             <TextInput
                 autoCapitalize={"none"}
                 autoCorrect={false}
+                onChangeText={(searchText)=>searchFilter(searchText)}
                 style={{
                     flex: 1,
                     fontFamily: 'Montserrat_400Regular'

@@ -10,7 +10,7 @@ const useResult = () => {
         showJobs();
     }
 
-    const showJobs = async () => {
+    const showJobs = async (searchText) => {
         setRefreshing(true);
         setIsLoading(true);
         try {

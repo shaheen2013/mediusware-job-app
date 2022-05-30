@@ -57,7 +57,7 @@ const register = dispatch => async (formDataObj,callback) => {
       if(callback){
           callback();
       }
-        dispatch({type:'clear_loader'});
+       // dispatch({type:'clear_loader'});
     } catch (err) {
         console.log(err.response.data);
       let emailError = (err.response.data?.email !== undefined);

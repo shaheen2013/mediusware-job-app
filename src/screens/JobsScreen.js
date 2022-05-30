@@ -23,8 +23,15 @@ const JobsScreen = ({navigation}) => {
     const date = new Date();
     const hours = date.getHours();
     const [jobs,isLoading,setIsLoading,onRefresh,refreshing] = useJobs();
+    console.log("jgljfl;sdjfasld;jfsdal;f",jobs);
     const [greetings,setGreetings] = useState('Good Morning');
+    const [searchText,setSearchText] = useState("");
+    const [jobList,setJobList] = useState([]);
+    console.log("job list ...",jobList);
 
+    useEffect(()=>{
+        setJobList(jobs);
+    },[jobs.length])
     useEffect(()=>{
         tryLocalLogin().then(()=>getUser(token));
     },[token])
@@ -41,6 +48,15 @@ const JobsScreen = ({navigation}) => {
         }
     },[])
 
+    const searchFilter = (text) =>{
+        const filteredList = jobs.filter(job => {
+            const jobTitle = job.title.toLowerCase();
+            const userTypedText = text.toLowerCase();
+            return jobTitle.indexOf(userTypedText) > -1;
+        })
+        setJobList(filteredList);
+    }
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
@@ -53,9 +69,9 @@ const JobsScreen = ({navigation}) => {
                 </View>
                 <View row>
                     <View flex-6 marginR-10>
-                        <SearchField/>
+                        <SearchField searchText={searchText} searchFilter={searchFilter}/>
                     </View>
-                    <TouchableOpacity flex-1>
+                    <TouchableOpacity flex-1 disabled={true}>
                         <FilterBtn/>
                     </TouchableOpacity>
                 </View>
@@ -68,7 +84,7 @@ const JobsScreen = ({navigation}) => {
                             onRefresh={onRefresh} />
                     }
                     showsVerticalScrollIndicator={false}
-                    data={jobs}
+                    data={jobList}
                     keyExtractor={(item)=> item.title}
                     //keyExtractor={(item,index)=> item.key}
                     renderItem={({item}) => {
