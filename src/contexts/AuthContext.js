@@ -80,7 +80,7 @@ const login = (dispatch) => async ({ email, password },callback) => {
         if(callback){
             callback();
         }
-        dispatch({type:'clear_loader'});
+        //dispatch({type:'clear_loader'});
     } catch (err) {
         console.log("login error: ",err.response.data?.detail);
         dispatch({ type: "add_error", payload: {error:err.response.data?.detail} });

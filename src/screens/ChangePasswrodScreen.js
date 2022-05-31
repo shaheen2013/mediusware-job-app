@@ -19,6 +19,7 @@ import Toast from "react-native-toast-message";
 import {AntDesign, Ionicons} from "@expo/vector-icons";
 import ErrorToast from "../components/ErrorToast";
 import SuccessToast from "../components/SuccessToast";
+import ChangePasswordHeader from "../components/ChangePasswordHeader";
 
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -152,7 +153,7 @@ const ChangePasswordScreen = ({navigation, route}) => {
 
     return (<SafeAreaView style={{flex:1}}>
         <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
-        <JobDetailsHeader name={'Change Password'} navigation={navigation}/>
+        <ChangePasswordHeader name={'Change Password'} navigation={navigation}/>
         <View paddingH-16 marginT-20 flex-1>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <InputField

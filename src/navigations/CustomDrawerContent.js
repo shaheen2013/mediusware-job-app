@@ -10,11 +10,14 @@ import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
 import ApplicationIcon from "../../assets/svgIcon/ApplicationIcon";
 import ExaminationIcon from "../../assets/svgIcon/ExaminationIcon";
 import LogoutIcon from "../../assets/svgIcon/LogoutIcon";
+import logo from "../../assets/svgIcon/Logo";
+import { StackActions } from '@react-navigation/native';
 
 
 const CustomDrawerContent = (props) => {
     const {state:{token},logout,tryLocalLogin} = useContext(AuthContext);
     const {state:{user},getUser} = useContext(UserContext);
+
 
     useEffect(()=>{
         getUser(token);
@@ -90,6 +93,7 @@ const CustomDrawerContent = (props) => {
                                             labelStyle={{color: Colors.gray, fontSize: 16, fontFamily: 'Montserrat_500Medium'}}
                                             icon={({focused}) => <ExaminationIcon/>}
                                             onPress={() => {
+                                                logout();
                                                 props.navigation.navigate('Home',{screen:'ExamStackNavigation'});
                                                 props.navigation.closeDrawer();
                                             }}
@@ -105,7 +109,11 @@ const CustomDrawerContent = (props) => {
                         <DrawerItem label={"Logout"} style={{marginBottom: 20, marginLeft: 0}}
                                     labelStyle={{color: Colors.gray, fontSize: 16, fontFamily: 'Montserrat_500Medium'}}
                                     icon={({focused}) => <LogoutIcon/>}
-                                    onPress={logout}
+                                    onPress={()=>{
+                                        props.navigation.closeDrawer();
+                                        props.navigation.navigate('Home');
+                                        logout()
+                                    }}
                         />
                     </View>
                 )

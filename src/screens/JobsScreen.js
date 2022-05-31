@@ -23,11 +23,10 @@ const JobsScreen = ({navigation}) => {
     const date = new Date();
     const hours = date.getHours();
     const [jobs,isLoading,setIsLoading,onRefresh,refreshing] = useJobs();
-    console.log("jgljfl;sdjfasld;jfsdal;f",jobs);
     const [greetings,setGreetings] = useState('Good Morning');
     const [searchText,setSearchText] = useState("");
     const [jobList,setJobList] = useState([]);
-    console.log("job list ...",jobList);
+
 
     useEffect(()=>{
         setJobList(jobs);

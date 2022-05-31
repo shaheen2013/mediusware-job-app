@@ -85,16 +85,35 @@ const getQuizQuestion = dispatch => async (token,assessmentId,callback) => {
         if(callback){
             callback();
         }
-        console.log(response.data);
+        //console.log(response.data);
         dispatch({ type: "quiz_question", payload: {quiz:response.data}});
     } catch (err) {
-        console.log(err?.response?.data);
+        //console.log(err?.response?.data);
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.time_up}});
+    }
+};
+
+
+const savedAnswer = dispatch => async ({uuid,question_id,answers},token,callback) => {
+    try {
+        const response = await mediusware.post(`/assessment/save-answer/`, {uuid,question_id,answers},{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        if(callback){
+            callback();
+        }
+        console.log(response.data);
+        dispatch({type:'clear_quiz'});
+    } catch (err) {
+        console.log(err?.response?.data);
+
     }
 };
 
 export const { Provider, Context } = createDataContext(
     assessmentReducer,
-    {getAssessment,getQuizQuestion,startExam, clearErrorMsg,startReExam},
+    {getAssessment,getQuizQuestion,startExam, clearErrorMsg,startReExam,savedAnswer},
     {assessment:{},quiz:{},errorMsg: {}}
 );

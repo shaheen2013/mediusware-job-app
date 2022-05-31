@@ -66,7 +66,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         }
     },[token])
 
-    console.log('token ....',token);
+    //console.log('token ....',token);
 
 
 

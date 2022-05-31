@@ -104,7 +104,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
                 setSuccess(response.data.message);
 
             }catch(err){
-                console.log(err.response.data);
+                //console.log(err.response.data);
                // setISSuccess(false);
                 setLoading(false);
                 let emailError = (err.response.data?.email !== undefined);

@@ -39,27 +39,29 @@ const toastConfig = {
 const MCQScreen = ({navigation, route}) => {
     const {state:{token}} = useContext(AuthContext);
     const {id} = route.params;
+    //console.log("Quiz is in mcq screen, ",id);
+    //console.log(token);
     const {state:{assessment,errorMsg}, clearErrorMsg,getAssessment,getQuizQuestion,startExam,startReExam} = useContext(AssessmentContext);
-    console.log(assessment?.assessment?.candidate_job?.job?.title);
     useEffect(()=>{
         getAssessment(token,id);
     },[token])
     const startingExam = () =>{
-           if(assessment?.assessment?.exam_started_at){
-               startReExam(token,id, ()=>{
-                   getQuizQuestion(token,id,()=>{
-                       clearErrorMsg();
-                       navigation.navigate('McqQuiz');
-                   });
-               })
-           }else{
+           if(assessment?.assessment?.exam_started_at === null){
                startExam(token,id, ()=>{
                    getQuizQuestion(token,id),()=>{
                        clearErrorMsg();
-                       navigation.navigate('McqQuiz');
+                       navigation.navigate('McqQuiz', {id: id});
                    };
 
                })
+           }else{
+               startReExam(token,id, ()=>{
+                   getQuizQuestion(token,id,()=>{
+                       clearErrorMsg();
+                       navigation.navigate('McqQuiz',{id: id});
+                   });
+               })
+
            }
 
 

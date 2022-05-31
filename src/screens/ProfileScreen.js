@@ -108,7 +108,7 @@ const ProfileScreen = ({navigation, route}) => {
                 email:values?.email,
                 current_password:values.password,
             };
-            console.log(formDataObj , 'formDataObj')
+            //console.log(formDataObj , 'formDataObj')
             for (let key in formData) {
                 formDataObj.append(
                     key,

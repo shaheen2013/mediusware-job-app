@@ -43,42 +43,6 @@ const DashBoardScreen = ({navigation, route}) => {
                                         navigation={navigation}
                                     />
                                 }}/>
-                           {/* <View style={{marginBottom: 10}}>
-                                <Text deepGray subtitle1 marginT-20 marginB-10>Calendar</Text>
-                                <Calendar
-                                    style={{borderColor: Colors.borderColor, borderRadius: 10, borderWidth: 1}}
-                                    // Specify theme properties to override specific styles for calendar parts
-                                    theme={{
-                                        backgroundColor: '#ffffff',
-                                        calendarBackground: '#ffffff',
-                                        textSectionTitleColor: '#b6c1cd',
-                                        textSectionTitleDisabledColor: '#d9e1e8',
-                                        selectedDayBackgroundColor: '#00adf5',
-                                        selectedDayTextColor: '#ffffff',
-                                        todayTextColor: Colors.white,
-                                        todayBackgroundColor: Colors.blue,
-                                        dayTextColor: Colors.blackGray,
-                                        textDisabledColor: '#d9e1e8',
-                                        dotColor: '#00adf5',
-                                        selectedDotColor: '#ffffff',
-                                        arrowColor: Colors.blackGray,
-                                        disabledArrowColor: '#d9e1e8',
-                                        monthTextColor: Colors.blackGray,
-                                        indicatorColor: 'blue',
-                                        textDayFontFamily: 'monospace',
-                                        textMonthFontFamily: 'monospace',
-                                        textDayHeaderFontFamily: 'monospace',
-                                        textDayFontWeight: '300',
-                                        textMonthFontWeight: 'bold',
-                                        textDayHeaderFontWeight: '300',
-                                        textDayFontSize: 16,
-                                        textMonthFontSize: 16,
-                                        textDayHeaderFontSize: 16
-                                    }}
-                                />
-                            </View>*/}
-
-
                 </View>
 
 

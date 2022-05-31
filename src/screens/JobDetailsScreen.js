@@ -1,5 +1,5 @@
 import { Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused   } from '@react-navigation/native';
 import React, {useEffect, useState,useContext} from 'react';
 import { StatusBar,ActivityIndicator,StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,7 +13,6 @@ import useSingleJob from "../hooks/useSingleJob";
 import { BlurView } from 'expo-blur';
 import {Context as AuthContext} from "../contexts/AuthContext";
 import {Dimensions} from 'react-native';
-
 
 const screenWidth = Dimensions.get('window').width;
 function FocusAwareStatusBar(props) {
@@ -51,7 +50,6 @@ const JobDetails = ({route,navigation}) => {
             navigation.navigate('Apply',{title:singleJob?.title,job_slug:slug});
         }
     }
-
 
     return (
         <SafeAreaView style={{flex: 1}}>

@@ -6,7 +6,7 @@ import {Context as AuthContext} from "../contexts/AuthContext";
 const useApply = () => {
     const{state:{token},tryLocalLogin} = useContext(AuthContext);
     const [apply, setApply] = useState([]);
-    const[loader,setLoader] = useState(false);
+    const[loader,setLoader] = useState(true);
     const [refreshing, setRefreshing] = useState(true);
 
     const onRefresh =  () => {
