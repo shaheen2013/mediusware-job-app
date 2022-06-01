@@ -45,26 +45,28 @@ const MCQScreen = ({navigation, route}) => {
     useEffect(()=>{
         getAssessment(token,id);
     },[token])
+
+    useEffect(()=>{
+        startingExamination();
+    },[assessment?.assessment?.exam_started_at])
     const startingExam = () =>{
            if(assessment?.assessment?.exam_started_at === null){
                startExam(token,id, ()=>{
-                   getQuizQuestion(token,id),()=>{
-                       clearErrorMsg();
-                       navigation.navigate('McqQuiz', {id: id});
-                   };
-
+                   startingExamination();
                })
            }else{
-               startReExam(token,id, ()=>{
-                   getQuizQuestion(token,id,()=>{
-                       clearErrorMsg();
-                       navigation.navigate('McqQuiz',{id: id});
-                   });
-               })
 
+               startingExamination();
            }
+    }
 
-
+    const startingExamination = () =>{
+        startReExam(token,id, ()=>{
+            getQuizQuestion(token,id,()=>{
+                clearErrorMsg();
+                navigation.navigate('McqQuiz',{id: id});
+            });
+        })
     }
 
     useEffect(() => {
@@ -101,10 +103,10 @@ const MCQScreen = ({navigation, route}) => {
                 <Text text marginT-10 warningColor>You can start the exam at any time but we prefer ASAP. And once you start you have to finish within the given allocated maximum hours.</Text>
                 <Text subtitle1 deepGray marginT-10>Read before Starting Exam</Text>*/}
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <HTMLView
+                    {/*<HTMLView
                         value={assessment?.assessment?.assessment?.description}
                         // style={styles}
-                    />
+                    />*/}
 
                 </ScrollView>
                 <TouchableOpacity marginV-10 onPress={startingExam}>

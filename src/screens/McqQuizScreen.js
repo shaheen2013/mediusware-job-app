@@ -11,7 +11,6 @@ import {Context as AssessmentContext} from "../contexts/AssessmentContext";
 
 const McqQuizScreen = ({navigation, route}) => {
     const {id} = route.params;
-    //console.log("Quiz id is: ",id);
     const {state:{token}} = useContext(AuthContext);
     const [selectedAnswers,setSelectedAnswers] = useState([]);
     const [selection,setSelection] = useState(null);
@@ -20,7 +19,6 @@ const McqQuizScreen = ({navigation, route}) => {
         getAssessment(token);
     },[token])
 
-    //console.log("Quiz id.............",quiz?.quiz?.id);
 
     const nextStep = () =>{
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:[selection]},token,()=>{
@@ -37,9 +35,6 @@ const McqQuizScreen = ({navigation, route}) => {
             };
         })
     }
-
-
-    //console.log(quiz?.quiz?.title,'quiz...');
 
     return (
         <SafeAreaView style={{flex:1}}>

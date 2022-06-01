@@ -52,7 +52,7 @@ const startExam = dispatch => async (token,assessmentId,callback) => {
         }
         //console.log(response.data);
     } catch (err) {
-        console.log(err?.response?.data?.admin_only,"error message...");
+        console.log(err?.response?.data?.admin_only,"start exam message...");
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
 };
@@ -69,7 +69,7 @@ const startReExam = dispatch => async (token,assessmentId,callback) => {
         }
         //console.log(response.data);
     } catch (err) {
-        console.log(err?.response?.data,"error message...");
+        console.log(err?.response?.data," Re start message...");
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
 };
