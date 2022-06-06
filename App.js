@@ -50,6 +50,7 @@ Typography.loadTypographies({
     h3: {fontSize: 24, fontFamily: 'Montserrat_400Regular'},
     h4: {fontSize: 20, fontFamily: 'Montserrat_500Medium'},
     h5: {fontSize: 24, fontFamily: 'Montserrat_500Medium'},
+    title: {fontSize: 20, fontFamily: 'Montserrat_600SemiBold'},
     subtitle1: {fontSize: 16, fontFamily: 'Montserrat_600SemiBold'},
     subtitle2: {fontSize: 16, fontFamily: 'Montserrat_400Regular'},
     subtitle3: {fontSize: 14, fontFamily: 'Montserrat_500Medium'},

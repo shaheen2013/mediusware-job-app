@@ -65,6 +65,8 @@ const MCQScreen = ({navigation, route}) => {
             getQuizQuestion(token,id,()=>{
                 clearErrorMsg();
                 navigation.navigate('McqQuiz',{id: id});
+            },()=>{
+               navigation.navigate('Result',{assessment:assessment});
             });
         })
     }

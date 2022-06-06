@@ -49,6 +49,7 @@ const LoginScreen = ({navigation, route}) => {
     const password = useRef(null);
     const {state:{token,errorMessage,loader},register,login,clearErrorMsg} = useContext(AuthContext);
     const [error,setError] = useState('');
+    console.log(token);
     const isIcon = false;
     const {
         handleChange,

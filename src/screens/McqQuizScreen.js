@@ -15,6 +15,7 @@ const McqQuizScreen = ({navigation, route}) => {
     const [selectedAnswers,setSelectedAnswers] = useState([]);
     const [selection,setSelection] = useState(null);
     const {state:{assessment,quiz},getAssessment,getQuizQuestion,startExam,clearErrorMsg,savedAnswer} = useContext(AssessmentContext);
+    const [time,setTime] = useState(null);
     useEffect(()=>{
         getAssessment(token);
     },[token])
@@ -22,19 +23,31 @@ const McqQuizScreen = ({navigation, route}) => {
 
     const nextStep = () =>{
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:[selection]},token,()=>{
-            getQuizQuestion(token,id),()=>{
+            getQuizQuestion(token,id,()=>{
                 clearErrorMsg();
-            };
+            },()=>{
+                navigation.navigate('Result',{assessment:assessment});
+            })
         })
     }
 
     const skipStep = () =>{
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:[]},token,()=>{
-            getQuizQuestion(token,id),()=>{
+            getQuizQuestion(token,id,()=>{
                 clearErrorMsg();
-            };
+            },()=>{
+                navigation.navigate('Result',{assessment:assessment});
+            })
         })
     }
+
+    useEffect(() => {
+        const timer =  setInterval(()=>{
+            setTime(assessment?.assessment?.time_spend)
+        },1000)
+        return () => clearInterval(timer);
+
+    }, []);
 
     return (
         <SafeAreaView style={{flex:1}}>
@@ -42,6 +55,7 @@ const McqQuizScreen = ({navigation, route}) => {
             <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
             <View paddingH-16 marginT-20 style={{flex:1}}>
                 <Text subtitle1 deepGray marginB-10>{assessment?.assessment?.candidate_job?.job?.title}- MCQ</Text>
+                <Text subtitle3 warningColor marginB-10>{time}</Text>
                 <ScrollView flex-2 showsVerticalScrollIndicator={false}>
                     <Quiz
                         selection={selection}

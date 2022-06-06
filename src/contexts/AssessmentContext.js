@@ -52,6 +52,7 @@ const startExam = dispatch => async (token,assessmentId,callback) => {
         }
         //console.log(response.data);
     } catch (err) {
+        console.log(err?.response?.data);
         console.log(err?.response?.data?.admin_only,"start exam message...");
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
@@ -75,7 +76,7 @@ const startReExam = dispatch => async (token,assessmentId,callback) => {
 };
 
 
-const getQuizQuestion = dispatch => async (token,assessmentId,callback) => {
+const getQuizQuestion = dispatch => async (token,assessmentId,callback,errCallback) => {
     try {
         const response = await mediusware.get(`/assessment/${assessmentId}/question/`, {
             headers: {
@@ -85,11 +86,15 @@ const getQuizQuestion = dispatch => async (token,assessmentId,callback) => {
         if(callback){
             callback();
         }
-        //console.log(response.data);
+       // console.log(response.data,"success ");
         dispatch({ type: "quiz_question", payload: {quiz:response.data}});
     } catch (err) {
-        //console.log(err?.response?.data);
+       // console.log(err?.response?.data,"error");
+        dispatch({ type: "add_error", payload: {error:err?.response?.data?.out_of_step}});
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.time_up}});
+        if(err?.response?.data?.out_of_step || err?.response?.data?.time_up){
+            errCallback();
+        }
     }
 };
 
