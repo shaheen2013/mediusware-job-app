@@ -36,7 +36,6 @@ const DashBoardScreen = ({navigation, route}) => {
                                 showsVerticalScrollIndicator={false}
                                 data={apply}
                                 keyExtractor={(item) => item.unique_id}
-                                //keyExtractor={(item,index)=> item.key}
                                 renderItem={({item}) => {
                                     return <DashBoardCard
                                         singleApply={item}

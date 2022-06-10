@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState,useRef,useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
 import CommonHeader from "../components/CommonHeader";
@@ -8,6 +8,7 @@ import Quiz from "../components/ExamProgress/Quiz";
 import OutlineBtn from "../components/buttons/OutlineBtn";
 import {Context as AuthContext} from "../contexts/AuthContext";
 import {Context as AssessmentContext} from "../contexts/AssessmentContext";
+import moment from 'moment';
 
 const McqQuizScreen = ({navigation, route}) => {
     const {id} = route.params;
@@ -21,8 +22,10 @@ const McqQuizScreen = ({navigation, route}) => {
     },[token])
 
 
+
     const nextStep = () =>{
-        savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:[selection]},token,()=>{
+        savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:selectedAnswers},token,()=>{
+            setSelectedAnswers([]);
             getQuizQuestion(token,id,()=>{
                 clearErrorMsg();
             },()=>{
@@ -33,6 +36,7 @@ const McqQuizScreen = ({navigation, route}) => {
 
     const skipStep = () =>{
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:[]},token,()=>{
+            setSelectedAnswers([]);
             getQuizQuestion(token,id,()=>{
                 clearErrorMsg();
             },()=>{
@@ -40,14 +44,46 @@ const McqQuizScreen = ({navigation, route}) => {
             })
         })
     }
+    useEffect(()=>{
+        calculateDuration();
+    },[])
 
-    useEffect(() => {
-        const timer =  setInterval(()=>{
-            setTime(assessment?.assessment?.time_spend)
-        },1000)
-        return () => clearInterval(timer);
 
-    }, []);
+
+    const calculateDuration = eventTime => moment.duration(Math.max(Math.floor(new Date(eventTime).getTime() / 1000 - (3600*6)) - (Math.floor(Date.now() / 1000)), 0), 'seconds');
+   // const calculateDuration = eventTime => moment.duration(Math.max(Math.floor(new Date(eventTime).getTime()) / 1000) - (Math.floor(Date.now() / 1000)), 0), 'seconds');
+    //const calculateDuration = eventTime => moment.duration((moment(eventTime).unix()) - moment().unix());
+
+
+    function Countdown({ eventTime, interval }) {
+         console.log('event-time.....',eventTime);
+        const [duration, setDuration] = useState(calculateDuration(eventTime));
+        const timerRef = useRef(0);
+        const timerCallback = useCallback(() => {
+            setDuration(calculateDuration(eventTime));
+        }, [eventTime])
+
+        useEffect(() => {
+            timerRef.current = setInterval(timerCallback, interval);
+
+            return () => {
+                clearInterval(timerRef.current);
+            }
+        }, [eventTime]);
+
+       /* useEffect(()=>{
+            if(duration.hours() === 0 && duration.minutes() === 0 && duration.seconds() === 0){
+                navigation.navigate('Result',{assessment:assessment});
+            }
+        },[duration.hours(),duration.minutes(),duration.seconds()])*/
+
+        return (
+                <Text subtitle3 warningColor marginB-10>Exam Time: {duration.hours()}:{duration.minutes()}: {duration.seconds()}</Text>
+
+        )
+    }
+
+
 
     return (
         <SafeAreaView style={{flex:1}}>
@@ -55,12 +91,18 @@ const McqQuizScreen = ({navigation, route}) => {
             <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
             <View paddingH-16 marginT-20 style={{flex:1}}>
                 <Text subtitle1 deepGray marginB-10>{assessment?.assessment?.candidate_job?.job?.title}- MCQ</Text>
-                <Text subtitle3 warningColor marginB-10>{time}</Text>
+                {/*<Text subtitle3 warningColor marginB-10>{time}</Text>*/}
+                <Countdown eventTime={assessment?.assessment?.exam_end_at} interval={1000}/>
+                <Text subtitle3 warningColor marginB-10></Text>
                 <ScrollView flex-2 showsVerticalScrollIndicator={false}>
                     <Quiz
+                        selectedAnswers={selectedAnswers}
+                        setSelectedAnswers={setSelectedAnswers}
                         selection={selection}
                         setSelection={setSelection}
+                        type={quiz?.quiz?.type}
                         title={quiz?.quiz?.title}
+                        answers={quiz?.quiz?.answers && quiz?.quiz?.answers}
                         answer1={quiz?.quiz?.answers && quiz?.quiz?.answers[0]}
                         answer2={quiz?.quiz?.answers && quiz?.quiz?.answers[1]}
                         answer3={quiz?.quiz?.answers && quiz?.quiz?.answers[2]}
