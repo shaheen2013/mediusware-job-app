@@ -46,9 +46,9 @@ const MCQScreen = ({navigation, route}) => {
         getAssessment(token,id);
     },[token])
 
-    useEffect(()=>{
+ /*   useEffect(()=>{
         startingExamination();
-    },[assessment?.assessment?.exam_started_at])
+    },[assessment?.assessment?.exam_started_at])*/
     const startingExam = () =>{
            if(assessment?.assessment?.exam_started_at === null){
                startExam(token,id, ()=>{

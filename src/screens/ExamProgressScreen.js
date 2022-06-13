@@ -83,7 +83,13 @@ const ExamProgress = ({route, navigation}) => {
                      //goNextPage={goNextPage}
                 />;
             case 2:
-                return <Written navigation={navigation} title={apply?.job?.title}/>;
+                return <Written
+                    navigation={navigation}
+                    title={singleApply?.job?.title}
+                    time={singleApply?.candidate_assessment && singleApply?.candidate_assessment[1]?.assessment?.duration}
+                    score={singleApply?.candidate_assessment && singleApply?.candidate_assessment[1]?.score}
+                    id={singleApply?.candidate_assessment && singleApply?.candidate_assessment[1]?.unique_id}
+                />;
             case 3:
                 return <Viva navigation={navigation} title={apply?.job?.title}/>;
             case 4:

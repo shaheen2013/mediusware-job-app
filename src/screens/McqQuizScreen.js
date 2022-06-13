@@ -17,16 +17,31 @@ const McqQuizScreen = ({navigation, route}) => {
     const [selection,setSelection] = useState(null);
     const {state:{assessment,quiz},getAssessment,getQuizQuestion,startExam,clearErrorMsg,savedAnswer} = useContext(AssessmentContext);
     const [time,setTime] = useState(null);
-    useEffect(()=>{
-        getAssessment(token);
-    },[token])
+    const [showStep,setShowStep] = useState(assessment?.assessment?.step?.current_step);
 
+    useEffect(()=>{
+        console.log(token);
+        getAssessment(token,id);
+    },[token,assessment?.assessment?.exam_end_at])
+
+    useEffect(()=>{
+       // console.log(assessment?.assessment, "asdsadfasf")
+        setShowStep(assessment?.assessment?.step?.current_step+1);
+    },[quiz?.quiz])
+
+
+    // useEffect(()=>{
+    //     setShowStep(assessment?.assessment?.step?.current_step);
+    // },[assessment?.assessment?.step?.current_step])
 
 
     const nextStep = () =>{
+        getAssessment(token,id);
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:selectedAnswers},token,()=>{
+            //console.log(assessment?.assessment?.step?.current_step,"Step....");
             setSelectedAnswers([]);
             getQuizQuestion(token,id,()=>{
+                console.log()
                 clearErrorMsg();
             },()=>{
                 navigation.navigate('Result',{assessment:assessment});
@@ -35,7 +50,9 @@ const McqQuizScreen = ({navigation, route}) => {
     }
 
     const skipStep = () =>{
+        getAssessment(token,id);
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:[]},token,()=>{
+           // console.log(assessment?.assessment?.candidate_job?.candidate_assessment?.step?.current_step,"skip step");
             setSelectedAnswers([]);
             getQuizQuestion(token,id,()=>{
                 clearErrorMsg();
@@ -44,19 +61,20 @@ const McqQuizScreen = ({navigation, route}) => {
             })
         })
     }
-    useEffect(()=>{
-        calculateDuration();
-    },[])
+    // useEffect(()=>{
+    //     calculateDuration();
+    // },[])
 
 
 
-    const calculateDuration = eventTime => moment.duration(Math.max(Math.floor(new Date(eventTime).getTime() / 1000 - (3600*6)) - (Math.floor(Date.now() / 1000)), 0), 'seconds');
+
    // const calculateDuration = eventTime => moment.duration(Math.max(Math.floor(new Date(eventTime).getTime()) / 1000) - (Math.floor(Date.now() / 1000)), 0), 'seconds');
     //const calculateDuration = eventTime => moment.duration((moment(eventTime).unix()) - moment().unix());
 
 
     function Countdown({ eventTime, interval }) {
-         console.log('event-time.....',eventTime);
+        const calculateDuration = eventTime => moment.duration(Math.max(Math.floor(new Date(eventTime).getTime() / 1000 - (3600*6)) - (Math.floor(Date.now() / 1000)), 0), 'seconds');
+        // console.log('event-time.....',eventTime);
         const [duration, setDuration] = useState(calculateDuration(eventTime));
         const timerRef = useRef(0);
         const timerCallback = useCallback(() => {
@@ -92,8 +110,12 @@ const McqQuizScreen = ({navigation, route}) => {
             <View paddingH-16 marginT-20 style={{flex:1}}>
                 <Text subtitle1 deepGray marginB-10>{assessment?.assessment?.candidate_job?.job?.title}- MCQ</Text>
                 {/*<Text subtitle3 warningColor marginB-10>{time}</Text>*/}
-                <Countdown eventTime={assessment?.assessment?.exam_end_at} interval={1000}/>
-                <Text subtitle3 warningColor marginB-10></Text>
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                    <Countdown eventTime={assessment?.assessment?.exam_end_at} interval={1000}/>
+                    {/*<Text subtitle3 blackGray marginB-10>{showStep}/{assessment?.assessment?.step?.question_ids && assessment?.assessment?.step?.question_ids?.length}</Text>*/}
+                    <Text subtitle3 blackGray marginB-10>{showStep}/{assessment?.assessment?.step?.question_ids && assessment?.assessment?.step?.question_ids?.length}</Text>
+                </View>
+
                 <ScrollView flex-2 showsVerticalScrollIndicator={false}>
                     <Quiz
                         selectedAnswers={selectedAnswers}
@@ -110,11 +132,11 @@ const McqQuizScreen = ({navigation, route}) => {
                     />
                 </ScrollView>
                 <View row marginV-16>
-                    <TouchableOpacity flex-1 marginR-10 onPress={nextStep}>
-                        <FilledBtn title={'Next'}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity flex-1 onPress={skipStep}>
+                    <TouchableOpacity flex-1 marginR-10 onPress={skipStep}>
                         <OutlineBtn title={'Skip'}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity flex-2  onPress={nextStep}>
+                        <FilledBtn title={'Next'}/>
                     </TouchableOpacity>
 
                 </View>

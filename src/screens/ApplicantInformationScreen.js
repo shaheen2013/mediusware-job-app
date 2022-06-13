@@ -59,6 +59,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     const [comment,setComment] = useState("");
     const [additionalFields,setAdditionalFields] = useState([singleJob?.additional_fields]);
     const [text, setText] = useState([]);
+
     //const [isToken,setIsToken] = useState('');
     useEffect(()=>{
         if(token?.length > 0){
@@ -66,8 +67,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         }
     },[token])
 
-    //console.log('token ....',token);
 
+    //console.log('token ....',token);
 
 
     const onChangeValue = () => {
@@ -110,6 +111,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     additional_message: values.comment,
                     additional_fields: text
                 }, () => {
+                    console.log("application complete");
                     navigation.navigate('Submission');
                     clearErrorMsg();
                     values.expSalary = "";
