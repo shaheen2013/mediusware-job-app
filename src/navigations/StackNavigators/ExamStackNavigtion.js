@@ -7,6 +7,7 @@ import ResultScreen from "../../screens/ResultScreen";
 import WrittenExamScreen from "../../screens/WrittenExamScreen";
 import ExamProgressScreen from "../../screens/ExamProgressScreen";
 import WrittenExamQuestionScreen from "../../screens/WrittenExamQuestionScreen";
+import ExaminationScreen from "../../screens/ExaminationScreen";
 const Stack = createNativeStackNavigator();
 const ExamStackNavigation = () => {
     return (<Stack.Navigator
@@ -21,6 +22,7 @@ const ExamStackNavigation = () => {
         <Stack.Screen name="WrittenExam" component={WrittenExamScreen}/>
         <Stack.Screen name="WrittenExamQuestion" component={WrittenExamQuestionScreen}/>
         <Stack.Screen name="Result" component={ResultScreen}/>
+        <Stack.Screen name="Examination" component={ExaminationScreen}/>
     </Stack.Navigator>);
 };
 

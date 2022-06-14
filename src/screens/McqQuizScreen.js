@@ -27,7 +27,7 @@ const McqQuizScreen = ({navigation, route}) => {
     useEffect(()=>{
        // console.log(assessment?.assessment, "asdsadfasf")
         setShowStep(assessment?.assessment?.step?.current_step+1);
-    },[quiz?.quiz])
+    },[quiz?.quiz,assessment?.assessment?.step?.current_step])
 
 
     // useEffect(()=>{

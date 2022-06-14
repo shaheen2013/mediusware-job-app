@@ -60,8 +60,11 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     const [additionalFields,setAdditionalFields] = useState([singleJob?.additional_fields]);
     const [text, setText] = useState([]);
 
+    //console.log(singleJob?.additional_fields,"my additional Field....");
+
     //const [isToken,setIsToken] = useState('');
     useEffect(()=>{
+        console.log("token hitted.......")
         if(token?.length > 0){
             applyProcess();
         }
@@ -105,18 +108,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     additional_fields: text
                 }*/
             if(token){
-                apply(token,{
-                    job_slug,
-                    expected_salary: values.expSalary,
-                    additional_message: values.comment,
-                    additional_fields: text
-                }, () => {
-                    console.log("application complete");
-                    navigation.navigate('Submission');
-                    clearErrorMsg();
-                    values.expSalary = "";
-                    values.comment = "";
-                });
+                applyProcess(true);
             }else{
                 register(registerData,()=> {
                     login(loginData,()=>{
@@ -143,7 +135,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
 
 
-    const applyProcess = () => {
+    const applyProcess = (initailValue=false) => {
         apply(token,{
             job_slug,
             expected_salary: values.expSalary,
@@ -154,7 +146,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
             clearErrorMsg();
             values.expSalary = "";
             values.comment = "";
-        });
+        },initailValue);
     }
 
 
@@ -316,6 +308,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                             }}
                                         />
                                     </View>
+
                                 </View>
                             ))
 
@@ -324,6 +317,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                             <Text marginV-8 text>Do you have anything to say to us?</Text>
                             <View style={{...styles.textInputStyle,borderColor:Colors.borderColor}}>
                                 <TextInput
+                                    place
                                     keyboardType="email-address"
                                     autoComplete={"off"}
                                     autoCorrect={false}

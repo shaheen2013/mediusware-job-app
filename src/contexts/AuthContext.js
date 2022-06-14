@@ -88,8 +88,10 @@ const login = (dispatch) => async ({ email, password },callback) => {
     }
 };
 
-const apply = (dispatch) => async (token,obj,callback) => {
-    dispatch({type:'set_loader'});
+const apply = (dispatch) => async (token,obj,callback,initialHit= false) => {
+    if(!token || initialHit){
+        dispatch({type:'set_loader'});
+    }
     try {
       const response = await mediusware.post(
         "https://hr.mediusware.xyz/api/apply/",obj,

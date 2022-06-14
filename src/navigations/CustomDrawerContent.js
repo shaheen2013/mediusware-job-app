@@ -77,7 +77,7 @@ const CustomDrawerContent = (props) => {
                                             icon={({focused}) => <DashBoardOutlineIcon/>}
                                             onPress={() => {
                                                 props.navigation.closeDrawer();
-                                                props.navigation.navigate('DashboardStackNavigation');
+                                                props.navigation.navigate('DashboardStackNavigation',{screen:'Dashboard'});
                                             }}
                                 />
                                 <DrawerItem label={"Application"} style={{marginBottom: -10, marginLeft: 0}}
@@ -85,7 +85,7 @@ const CustomDrawerContent = (props) => {
                                             icon={({focused}) => <ApplicationIcon/>}
                                             onPress={() => {
                                                 props.navigation.closeDrawer();
-                                                props.navigation.navigate('BottomNavigation',{screen:'Home'});
+                                                props.navigation.navigate('DashboardStackNavigation',{screen:'Dashboard'});
 
                                             }}
                                 />
@@ -93,8 +93,8 @@ const CustomDrawerContent = (props) => {
                                             labelStyle={{color: Colors.gray, fontSize: 16, fontFamily: 'Montserrat_500Medium'}}
                                             icon={({focused}) => <ExaminationIcon/>}
                                             onPress={() => {
-                                                logout();
-                                                props.navigation.navigate('Home',{screen:'ExamStackNavigation'});
+                                               // logout();
+                                                props.navigation.navigate('ExamStackNavigation',{screen:'Examination'});
                                                 props.navigation.closeDrawer();
                                             }}
                                 />

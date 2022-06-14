@@ -6,6 +6,7 @@ import DashBoardScreen from "../../screens/DashBoardScreen";
 import MCQScreen from "../../screens/MCQScreen";
 import McqQuizScreen from "../../screens/McqQuizScreen";
 import ResultScreen from "../../screens/ResultScreen";
+import ExaminationScreen from "../../screens/ExaminationScreen";
 
 
 const Stack = createNativeStackNavigator();

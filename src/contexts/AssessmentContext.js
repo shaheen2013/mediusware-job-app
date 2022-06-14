@@ -5,6 +5,8 @@ const assessmentReducer = (state, action) => {
     switch (action.type) {
         case "assessment":
             return { ...state, assessment:action.payload};
+        case "allAssessments":
+            return { ...state, allAssessments:action.payload};
         case "quiz_question":
             return { ...state, quiz:action.payload};
         case "add_error":
@@ -30,6 +32,23 @@ const getAssessment = dispatch => async (token,assessmentId,callback) => {
             }
         });
         dispatch({ type: "assessment", payload: {assessment:response.data}});
+        //console.log("response data: ",response.data);
+        if(callback){
+            callback();
+        }
+    } catch (err) {
+        console.log(err?.response?.data);
+
+    }
+};
+const getAllAssessment = dispatch => async (token,callback) => {
+    try {
+        const response = await mediusware.get(`/assessment/`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        dispatch({ type: "allAssessments", payload: {allAssessments:response.data}});
         //console.log("response data: ",response.data);
         if(callback){
             callback();
@@ -117,8 +136,22 @@ const savedAnswer = dispatch => async ({uuid,question_id,answers},token,callback
     }
 };
 
+const savedEvaluation = dispatch => async ({assessment_uuid,evaluation_url,candidate_feedback}, callback) => {
+    try {
+        const response = await mediusware.post(`/assessment/save-evaluation-url/`, {assessment_uuid,evaluation_url,candidate_feedback});
+        if(callback){
+            callback();
+        }
+        console.log(response.data);
+        dispatch({type:'clear_quiz'});
+    } catch (err) {
+        console.log(err?.response?.data);
+
+    }
+};
+
 export const { Provider, Context } = createDataContext(
     assessmentReducer,
-    {getAssessment,getQuizQuestion,startExam, clearErrorMsg,startReExam,savedAnswer},
-    {assessment:{},quiz:{},errorMsg: {}}
+    {getAssessment,getQuizQuestion,startExam, clearErrorMsg,startReExam,savedAnswer,savedEvaluation,getAllAssessment},
+    {assessment:{},quiz:{},errorMsg: {},allAssessments:[]}
 );
