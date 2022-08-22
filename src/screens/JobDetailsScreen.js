@@ -1,18 +1,15 @@
 import { Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { useIsFocused   } from '@react-navigation/native';
-import React, {useEffect, useState,useContext} from 'react';
-import { StatusBar,ActivityIndicator,StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { ActivityIndicator, Animated, Dimensions, FlatList, StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import FilledBtn from "../components/buttons/FilledBtn";
 import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
 import JobDetailsInfo from "../components/JobDetailsComponents/JobDetailsInfo";
 import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
-import VirtualizedView from "../components/VirtualizedView";
+import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
-import { BlurView } from 'expo-blur';
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {Dimensions} from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 function FocusAwareStatusBar(props) {
@@ -20,10 +17,14 @@ function FocusAwareStatusBar(props) {
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
 
+const hSecHeight = 200;
+
 const JobDetails = ({route,navigation}) => {
     const {slug} = route.params;
     const [singleJob,isLoading] = useSingleJob(slug);
     const {state:{token}} = useContext(AuthContext);
+    const offset = new Animated.Value(0);
+    const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
     if (!singleJob) {
         return null;
@@ -51,6 +52,25 @@ const JobDetails = ({route,navigation}) => {
         }
     }
 
+    const headerHeight = offset.interpolate({
+        inputRange: [0, hSecHeight + SafeAreaView.top],
+        outputRange: [hSecHeight + SafeAreaView.top, SafeAreaView.top + 60],
+        extrapolate: "clamp",
+      });
+    
+      const sliderHeight = offset.interpolate({
+        inputRange: [0, hSecHeight + SafeAreaView.top],
+        outputRange: [hSecHeight + SafeAreaView.top - 26, 1],
+        extrapolate: "clamp",
+      });
+    
+      const opacityForSlider = offset.interpolate({
+        inputRange: [hSecHeight, hSecHeight + SafeAreaView.top],
+        outputRange: [1, 0],
+        extrapolate: "clamp",
+      });
+    
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
@@ -61,10 +81,28 @@ const JobDetails = ({route,navigation}) => {
                 </View>)
                 :
                     (
-                        <View style={{flex: 1}}>
+                        <View style={{flex:1}} forceInset={{ top: "always" }}>
                             {singleJob?.job_summery &&
-                                <View style={{backgroundColor: Colors.blue}} paddingB-12 paddingH-16>
-                                <Text h4 marginV-8 white>{singleJob?.title}</Text>
+                            <Animated.View  style={{
+                                    backgroundColor: Colors.blue,
+                                    paddingHorizontal:16,
+                                    paddingBottom:12,
+                                    position:'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: 180,
+                                    zIndex:1,
+                                }}>
+                                <Animated.View 
+                                style={{
+                                    opacity: opacityForSlider,
+                                    overflow: "hidden",
+                                    height: sliderHeight,
+                                }}
+                                    
+                               >
+                                    <Text h4 marginV-8 white>{singleJob?.title}</Text>
                                     <View>
                                         <View>
                                             <JobDetailsInfo icon={"calendar"} title={"Published:"} text={singleJob?.updated_at}
@@ -85,17 +123,25 @@ const JobDetails = ({route,navigation}) => {
                                     <JobDetailsInfo icon={"currency-usd-circle-outline"} title={"Salary:"}
                                                     text={singleJob?.job_summery?.salary_range}
                                                     IconLib={MaterialCommunityIcons}/>
-                                <JobDetailsInfo icon={"location-pin"} title={"Location:"}
+                                    <JobDetailsInfo icon={"location-pin"} title={"Location:"}
                                                 text={"Ring Road, Mohammadpur, House 18/5, Floor 2nd, Dhaka, 1207"}
                                                 IconLib={SimpleLineIcons}/>
-                            </View>
+                                </Animated.View>
+                            </Animated.View>
+                             
                             }
                         {/*Customized Flatlist instead of Scrollview because flatlist and scrollview cann't work nested together */}
                         {
-
-                            <VirtualizedView>
-                                {
-                                        singleJob?.job_contexts &&
+                            <AnimatedFlatList
+                             scrollEventThrottle={16}
+                                data={[{}]}
+                                keyExtractor={() => null}
+                                onScroll={
+                                    Animated.event(
+                                    [{ nativeEvent: { contentOffset: { y: offset } } }],
+                                    { useNativeDriver: false }
+                                    )}
+                                renderItem={() => <>{singleJob?.job_contexts &&
                                         <View marginB-60>
                                             <View marginT-20 paddingR-16>
                                                 <JobResponsibility points={createPoint(singleJob?.job_contexts[3]?.description)}
@@ -118,10 +164,9 @@ const JobDetails = ({route,navigation}) => {
                                                                    value={"compensation-value"}/>
                                             </View>
 
-                                        </View>
-                                }
+                                        </View>}</>}
+                            />
 
-                            </VirtualizedView>
                         }
 
                             {singleJob?.job_summery &&

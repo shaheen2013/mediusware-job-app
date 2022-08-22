@@ -1,10 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import JobsDetailsStackNavigation from "./JobsDetailsStackNavigation";
-import BottomNavigation from "../BottomNavigation";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useContext } from 'react';
+import { Context as AuthContext } from "../../contexts/AuthContext";
 import ExamStackNavigation from "./ExamStackNavigtion";
-import {Context as AuthContext} from "../../contexts/AuthContext";
-import JobsScreen from "../../screens/JobsScreen";
+import JobsDetailsStackNavigation from "./JobsDetailsStackNavigation";
 
 
 const Stack = createNativeStackNavigator();

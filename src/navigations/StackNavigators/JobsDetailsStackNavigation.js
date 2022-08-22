@@ -1,14 +1,12 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import JobDetailsScreen from "../../screens/JobDetailsScreen";
-import ApplyScreen from "../../screens/ApplyScreen";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useContext } from 'react';
+import { Context as AuthContext } from "../../contexts/AuthContext";
 import ApplicantInformationScreen from "../../screens/ApplicantInformationScreen";
-import SubmissionScreen from "../../screens/SubmissionScreen";
+import ApplyScreen from "../../screens/ApplyScreen";
+import JobDetailsScreen from "../../screens/JobDetailsScreen";
 import JobsScreen from "../../screens/JobsScreen";
+import SubmissionScreen from "../../screens/SubmissionScreen";
 import BottomNavigation from "../BottomNavigation";
-import {Context as AuthContext} from "../../contexts/AuthContext";
-import JobsStackNavigation from "./JobsStackNavigation";
 
 
 

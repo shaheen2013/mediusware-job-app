@@ -101,8 +101,6 @@ const McqQuizScreen = ({navigation, route}) => {
         )
     }
 
-
-
     return (
         <SafeAreaView style={{flex:1}}>
             <CommonHeader name={"MCQ"} navigation={navigation}/>
