@@ -1,30 +1,24 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import CommonHeader from "../components/CommonHeader";
-import FilledBtn from "../components/buttons/FilledBtn";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useContext, useEffect, useState } from 'react';
 import {
-    StatusBar,
+    ScrollView, StatusBar,
     StyleSheet,
-    TextInput,
-    KeyboardAvoidingView,
-    ScrollView,
-    FlatList,
-    RefreshControl
+    TextInput
 } from "react-native";
-import {Feather, Ionicons} from "@expo/vector-icons";
-import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {useFormik} from 'formik';
-import * as Yup from 'yup';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
+import FilledBtn from "../components/buttons/FilledBtn";
+import CommonHeader from "../components/CommonHeader";
+import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
 
 
 
-let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
+/* let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
 let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
-let experience = /^[0-9][0-9]?$|^100$/;
+let experience = /^[0-9][0-9]?$|^100$/; */
 let validateExpSalary = /^(?:[0-9][0-9]{0,6}(?:\.\d{1,2})?|100000|100000.00)$/;
 
 const toastConfig = {
@@ -55,71 +49,74 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     const {title, job_slug,registerData,loginData} = route.params;
     const [singleJob] = useSingleJob(job_slug);
     const isIcon = false;
-    const [expSalary,setExpSalary] = useState("");
-    const [comment,setComment] = useState("");
+    // const [expSalary,setExpSalary] = useState("");
+    // const [comment,setComment] = useState("");
     const [additionalFields,setAdditionalFields] = useState([singleJob?.additional_fields]);
     const [text, setText] = useState([]);
+    const [errors,setErrors] = useState({
+        expSalary:'',
+        commment:'',
+    });
+    const [dErrors,setDErrors] = useState({});
+    const [formData,setFormData] =useState({
+        expSalary:'',
+        comment:"",
+    });
 
-    //console.log(singleJob?.additional_fields,"my additional Field....");
+     console.log(singleJob?.additional_fields,"my additional Field....");
 
     //const [isToken,setIsToken] = useState('');
     useEffect(()=>{
-        console.log("token hitted.......")
+        // console.log("token hitted.......")
         if(token?.length > 0){
             applyProcess();
         }
     },[token])
 
 
-    //console.log('token ....',token);
+    useEffect(()=>{
+        singleJob?.additional_fields?.map(field=> setDErrors((prev)=> {
+            if(field?.required === true){
+                return {...prev,[field?.title?.split(" ").join("")]: true}
+            } 
+            return {...prev,[field?.title?.split(" ").join("")]: false}
+            
+        }));
+    },[singleJob?.additional_fields?.length])
 
-
-    const onChangeValue = () => {
-
+  
+    const handleChange = (value,text) => {
+            setFormData({...formData,[value]:text})
+            setErrors({...errors,[value]:""})
     }
-    /*console.log(singleJob?.additional_fields, 'Single job....');
 
-    for(let i = 0;i<singleJob?.additional_fields?.length;i++){
-        console.log(singleJob?.additional_fields[i].title, "Additional Fields Title: ");
-    }*/
-
-    const applySchema = Yup.object().shape({
-        expSalary: Yup.string().matches(validateExpSalary, 'Expected Salary is not valid').required('Required'),
-       // linkedin: Yup.string().matches(validateLinkedin, 'Linkedin Profile is not valid').required('Required'),
-       // gitUrl: Yup.string().matches(validateGithub, 'Github Profile is not valid').required('Required'),
-       // experience: Yup.string().matches(experience, 'Invalid Experience').required('Required'),
-
-    });
-    const {
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        errors,
-        touched
-    } = useFormik({
-        validationSchema: applySchema,
-        initialValues: {expSalary: '',comment: ''},
-        onSubmit: (values) => {
-                /*const formData = {
-                    job_slug,
-                    expected_salary: values.expSalary,
-                    additional_message: values.comment,
-                    additional_fields: text
-                }*/
-            if(token){
-                applyProcess(true);
-            }else{
-                register(registerData,()=> {
-                    login(loginData,()=>{
-                           applyProcess();
-
-                    });
-                })
-            }
-
+    const handleSubmit = () =>{
+        console.log('dError',dErrors)
+        console.log('errors', errors);
+        if(validateExpSalary.test(formData.expSalary) === false){
+            setErrors({...errors,expSalary:"Invalid Expected Salary"})
         }
-    });
+
+      /*   singleJob?.additional_fields?.forEach(field => {
+            if(field?.validation_regx.test(dErrors[field?.title?.split(" ").join("")]) === false)
+            
+        });
+         */
+       
+        if(token){
+            applyProcess(true);
+        }else{
+            register(registerData,()=> {
+                login(loginData,()=>{
+                       applyProcess();
+
+                });
+            })
+        }
+    }
+
+
+   
 
    /* apply(isToken,{
         job_slug,
@@ -136,70 +133,25 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
 
     const applyProcess = (initailValue=false) => {
+        console.log(text,'text.......');
         apply(token,{
             job_slug,
-            expected_salary: values.expSalary,
-            additional_message: values.comment,
+            expected_salary: formData.expSalary,
+            additional_message: formData.comment,
             additional_fields: text
         }, () => {
             navigation.navigate('Submission');
             clearErrorMsg();
-            values.expSalary = "";
-            values.comment = "";
+            formData.expSalary = "";
+            formData.comment = "";
         },initailValue);
     }
 
+    const salaryValidationColor = errors.expSalary ? '#FF5A5F' : Colors.borderColor;
 
-    const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;
-    /*const comValidationColor = !touched ? Colors.borderColor : errors?.comment ? '#FF5A5F' : Colors.borderColor;
-    const additionalGitColor  = !touched ? Colors.borderColor : errors?.gitUrl ? '#FF5A5F' : Colors.borderColor;
-    const additionalLinkedinColor  = !touched ? Colors.borderColor : errors?.linkedin ? '#FF5A5F' : Colors.borderColor;
-    const additionalExpColor  = !touched ? Colors.borderColor : errors?.experience ? '#FF5A5F' : Colors.borderColor;*/
+    // const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;
 
-    /*const handleApply = () =>{
-        console.log('token in APP',token);
-
-        apply(token,{
-            job_slug:job_slug,
-            expected_salary: expSalary,
-            additional_message: comment,
-            additional_fields: text,
-        }, () => {
-            navigation.navigate('Submission');
-            clearErrorMsg();
-            setExpSalary("");
-            setComment("");
-        });
-       // console.log(text);
-        /!*if(token){
-            apply({
-                job_slug,
-                expected_salary: expSalary,
-                additional_message: comment,
-                additional_fields: text
-            }, () => {
-                navigation.navigate('Submission');
-                clearErrorMsg();
-                setExpSalary("");
-                setComment("");
-            });
-        }else{
-            register(registerData,()=> {
-                login(loginData);
-                apply({
-                    job_slug,
-                    expected_salary: expSalary,
-                    additional_message: comment,
-                    additional_fields: text
-                }, () => {
-                    navigation.navigate('Submission');
-                    clearErrorMsg();
-                    setExpSalary("");
-                    setComment("");
-                });
-            })
-        }*!/
-    }*/
+   
 
     useEffect(() => {
         showToast()
@@ -232,20 +184,21 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                         <View marginB-16>
                             <Text marginB-8 text>What is your expected salary?*</Text>
                             <View row>
-                                <View style={{...styles.currencyContainer,borderColor:validationColor}}>
+                                <View style={{...styles.currencyContainer,borderColor:salaryValidationColor}}>
                                     <Text>BDT</Text>
                                 </View>
-                                <View style={{...styles.salaryContainer,borderColor:validationColor}}>
+                                <View style={{...styles.salaryContainer,borderColor:salaryValidationColor}}>
                                     <TextInput
                                         keyboardType="numeric"
                                         autoCapitalize={"none"}
                                         autoCorrect={false}
                                         autoComplete={"off"}
-                                        value={values.expSalary}
-                                        onChangeText={handleChange('expSalary')}
-                                        onBlur={handleBlur('expSalary')}
-                                        error={errors.expSalary}
-                                        touched={touched.expSalary}
+                                        value={formData.expSalary}
+                                        //onChangeText={(text) => setFormData({...formData,expSalary:text})} 
+                                         onChangeText={(text)=>handleChange('expSalary',text)}
+                                        // onBlur={handleBlur('expSalary')}
+                                        // error={errors.expSalary}
+                                        // touched={touched.expSalary}
                                         /*value={expSalary}
                                         onChangeText={setExpSalary}*/
                                         style={{
@@ -262,29 +215,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                             )}
                         </View>
 
-                      {/*  <FlatList
-                            showsVerticalScrollIndicator={false}
-                            data={singleJob?.additional_fields}
-                            //keyExtractor={(index)=> index}
-                            keyExtractor={(item,index)=> item.key}
-                            renderItem={({item,index}) => {
-                                return <View>
-                                            <Text marginV-8 text>{`${item?.title} ${item?.required ? '*':''}`}</Text>
-                                            <View style={{...styles.textInputField,borderColor:Colors.borderColor}}>
-                                                <TextInput
-                                                    autoComplete={"off"}
-                                                    autoCorrect={false}
-                                                    onChangeText={text=> console.log(text)}
-                                                    text={text}
-                                                    value={text[index]}
-                                                    style={{
-                                                        textAlignVertical: 'top',
-                                                        fontFamily: 'Montserrat_400Regular'
-                                                    }}
-                                                />
-                                    </View>
-                                </View>
-                            }}/>*/}
 
                         {
                             singleJob?.additional_fields?.map((field,index)=>(
@@ -297,10 +227,16 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                             value={text[index]}
                                             onChangeText={(t) => {
                                                 setText((text) => {
+                                                    // console.log(text)
                                                     const newText = [...text];
                                                     newText[index] = t;
                                                     return newText;
                                                 });
+                                               t.length === 0 ?  
+                                               setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                                               :
+                                               setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
+                                               
                                             }}
                                             style={{
                                                 flex: 1,
@@ -317,20 +253,19 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                             <Text marginV-8 text>Do you have anything to say to us?</Text>
                             <View style={{...styles.textInputStyle,borderColor:Colors.borderColor}}>
                                 <TextInput
-                                    place
                                     keyboardType="email-address"
                                     autoComplete={"off"}
                                     autoCorrect={false}
-                                    value={values.comments}
-                                    onChangeText={handleChange('comment')}
-                                    onBlur={handleBlur('comment')}
-                                    error={errors.comment}
-                                    touched={touched.comment}
+                                    //value={values.comments}
+                                  //  onChangeText={handleChange('comment')}
+                                   // onBlur={handleBlur('comment')}
+                                    // error={errors.comment}
+                                    // touched={touched.comment}
                                     multiline={true}
                                     numberOfLines={10}
-                                    onSubmitEditing={() => handleSubmit()}
-                                    value={comment}
-                                    onChangeText={setComment}
+                                    // onSubmitEditing={() => handleSubmit()}
+                                   // value={comment}
+                                   // onChangeText={setComment}
                                     style={{
                                         textAlignVertical: 'top',
                                         fontFamily: 'Montserrat_400Regular'
@@ -346,7 +281,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     position='top'
                 />
                 <View row marginV-15>
-                    <TouchableOpacity flex-1 marginR-10 onPress={() => navigation.navigate('Apply')}>
+                    <TouchableOpacity flex-1 marginR-10 onPress={() => navigation.navigate('Apply',{title:title,job_slug:job_slug})}>
                         <BlueOutlineBtn title={'Back'}/>
                     </TouchableOpacity>
                     <TouchableOpacity flex-1 disabled={loader} onPress={handleSubmit} >

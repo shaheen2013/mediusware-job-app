@@ -1,16 +1,16 @@
+import { Ionicons } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
-import React, {useContext, useEffect, useRef, useState} from "react";
-import {ScrollView, StatusBar, StyleSheet, TextInput} from "react-native";
+import { useFormik } from 'formik';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { ScrollView, StatusBar, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from 'react-native-toast-message';
 import { Colors, Text, TouchableOpacity, View } from "react-native-ui-lib";
+import * as Yup from 'yup';
 import FilledBtn from "../components/buttons/FilledBtn";
 import CommonHeader from "../components/CommonHeader";
-import { Context as AuthContext } from "../contexts/AuthContext";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import InputField from "../components/formComponents/InputField";
-import Toast from 'react-native-toast-message';
-import {Ionicons} from "@expo/vector-icons";
+import { Context as AuthContext } from "../contexts/AuthContext";
 
 const ApplyScreen = ({ navigation, route }) => {
   const { state, register, login, apply, clearErrorMsg } =
@@ -225,7 +225,7 @@ const ApplyScreen = ({ navigation, route }) => {
                         autoCorrect={false}
                         style={{
                           fontFamily: "Montserrat_400Regular",
-                          fontsize:14,
+                          fontSize:14,
                         }}
                     />
                   </View>
@@ -354,6 +354,9 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft:0,
     flex: 6,
+  },
+  mobileInputStyle:{
+    
   }
 });
 

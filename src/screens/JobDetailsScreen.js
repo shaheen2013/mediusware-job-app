@@ -18,6 +18,7 @@ function FocusAwareStatusBar(props) {
 }
 
 const hSecHeight = 270;
+const offsetY = 0;
 
 const JobDetails = ({route,navigation}) => {
     const {slug} = route.params;
@@ -25,8 +26,7 @@ const JobDetails = ({route,navigation}) => {
     const {state:{token}} = useContext(AuthContext);
     const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
     const animatedValue = new Animated.Value(0);
-    const [fullHeader,setFullHeader] = useState(true);
-    const [shortHeader,setShortHeader] = useState(false);
+    const [header,setHeader] = useState(false);
 
 
     if (!singleJob) {
@@ -57,7 +57,7 @@ const JobDetails = ({route,navigation}) => {
 
       let translateY = animatedValue.interpolate({
         inputRange: [0, 310],
-        outputRange: [0, -110],
+        outputRange: [0, -310],
         extrapolate: 'clamp',
     });
     
@@ -76,12 +76,12 @@ const JobDetails = ({route,navigation}) => {
                             {
                                 singleJob?.job_summery && 
                                 <View>
-                                    <View style={{
+                                     <View style={{
                                         backgroundColor: Colors.blue,
                                         paddingHorizontal:16,
                                         paddingBottom:12,
                                          
-                                        },[shortHeader && {zIndex:99}]}>
+                                        }}>
                                         <Text style={{color:'white',fontFamily:"Montserrat_600SemiBold",marginVertical:8,fontSize:15}}>{singleJob?.title}</Text>
                                         <JobDetailsInfo icon={"users"} title={"Experience:"}
                                                             text={singleJob?.job_summery?.experience}
@@ -90,9 +90,9 @@ const JobDetails = ({route,navigation}) => {
                                                     text={singleJob?.job_summery?.salary_range}
                                                     IconLib={MaterialCommunityIcons}/>
                                     </View>
-                                
-                                  {fullHeader && <Animated.View style={[styles.headerWrapper, {transform: [{translateY}]}]}>
-                                    <View style={{backgroundColor: Colors.blue, paddingHorizontal:16, paddingBottom:12,}}>
+                        
+                                   <Animated.View style={[styles.headerWrapper, {transform: [{translateY}]}]}>
+                                    {<View style={{backgroundColor: Colors.blue, paddingHorizontal:16, paddingBottom:12,}}>
                                          <Text style={{color:'white',fontFamily:"Montserrat_600SemiBold",marginVertical:8,fontSize:15}}>{singleJob?.title}</Text>
                                     
                                         <View>
@@ -117,8 +117,10 @@ const JobDetails = ({route,navigation}) => {
                                                 IconLib={SimpleLineIcons}/>
 
                                     </View>
+                                    }
+                                   
                                     
-                                    </Animated.View>}
+                                    </Animated.View>
                                 </View>
                             }
                         {
@@ -133,14 +135,15 @@ const JobDetails = ({route,navigation}) => {
                                         useNativeDriver: true,
                                         listener: (event) => {
                                              const offsetY = event.nativeEvent.contentOffset.y;
-                                            if(offsetY >= 128){
+                                            if(offsetY >= 280){
                                                 console.log(offsetY,'offsety...')
-                                                 //setFullHeader(false);
-                                                 //setShortHeader(true);
+                                                // setHeader(true);
+                                                
                                             }else{
+                                               // setHeader(false);
+                                               
                                                 console.log(offsetY,'less than 135 offsety...')
-                                               // setFullHeader(true);
-                                              //  setShortHeader(false);
+                                              
                                                 
                                             }
                                              
@@ -200,7 +203,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf:'center',
         width: screenWidth - 32,
-        top: '88%',
+        top: '87.5%',
         backgroundColor:'white',
         borderTopEndRadius:16,
         borderTopLeftRadius: 16,
