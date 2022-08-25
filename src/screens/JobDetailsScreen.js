@@ -119,7 +119,6 @@ const JobDetails = ({route,navigation}) => {
                                     </View>
                                     }
                                    
-                                    
                                     </Animated.View>
                                 </View>
                             }

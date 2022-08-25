@@ -6,6 +6,7 @@ import {
     TextInput
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Toast from 'react-native-toast-message';
 import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
@@ -13,8 +14,6 @@ import FilledBtn from "../components/buttons/FilledBtn";
 import CommonHeader from "../components/CommonHeader";
 import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
-
-
 
 /* let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
 let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
@@ -47,7 +46,7 @@ const toastConfig = {
 const ApplicantInformationScreen = ({navigation, route}) => {
     const {state:{token,errorMessage,loader}, register, login, clearErrorMsg, apply} = useContext(AuthContext);
     const {title, job_slug,registerData,loginData} = route.params;
-    const [singleJob] = useSingleJob(job_slug);
+    const [singleJob,isLoading] = useSingleJob(job_slug);
     const isIcon = false;
     // const [expSalary,setExpSalary] = useState("");
     // const [comment,setComment] = useState("");
@@ -63,7 +62,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         comment:"",
     });
 
-     console.log(singleJob?.additional_fields,"my additional Field....");
+    // console.log(singleJob?.additional_fields,"my additional Field....");
 
     //const [isToken,setIsToken] = useState('');
     useEffect(()=>{
@@ -73,12 +72,14 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         }
     },[token])
 
+    //console.log(dErrors,'drrors in console...')
+
 
     useEffect(()=>{
         singleJob?.additional_fields?.map(field=> setDErrors((prev)=> {
-            if(field?.required === true){
+           /*  if(field?.required === true){
                 return {...prev,[field?.title?.split(" ").join("")]: true}
-            } 
+            }  */ 
             return {...prev,[field?.title?.split(" ").join("")]: false}
             
         }));
@@ -91,17 +92,48 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     }
 
     const handleSubmit = () =>{
+        console.log('text.........', text)
         console.log('dError',dErrors)
-        console.log('errors', errors);
+       // console.log('errors', errors);
+
+        singleJob?.additional_fields?.map((field,i )=> {
+            let regx = field?.validation_regx.split("/").join("\\/")
+            // console.log(regx,'regx.....');
+            if(field.required){
+                console.log(field.title.split(" ").join(''),i,'fieldname')
+                setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                if(/regx/.test(text[i]) == false){
+                    console.log( text[i],'it is false at now...')
+                    setDErrors({...dErrors,[field.title.split(" ").join('')]:true});
+                }else {
+                    setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
+                }
+                
+               
+            }
+
+               /*  if(regx?.test(text[i]) === undefined){
+                    if(regx?.test(text[i]) === false){
+                        console.log("error....")
+                    }
+                    console.log('undefined error...')
+                } */
+                
+               /*  if(text[i] === undefined){
+                    setErrors({...errors,[field?.title?.split(" ").join("")]:"Required"})
+                }
+                else if((regx?.test(text[i]) === false)){
+                    setErrors({...errors,[field?.title?.split(" ").join("")]:"Invalid"})
+                } 
+            }*/ 
+        });
+
         if(validateExpSalary.test(formData.expSalary) === false){
             setErrors({...errors,expSalary:"Invalid Expected Salary"})
-        }
+            return;
 
-      /*   singleJob?.additional_fields?.forEach(field => {
-            if(field?.validation_regx.test(dErrors[field?.title?.split(" ").join("")]) === false)
-            
-        });
-         */
+        }
+         
        
         if(token){
             applyProcess(true);
@@ -133,7 +165,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
 
     const applyProcess = (initailValue=false) => {
-        console.log(text,'text.......');
         apply(token,{
             job_slug,
             expected_salary: formData.expSalary,
@@ -148,6 +179,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     }
 
     const salaryValidationColor = errors.expSalary ? '#FF5A5F' : Colors.borderColor;
+
+    // const dynamicValidation color = 
 
     // const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;
 
@@ -217,25 +250,57 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
 
                         {
-                            singleJob?.additional_fields?.map((field,index)=>(
+                            isLoading ?
+                            (<SkeletonPlaceholder speed={1000} direction={"right"} >
+                            <View style={{marginTop:16}}>
+                                <View style={{ marginLeft: 20 }}/>
+                                <View style={{ width: '50%', height: 20, borderRadius: 4 }} />
+                                <View
+                                    style={{ marginTop: 6,  width: '100%', height: 40, borderRadius: 4 }}
+                                />
+                            </View>
+                            <View style={{marginTop:16}}>
+                                <View style={{ marginLeft: 20 }}/>
+                                <View style={{  width: '50%', height: 20, borderRadius: 4 }} />
+                                <View
+                                    style={{ marginTop: 6,  width: '100%', height: 40, borderRadius: 4 }}
+                                />
+                            </View>
+                            </SkeletonPlaceholder>)
+                            :
+                          singleJob?.additional_fields?.map((field,index)=>(
                                 <View key={index}>
                                     <Text marginV-8 text>{`${field?.title} ${field?.required ? '*':''}`}</Text>
-                                    <View style={{...styles.textInputField,borderColor:Colors.borderColor}}>
+                                    <View style={{...styles.textInputField,borderColor:dErrors[field.title.split(" ").join('')] === true ? 'red' : Colors.borderColor}}>
                                         <TextInput
                                             autoComplete={"off"}
                                             autoCorrect={false}
                                             value={text[index]}
                                             onChangeText={(t) => {
                                                 setText((text) => {
-                                                    // console.log(text)
-                                                    const newText = [...text];
-                                                    newText[index] = t;
-                                                    return newText;
+                                                    // let regx = field?.validation_regx.split("/").join("\\/");
+                                                    // /regx/.test(t) === false ? 
+                                                    // (setDErrors({...dErrors,[field.title.split(" ").join('')]:true}))
+                                                    // :
+                                                    // (setDErrors({...dErrors,[field.title.split(" ").join('')]:false}))
+                                                    //const obj = {[field.title.split(" ").join('')]:...text}
+
+                                                    const newObj = [...text,]
+                                                    
+                                                    // const newText = [...text];
+                                                    // console.log(newText,"newText.....")
+                                                    // newText[index] = t;
+                                                    // return newText;
                                                 });
-                                               t.length === 0 ?  
+                                                field?.required && t.length === 0 ?  
                                                setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
                                                :
                                                setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
+
+                                              // console.log(field?.validation_regx,'fjdksjfdklfj');
+                                              
+                                            
+                                              
                                                
                                             }}
                                             style={{
@@ -244,6 +309,11 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                             }}
                                         />
                                     </View>
+                                   {/*  {field?.required  && (dErrors[index] === field.title.split(" ").join('')) ? (
+                                    <Text style={{color: 'red'}} marginV-4 text>{"Invalid"}</Text>
+                                    ) : (
+                                        <></>
+                                    )} */}
 
                                 </View>
                             ))
@@ -257,8 +327,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                     autoComplete={"off"}
                                     autoCorrect={false}
                                     //value={values.comments}
-                                  //  onChangeText={handleChange('comment')}
-                                   // onBlur={handleBlur('comment')}
+                                    //  onChangeText={handleChange('comment')}
+                                    // onBlur={handleBlur('comment')}
                                     // error={errors.comment}
                                     // touched={touched.comment}
                                     multiline={true}
