@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useEffect, useState } from 'react';
 import {
     ScrollView, StatusBar,
@@ -6,7 +7,7 @@ import {
     TextInput
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import Toast from 'react-native-toast-message';
 import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import BlueOutlineBtn from "../components/buttons/BlueOutlineBtn";
@@ -14,6 +15,7 @@ import FilledBtn from "../components/buttons/FilledBtn";
 import CommonHeader from "../components/CommonHeader";
 import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
+
 
 /* let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
 let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
@@ -62,6 +64,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
         comment:"",
     });
 
+    let textArr = [];
+
     // console.log(singleJob?.additional_fields,"my additional Field....");
 
     //const [isToken,setIsToken] = useState('');
@@ -92,25 +96,38 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     }
 
     const handleSubmit = () =>{
-        console.log('text.........', text)
-        console.log('dError',dErrors)
-       // console.log('errors', errors);
+        text.map(t => {
+           Object.keys(t).forEach(key => {
+             textArr.push(t[key]);
+          })}
+          )
 
-        singleJob?.additional_fields?.map((field,i )=> {
+          //console.log('text Arr..',textArr);
+   
+         // console.log('derrors',dErrors)
+
+         let updatedError = {...dErrors};
+        singleJob?.additional_fields?.forEach((field,i )=> {
             let regx = field?.validation_regx.split("/").join("\\/")
-            // console.log(regx,'regx.....');
-            if(field.required){
-                console.log(field.title.split(" ").join(''),i,'fieldname')
-                setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
-                if(/regx/.test(text[i]) == false){
+             //console.log(regx,'regx.....');
+             if(field?.required){
+                 updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
+                
+               // setDErrors({...dErrors, [field.title.split(" ").join('')]:true})
+               // console.log(dErrors,i,'d errors....')
+             }
+             setErrors({...updatedError})
+            //  console.log(updatedError,'dErrors...')
+            /*  if(field.required){
+               
+                
+                 if(/regx/.test(text[i].field.title.split(" ").join('')) == false){
                     console.log( text[i],'it is false at now...')
                     setDErrors({...dErrors,[field.title.split(" ").join('')]:true});
                 }else {
                     setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
-                }
-                
-               
-            }
+                } 
+             }  */
 
                /*  if(regx?.test(text[i]) === undefined){
                     if(regx?.test(text[i]) === false){
@@ -169,7 +186,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
             job_slug,
             expected_salary: formData.expSalary,
             additional_message: formData.comment,
-            additional_fields: text
+            additional_fields: textArr
         }, () => {
             navigation.navigate('Submission');
             clearErrorMsg();
@@ -251,22 +268,55 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
                         {
                             isLoading ?
-                            (<SkeletonPlaceholder speed={1000} direction={"right"} >
-                            <View style={{marginTop:16}}>
-                                <View style={{ marginLeft: 20 }}/>
-                                <View style={{ width: '50%', height: 20, borderRadius: 4 }} />
-                                <View
-                                    style={{ marginTop: 6,  width: '100%', height: 40, borderRadius: 4 }}
-                                />
-                            </View>
-                            <View style={{marginTop:16}}>
-                                <View style={{ marginLeft: 20 }}/>
-                                <View style={{  width: '50%', height: 20, borderRadius: 4 }} />
-                                <View
-                                    style={{ marginTop: 6,  width: '100%', height: 40, borderRadius: 4 }}
-                                />
-                            </View>
-                            </SkeletonPlaceholder>)
+                            (<View  style={{ marginTop:16}}>
+                                <ShimmerPlaceHolder
+                                LinearGradient={LinearGradient}
+                                height={20}
+                                isReversed={true}
+                                width={180}
+                                >
+                                </ShimmerPlaceHolder>
+                                <ShimmerPlaceHolder
+                                style={{marginTop:8}}
+                                LinearGradient={LinearGradient}
+                                height={40}
+                                isReversed={true}
+                                width={380}
+                                >
+                                </ShimmerPlaceHolder>
+                                <ShimmerPlaceHolder
+                                style={{ marginTop:16}}
+                                LinearGradient={LinearGradient}
+                                height={20}
+                                isReversed={true}
+                                width={180}
+                                >
+                                </ShimmerPlaceHolder>
+                                <ShimmerPlaceHolder
+                                style={{marginTop:8}}
+                                LinearGradient={LinearGradient}
+                                height={40}
+                                isReversed={true}
+                                width={380}
+                                >
+                                </ShimmerPlaceHolder>
+                                <ShimmerPlaceHolder
+                                style={{ marginTop:16}}
+                                LinearGradient={LinearGradient}
+                                height={20}
+                                isReversed={true}
+                                width={180}
+                                >
+                                </ShimmerPlaceHolder>
+                                <ShimmerPlaceHolder
+                                style={{marginTop:8}}
+                                LinearGradient={LinearGradient}
+                                height={40}
+                                isReversed={true}
+                                width={380}
+                                >
+                                </ShimmerPlaceHolder>
+                            </View>)
                             :
                           singleJob?.additional_fields?.map((field,index)=>(
                                 <View key={index}>
@@ -275,27 +325,36 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                         <TextInput
                                             autoComplete={"off"}
                                             autoCorrect={false}
-                                            value={text[index]}
+                                            //value={text[index]}
                                             onChangeText={(t) => {
+                                                
                                                 setText((text) => {
                                                     // let regx = field?.validation_regx.split("/").join("\\/");
                                                     // /regx/.test(t) === false ? 
                                                     // (setDErrors({...dErrors,[field.title.split(" ").join('')]:true}))
                                                     // :
                                                     // (setDErrors({...dErrors,[field.title.split(" ").join('')]:false}))
-                                                    //const obj = {[field.title.split(" ").join('')]:...text}
+                                                    //const obj = {[field.title.split(" ").join('')]:t}
+                                                   // console.log(obj,'obj...')
+                                                    // console.log(text,'text');
 
-                                                    const newObj = [...text,]
+                                                   // const newObj = [...text,obj];
+                                                    //console.log(newObj,'newObj...');
                                                     
-                                                    // const newText = [...text];
-                                                    // console.log(newText,"newText.....")
-                                                    // newText[index] = t;
-                                                    // return newText;
+                                                    //const newText = [...text,obj];
+                                                    const newText = [...text];
+                                                    newText[index] = {[field.title.split(" ").join('')]:t}
+                                                    return newText;
+                                                
+                                                    // newText[index] = obj;
+                                                     //console.log(newText,'newText.....')
+                                                   // return newText;
                                                 });
-                                                field?.required && t.length === 0 ?  
-                                               setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
-                                               :
-                                               setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
+                                                
+                                            //     field?.required && t.length === 0 ?  
+                                            //    setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                                            //    :
+                                            //    setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
 
                                               // console.log(field?.validation_regx,'fjdksjfdklfj');
                                               

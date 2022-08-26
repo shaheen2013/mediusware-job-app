@@ -4975,6 +4975,11 @@ expo-keep-awake@~10.0.2:
   resolved "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-10.0.2.tgz"
   integrity sha512-Ro1lgyKldbFs4mxhWM+goX9sg0S2SRR8FiJJeOvaRzf8xNhrZfWA00Zpr+/3ocCoWQ3eEL+X9UF4PXXHf0KoOg==
 
+expo-linear-gradient@~11.0.3:
+  version "11.0.3"
+  resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-11.0.3.tgz#bc559b9a251c9dc8aa37fb6c66c7a497fe92993c"
+  integrity sha512-LuzTM5+iEHCQfC2TBHAAI+ZjPvf0TvGiA7GYMsyTnakGA2r4JtsV8Ah/miQPKhfG06jLDOo4grUoSMGqbmSrEw==
+
 expo-manifests@~0.2.2:
   version "0.2.4"
   resolved "https://registry.npmjs.org/expo-manifests/-/expo-manifests-0.2.4.tgz"
@@ -9754,6 +9759,11 @@ react-native-select-multiple@^2.1.0:
   integrity sha512-sJepp/RNeLorR+/bEUVuWnVEX5klpyf0MHWKy0SN1MIty4vcKhL9ZhPM6Zydm5p6qHeFcvA7Q87FzO1JTdaqkw==
   dependencies:
     prop-types "^15.7.2"
+
+react-native-shimmer-placeholder@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-shimmer-placeholder/-/react-native-shimmer-placeholder-2.0.9.tgz#0096932289bd9ec5747cd4f1c9d15f91ba02157a"
+  integrity sha512-s2pfAAO6uaybREYM2KcaxP3c2XlZvLfHfzmhMlGEoOhSKaoM92KpA1Hx0BeC75yilkliJuowqO/hFzvLB0h7hg==
 
 react-native-skeleton-placeholder@^5.0.0:
   version "5.0.0"

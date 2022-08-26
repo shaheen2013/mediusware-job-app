@@ -1,7 +1,11 @@
 import { Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
-import { ActivityIndicator, Animated, Dimensions, FlatList, StatusBar, StyleSheet, Text } from 'react-native';
+import { Animated, Dimensions, FlatList, StatusBar, StyleSheet, Text } from 'react-native';
+
+import { LinearGradient } from 'expo-linear-gradient';
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
+
 import { Colors, TouchableOpacity, View } from 'react-native-ui-lib';
 import FilledBtn from "../components/buttons/FilledBtn";
 import JobDetailsHeader from "../components/JobDetailsComponents/JobDetailsHeader";
@@ -9,7 +13,6 @@ import JobDetailsInfo from "../components/JobDetailsComponents/JobDetailsInfo";
 import JobResponsibility from "../components/JobDetailsComponents/JobResponsibility";
 import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
-
 
 const screenWidth = Dimensions.get('window').width;
 function FocusAwareStatusBar(props) {
@@ -20,6 +23,7 @@ function FocusAwareStatusBar(props) {
 const hSecHeight = 270;
 const offsetY = 0;
 
+
 const JobDetails = ({route,navigation}) => {
     const {slug} = route.params;
     const [singleJob,isLoading] = useSingleJob(slug);
@@ -27,6 +31,7 @@ const JobDetails = ({route,navigation}) => {
     const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
     const animatedValue = new Animated.Value(0);
     const [header,setHeader] = useState(false);
+    
 
 
     if (!singleJob) {
@@ -67,9 +72,340 @@ const JobDetails = ({route,navigation}) => {
             <FocusAwareStatusBar barStyle={Colors.white} backgroundColor={Colors.blue}/>
             <JobDetailsHeader name={'Jobs Details'} navigation={navigation}/>
             {isLoading ?
-                (<View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <ActivityIndicator size={50} color="#0000ff" style={{height:80}}/>
-                </View>)
+                (<View  style={{marginLeft:16, marginTop:16,marginRight:16}}>
+                    <ShimmerPlaceHolder
+                    LinearGradient={LinearGradient}
+                    height={40}
+                    isReversed={true}
+                    width={380}
+                    >
+
+                    </ShimmerPlaceHolder>
+
+                        <ShimmerPlaceHolder
+                        style={{marginTop:10}}
+                        LinearGradient={LinearGradient}
+                        height={20}
+                        isReversed={true}
+                        width={260}
+                        >
+
+                       </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                        style={{marginTop:10}}
+                        LinearGradient={LinearGradient}
+                        height={20}
+                        isReversed={true}
+                        width={260}
+                        >
+
+                       </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                        style={{marginTop:10}}
+                        LinearGradient={LinearGradient}
+                        height={20}
+                        isReversed={true}
+                        width={100}
+                        >
+
+                       </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                        style={{marginTop:10}}
+                        LinearGradient={LinearGradient}
+                        height={20}
+                        isReversed={true}
+                        width={180}
+                        >
+
+                       </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                        style={{marginTop:10}}
+                        LinearGradient={LinearGradient}
+                        height={20}
+                        isReversed={true}
+                        width={300}
+                        >
+
+                       </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                        style={{marginTop:10}}
+                        LinearGradient={LinearGradient}
+                        height={20}
+                        isReversed={true}
+                        width={380}
+                        >
+
+                       </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                        style={{marginTop:50}}
+                        LinearGradient={LinearGradient}
+                        height={35}
+                        isReversed={true}
+                        width={200}
+                        >
+                      </ShimmerPlaceHolder>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                      <View style={{flexDirection:'row'}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10,borderRadius:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={20}
+                            >
+                        </ShimmerPlaceHolder>
+                      <View style={{marginLeft:10}}>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+                        <ShimmerPlaceHolder
+                            style={{marginTop:10}}
+                            LinearGradient={LinearGradient}
+                            height={20}
+                            isReversed={true}
+                            width={350}
+                            >
+                        </ShimmerPlaceHolder>
+
+                      </View>
+                      </View>
+                    
+                </View>
+                )
                 :
                     (
                         <View style={{flex:1}}>
