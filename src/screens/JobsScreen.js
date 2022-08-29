@@ -1,20 +1,20 @@
-import React, {useContext, useEffect, useState,useCallback} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {RefreshControl,FlatList, StatusBar, StyleSheet,Button} from 'react-native';
-import {Text, View, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import HeaderTitle from "../components/HeaderTitle";
-import SearchField from "../components/formComponents/SearchField";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import FilterBtn from "../components/buttons/FilterBtn";
+import SearchField from "../components/formComponents/SearchField";
+import HeaderTitle from "../components/HeaderTitle";
 import JobCard from "../components/JobCard";
+import { Context as AuthContext } from "../contexts/AuthContext";
+import { Context as UserContext } from "../contexts/UserContext";
 import useJobs from "../hooks/useJobs";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {Context as UserContext} from "../contexts/UserContext";
-import useCandidate from "../hooks/useCandidate";
-import {useIsFocused} from "@react-navigation/native";
 function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar {...props} /> : <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>;
 }
+
 
 
 const JobsScreen = ({navigation}) => {
@@ -26,13 +26,18 @@ const JobsScreen = ({navigation}) => {
     const [greetings,setGreetings] = useState('Good Morning');
     const [searchText,setSearchText] = useState("");
     const [jobList,setJobList] = useState([]);
+    const [state, setState] = useState({});
 
-
+   
     useEffect(()=>{
         setJobList(jobs);
     },[jobs.length])
+
     useEffect(()=>{
         tryLocalLogin().then(()=>getUser(token));
+        return () => {
+            setState({}); // This worked for me
+          };
     },[token])
 
     useEffect(()=>{

@@ -17,9 +17,11 @@ import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
 
 
-/* let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
+/* 
+let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
 let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
-let experience = /^[0-9][0-9]?$|^100$/; */
+let experience = /^[0-9][0-9]?$|^100$/; 
+*/
 let validateExpSalary = /^(?:[0-9][0-9]{0,6}(?:\.\d{1,2})?|100000|100000.00)$/;
 
 const toastConfig = {
@@ -67,8 +69,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     let textArr = [];
 
     // console.log(singleJob?.additional_fields,"my additional Field....");
-
     //const [isToken,setIsToken] = useState('');
+
     useEffect(()=>{
         // console.log("token hitted.......")
         if(token?.length > 0){
@@ -81,7 +83,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
     useEffect(()=>{
         singleJob?.additional_fields?.map(field=> setDErrors((prev)=> {
-           /*  if(field?.required === true){
+            /* if(field?.required === true){
                 return {...prev,[field?.title?.split(" ").join("")]: true}
             }  */ 
             return {...prev,[field?.title?.split(" ").join("")]: false}
@@ -95,12 +97,16 @@ const ApplicantInformationScreen = ({navigation, route}) => {
             setErrors({...errors,[value]:""})
     }
 
+    const goBack = () =>{
+        navigation.goBack();
+    }
+
     const handleSubmit = () =>{
-        text.map(t => {
+       /*  text.map(t => {
            Object.keys(t).forEach(key => {
              textArr.push(t[key]);
           })}
-          )
+          ) */
 
           //console.log('text Arr..',textArr);
    
@@ -108,15 +114,39 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
          let updatedError = {...dErrors};
         singleJob?.additional_fields?.forEach((field,i )=> {
-            let regx = field?.validation_regx.split("/").join("\\/")
-             //console.log(regx,'regx.....');
-             if(field?.required){
-                 updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
-                
-               // setDErrors({...dErrors, [field.title.split(" ").join('')]:true})
-               // console.log(dErrors,i,'d errors....')
-             }
-             setErrors({...updatedError})
+            let regx = field?.validation_regx.split("/").join("\\/");
+            
+            /* if(field?.required){
+                if(text[i]?.field?.title?.split(" ").join('')){
+                    if(/regx/.test(text[i][field.title.split(" ").join('')]) === false){
+                        updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
+                    }else {
+                        updatedError = {...updatedError,[field.title.split(" ").join('')]:false};
+                    }
+                }else{
+                    updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
+                } 
+             }else{
+                if(text[i]?.field?.title?.split(" ").join('')){
+                    if(/regx/.test(text[i][field.title.split(" ").join('')]) === false){
+                        updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
+                    }else {
+                        updatedError = {...updatedError,[field.title.split(" ").join('')]:false};
+                    }
+                }
+             } */
+             setDErrors({...updatedError})
+
+             
+             
+            //setErrors({...errors,[field?.title?.split(" ").join("")]:"Required"})
+            
+
+            console.log(errors, 'errors...')
+
+           // console.log(errors,'errors.....')
+            
+             
             //  console.log(updatedError,'dErrors...')
             /*  if(field.required){
                
@@ -144,6 +174,9 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                 } 
             }*/ 
         });
+        
+
+        //console.log(errors,'updated error...');
 
         if(validateExpSalary.test(formData.expSalary) === false){
             setErrors({...errors,expSalary:"Invalid Expected Salary"})
@@ -182,11 +215,12 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
 
     const applyProcess = (initailValue=false) => {
+        console.log(text,'text.....')
         apply(token,{
             job_slug,
             expected_salary: formData.expSalary,
             additional_message: formData.comment,
-            additional_fields: textArr
+            additional_fields: text
         }, () => {
             navigation.navigate('Submission');
             clearErrorMsg();
@@ -196,12 +230,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     }
 
     const salaryValidationColor = errors.expSalary ? '#FF5A5F' : Colors.borderColor;
-
-    // const dynamicValidation color = 
-
-    // const validationColor = !touched ? Colors.borderColor : errors?.expSalary ? '#FF5A5F' : Colors.borderColor;
-
-   
 
     useEffect(() => {
         showToast()
@@ -321,11 +349,11 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                           singleJob?.additional_fields?.map((field,index)=>(
                                 <View key={index}>
                                     <Text marginV-8 text>{`${field?.title} ${field?.required ? '*':''}`}</Text>
-                                    <View style={{...styles.textInputField,borderColor:dErrors[field.title.split(" ").join('')] === true ? 'red' : Colors.borderColor}}>
+                                    <View style={{...styles.textInputField,borderColor:dErrors[field.title.split(" ").join('')] === true?'red':Colors.borderColor}}>
                                         <TextInput
                                             autoComplete={"off"}
                                             autoCorrect={false}
-                                            //value={text[index]}
+
                                             onChangeText={(t) => {
                                                 
                                                 setText((text) => {
@@ -343,18 +371,28 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                                     
                                                     //const newText = [...text,obj];
                                                     const newText = [...text];
-                                                    newText[index] = {[field.title.split(" ").join('')]:t}
+                                                   // newText[index] = {[field.title.split(" ").join('')]:t}
+                                                    newText[index] = t;
                                                     return newText;
                                                 
                                                     // newText[index] = obj;
                                                      //console.log(newText,'newText.....')
                                                    // return newText;
                                                 });
+                                                console.log(t,'t');
+                                                const regex = field?.validation_regx.split("/").join("\\/");
+                                                // field?.required && t.length === 0 ?  
+                                                // setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                                                // :
+                                                //console.log(regex, t ,'T-Regex');
+                                              //  console.log(/field?.validation_regx/.test(t))
                                                 
-                                            //     field?.required && t.length === 0 ?  
-                                            //    setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
-                                            //    :
-                                            //    setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
+                                               // const regex = field?.validation_regx.split("/").join("\\/");
+
+                                               // /regex/.test(t) === true ? console.log(t,"false"):console.log(t,"true")
+                                                // setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                                                // :
+                                                // setDErrors({...dErrors,[field.title.split(" ").join('')]:false})
 
                                               // console.log(field?.validation_regx,'fjdksjfdklfj');
                                               
@@ -368,11 +406,11 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                             }}
                                         />
                                     </View>
-                                   {/*  {field?.required  && (dErrors[index] === field.title.split(" ").join('')) ? (
-                                    <Text style={{color: 'red'}} marginV-4 text>{"Invalid"}</Text>
+                                    {dErrors[field.title.split(" ").join('')] === true ? (
+                                    <Text style={{color: 'red'}} marginV-4 text>{`Invalid ${field.title}`}</Text>
                                     ) : (
                                         <></>
-                                    )} */}
+                                    )}
 
                                 </View>
                             ))
@@ -410,7 +448,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                     position='top'
                 />
                 <View row marginV-15>
-                    <TouchableOpacity flex-1 marginR-10 onPress={() => navigation.navigate('Apply',{title:title,job_slug:job_slug})}>
+                    <TouchableOpacity flex-1 marginR-10 onPress={goBack}>
                         <BlueOutlineBtn title={'Back'}/>
                     </TouchableOpacity>
                     <TouchableOpacity flex-1 disabled={loader} onPress={handleSubmit} >

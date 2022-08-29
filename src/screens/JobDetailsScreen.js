@@ -471,13 +471,13 @@ const JobDetails = ({route,navigation}) => {
                                         listener: (event) => {
                                              const offsetY = event.nativeEvent.contentOffset.y;
                                             if(offsetY >= 280){
-                                                console.log(offsetY,'offsety...')
+                                              //  console.log(offsetY,'offsety...')
                                                 // setHeader(true);
                                                 
                                             }else{
                                                // setHeader(false);
                                                
-                                                console.log(offsetY,'less than 135 offsety...')
+                                              //  console.log(offsetY,'less than 135 offsety...')
                                               
                                                 
                                             }
