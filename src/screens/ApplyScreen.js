@@ -92,20 +92,6 @@ const ApplyScreen = ({ navigation, route }) => {
       }
       console.log(formDataObj , 'formDataObj apply');
       navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug,registerData:formDataObj,loginData:{email:values.email, password:values.password}});
-     /* register(formDataObj, () => {
-       // navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug,registerData:formDataObj,loginData:{email:values.email, password:values.password}});
-        navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug});
-        login({ email:values.email, password:values.password });
-        clearErrorMsg();
-        setTotalFormDataObj(new FormData());
-        values.full_name = "";
-        values.email = "";
-        values.phone = "";
-        values.password = '';
-        values.rePassword= "";
-        values.file=null;
-        setCv({});
-      });*/
 
     }
   });
@@ -171,7 +157,7 @@ const ApplyScreen = ({ navigation, route }) => {
               <Text subtitle4 blue marginB-10>{title}</Text>
               <View>
                 <Text text gray marginB-20>If already have Mediusware job account then please <Text
-                    onPress={() => navigation.navigate('Login')} blue>Login</Text></Text>
+                    onPress={() => navigation.navigate('LoginStackNavigation',{screen:'Login'})} blue>Login</Text></Text>
               </View>
               <InputField
                   title={"Full Name*"}
