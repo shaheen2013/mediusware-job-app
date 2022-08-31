@@ -16,9 +16,7 @@ import CommonHeader from "../components/CommonHeader";
 import { Context as AuthContext } from "../contexts/AuthContext";
 import useSingleJob from "../hooks/useSingleJob";
 
-let validateLinkedin = /http(s)?:\/\/([\w]+\.)?linkedin\.com\/in\/[A-z0-9_-]+\/?/;
-let validateGithub = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim;
-let experience = /^[0-9][0-9]?$|^100$/;  
+ 
 let validateExpSalary = /^(?:[0-9][0-9]{0,6}(?:\.\d{1,2})?|100000|100000.00)$/;
 
 const toastConfig = {
@@ -50,8 +48,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     const {title, job_slug,registerData,loginData} = route.params;
     const [singleJob,isLoading] = useSingleJob(job_slug);
     const isIcon = false;
-    // const [expSalary,setExpSalary] = useState("");
-    // const [comment,setComment] = useState("");
     const [additionalFields,setAdditionalFields] = useState([singleJob?.additional_fields]);
     const [text, setText] = useState([]);
     const [textObj,setTextObj] = useState([]);
@@ -66,19 +62,11 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     });
     const [tempError,setTempError] = useState(false);
 
-    let textArr = [];
-
-    // console.log(singleJob?.additional_fields,"my additional Field....");
-    //const [isToken,setIsToken] = useState('');
-
     useEffect(()=>{
-        // console.log("token hitted.......")
         if(token?.length > 0){
             applyProcess();
         }
     },[token])
-
-    //console.log(dErrors,'drrors in console...')
 
 
     useEffect(()=>{
@@ -104,109 +92,29 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
     const handleSubmit = () =>{
         console.log(text,'text ...')
-       /*  text.map(t => {
-           Object.keys(t).forEach(key => {
-             textArr.push(t[key]);
-          })}
-          ) */
-
-          //console.log('text Arr..',textArr);
-   
-         // console.log('derrors',dErrors)
-
          let updatedError = {...dErrors};
         
         singleJob?.additional_fields?.forEach((field,i )=> {
-           // let regx = field?.validation_regx.split("/").join("\\/");
-            if(field?.required){
-                if(text.length){
-                    if(field.title.split(" ").join('') === 'GithubURL'){
-                        console.log(text[i],'inside github url')
-                        if(text[i] === undefined){
-                            console.log('undefined...')
-                            updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
-                            setTempError(true);
-                        }else{
-                            if(validateGithub.test(text[0]) === true){
-                                console.log('validdate github')
-                               updatedError = {...updatedError,[field.title.split(" ").join('')]:false};
-                               setTempError(false);
-                           }
-                          /*  else if(validateGithub.test(text[0]) === false) {
-                               console.log('invalid github')
-                               updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
-                               setTempError(false);
-                          } */
-                        }
-                            
-                       }
-                }else{
+            if(field?.required === true){
+                if(text.length === 0 || text[i] === undefined || text[i] === ''){
+                    console.log('undefined...')
                     updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
                     setTempError(true);
+                }     
+                            
+            }else if(field?.required === false){
+                if(text[i] === undefined){
+                    text[i] = "";
+                    updatedError = {...updatedError,[field.title.split(" ").join('')]:false};
+                    setTempError(false);
                 }
+                    
+            }
                
-                setDErrors({...updatedError}) 
-
-            }  
-               
-            
-            /* if(field?.required){
-                if(text[i]?.field?.title?.split(" ").join('')){
-                    if(/regx/.test(text[i][field.title.split(" ").join('')]) === false){
-                        updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
-                    }else {
-                        updatedError = {...updatedError,[field.title.split(" ").join('')]:false};
-                    }
-                }else{
-                    updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
-                } 
-             }else{
-                if(text[i]?.field?.title?.split(" ").join('')){
-                    if(/regx/.test(text[i][field.title.split(" ").join('')]) === false){
-                        updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
-                    }else {
-                        updatedError = {...updatedError,[field.title.split(" ").join('')]:false};
-                    }
-                }
-             } */
-            //  setDErrors({...updatedError})
-
-             
-             
-            //setErrors({...errors,[field?.title?.split(" ").join("")]:"Required"})
-            
+            setDErrors({...updatedError}) 
 
             console.log(errors, 'errors...')
-
-           // console.log(errors,'errors.....')
-            
-             
-            //  console.log(updatedError,'dErrors...')
-            /*  if(field.required){
-               
-                
-                 if(/regx/.test(text[i].field.title.split(" ").join('')) == false){
-                    console.log( text[i],'it is false at now...')
-                    setDErrors({...dErrors,[field.title.split(" ").join('')]:true});
-                }else {
-                    setDErrors({...dErrors,[field.title.split(" ").join('')]:false});
-                } 
-             }  */
-
-               /*  if(regx?.test(text[i]) === undefined){
-                    if(regx?.test(text[i]) === false){
-                        console.log("error....")
-                    }
-                    console.log('undefined error...')
-                } */
-                
-               /*  if(text[i] === undefined){
-                    setErrors({...errors,[field?.title?.split(" ").join("")]:"Required"})
-                }
-                else if((regx?.test(text[i]) === false)){
-                    setErrors({...errors,[field?.title?.split(" ").join("")]:"Invalid"})
-                } 
-            }*/ 
+ 
         });
         console.log('derrors.....',dErrors);
         
@@ -225,10 +133,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
         }
 
-       
-
-
-         
         if(token && tempError == false){
             applyProcess(true);
         }else{
@@ -242,20 +146,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     }
 
 
-   
-
-   /* apply(isToken,{
-        job_slug,
-        expected_salary: values.expSalary,
-        additional_message: values.comment,
-        additional_fields: text
-    }, () => {
-        navigation.navigate('Submission');
-        clearErrorMsg();
-        values.expSalary = "";
-        values.comment = "";
-    });*/
-
 
 
     const applyProcess = (initailValue=false) => {
@@ -266,7 +156,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
             additional_message: formData.comment,
             additional_fields: text
         }, () => {
-            navigation.navigate('Submission');
+            navigation.navigate('Submission',{title:title, job_slug:job_slug});
             clearErrorMsg();
             formData.expSalary = "";
             formData.comment = "";
@@ -316,13 +206,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                         autoCorrect={false}
                                         autoComplete={"off"}
                                         value={formData.expSalary}
-                                        //onChangeText={(text) => setFormData({...formData,expSalary:text})} 
                                          onChangeText={(text)=>handleChange('expSalary',text)}
-                                        // onBlur={handleBlur('expSalary')}
-                                        // error={errors.expSalary}
-                                        // touched={touched.expSalary}
-                                        /*value={expSalary}
-                                        onChangeText={setExpSalary}*/
                                         style={{
                                             fontFamily: "Montserrat_400Regular",
                                         }}
@@ -401,39 +285,38 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                             onChangeText={(t) => {
                                                 
                                                 setText((text) => {
-                                                    // let regx = field?.validation_regx.split("/").join("\\/");
-                                                    // /regx/.test(t) === false ? 
-                                                    // (setDErrors({...dErrors,[field.title.split(" ").join('')]:true}))
-                                                    // :
-                                                    // (setDErrors({...dErrors,[field.title.split(" ").join('')]:false}))
-                                                    //const obj = {[field.title.split(" ").join('')]:t}
-                                                   // console.log(obj,'obj...')
-                                                    // console.log(text,'text');
-
-                                                   // const newObj = [...text,obj];
-                                                    //console.log(newObj,'newObj...');
-                                                    
-                                                    //const newText = [...text,obj];
                                                     const newText = [...text];
-                                                   // const newTextObj = [...textObj];
                                                     textObj[index] = {[field.title.split(" ").join('')]:t}
                                                     newText[index] = t;
                                                     return newText;
-                                                
-                                                    // newText[index] = obj;
-                                                     //console.log(newText,'newText.....')
-                                                   // return newText;
                                                 });
-                                            t !== '' && setDErrors({...dErrors,[field.title.split(" ").join('')]:false})
-                                            !field?.required && t === '' && setDErrors({...dErrors,[field.title.split(" ").join('')]:false})
-                                            field.title.split(" ").join('') === 'GithubURL' && 
-                                            (validateGithub.test(t) === false) && setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
-                                            field.title.split(" ").join('') === 'Linkedin' && 
-                                            (validateLinkedin.test(t) === false) && setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
-                                             field.title.split(" ").join('') === 'ProfessionalExperience(Years)' && 
-                                            (experience.test(t) === false) && setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
 
-                                            
+                                               let regxE = new RegExp(field?.validation_regx, "i");
+                                               console.log(regxE,'regx...')
+                                               if(regxE.test(t) === true){
+                                                        setDErrors({...dErrors,[field.title.split(" ").join('')]:false})
+                                                        setTempError(false);
+                                               }else if(regxE.test(t) === false){
+                                                    setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                                                    setTempError(true);         
+                                                }
+
+                                                console.log('text',text)
+
+                                                if(field.required === true){
+                                                    if(t === ""){
+                                                        setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
+                                                        setTempError(true);
+                                                    }
+                                                }
+
+                                                if(field.required === false){
+                                                    if(t === ""){
+                                                        setDErrors({...dErrors,[field.title.split(" ").join('')]:false})
+                                                        setTempError(false);
+                                                    }
+                                                }
+
                                             }}
                                             style={{
                                                 flex: 1,
@@ -442,12 +325,12 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                         />
                                     </View>
                                     {dErrors[field.title.split(" ").join('')] === true ? 
-                                    (text.length && text[index] !== '' ) ?
+                                    (text[index] !== undefined ) ?
                                     (
                                      <Text style={{color: 'red'}} marginV-4 text>{`Invalid ${field.title}`}</Text>
-                                    ):
+                                    ): 
                                     (
-                                     <Text style={{color: 'red'}} marginV-4 text>{`Required ${field.title}`}</Text>
+                                     <Text style={{color: 'red'}} marginV-4 text>{`Requried ${field.title}`}</Text>
                                     ): (
                                         <></>
                                     )}
@@ -463,16 +346,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                     keyboardType="email-address"
                                     autoComplete={"off"}
                                     autoCorrect={false}
-                                    //value={values.comments}
-                                    //  onChangeText={handleChange('comment')}
-                                    // onBlur={handleBlur('comment')}
-                                    // error={errors.comment}
-                                    // touched={touched.comment}
                                     multiline={true}
                                     numberOfLines={10}
-                                    // onSubmitEditing={() => handleSubmit()}
-                                   // value={comment}
-                                   // onChangeText={setComment}
                                     style={{
                                         textAlignVertical: 'top',
                                         fontFamily: 'Montserrat_400Regular'

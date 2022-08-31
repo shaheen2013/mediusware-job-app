@@ -28,8 +28,9 @@ const ApplyScreen = ({ navigation, route }) => {
   const phone = useRef(null);
 
   let phoneRegExp = /^[0-9]{10}$/;
+  let nameRegExp = /^[a-zA-Z\s\.]+$/g;
   const registrationSchema = Yup.object().shape({
-    full_name:Yup.string().required('Required'),
+    full_name:Yup.string().matches(nameRegExp, 'Name is not valid').required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
     password: Yup.string()

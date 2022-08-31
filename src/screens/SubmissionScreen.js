@@ -1,28 +1,13 @@
-import React,{useEffect} from 'react';
-import {Colors, Image, Text, TouchableOpacity, View} from 'react-native-ui-lib';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import CommonHeader from "../components/CommonHeader";
-import {StatusBar} from "react-native";
+import React from 'react';
+import { StatusBar } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import FilledBtn from "../components/buttons/FilledBtn";
+import CommonHeader from "../components/CommonHeader";
 
 
 const SubmissionScreen = ({navigation,route}) => {
-   /* useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            SweetAlert.showAlertWithOptions({
-                title: '',
-                subTitle: '',
-                confirmButtonTitle: 'OK',
-                confirmButtonColor: '#000',
-                otherButtonTitle: 'Cancel',
-                otherButtonColor: '#dedede',
-                style: 'success',
-                cancellable: true
-            })
-        });
-
-        return unsubscribe;
-    }, [navigation]);*/
+    const {title, job_slug} = route.params;
     return (
         <SafeAreaView style={{flex:1}}>
                 <View flex-1>
@@ -33,7 +18,7 @@ const SubmissionScreen = ({navigation,route}) => {
                     <View style={{alignItems:'center'}} flex-8>
                         <Image source={require("../../assets/images/success.png")} />
                         <Text h4 blue marginT-20 marginB-10>Successful</Text>
-                        <Text gray text style={{textAlign:'center'}}>Your job application for UX UI Designer at Mediusware has successfully completed.
+                        <Text gray text style={{textAlign:'center'}}>Your job application for {title} at Mediusware has successfully completed.
                             After initial screening process we will get back to you. </Text>
                     </View>
                     <View flex-1>
