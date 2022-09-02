@@ -1,23 +1,21 @@
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Typography, Colors, Spacings} from 'react-native-ui-lib';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Colors, Spacings, Typography } from 'react-native-ui-lib';
 
 import {
-    useFonts,
     Montserrat_200ExtraLight,
     Montserrat_300Light,
     Montserrat_400Regular,
     Montserrat_500Medium,
     Montserrat_600SemiBold,
     Montserrat_700Bold,
-    Montserrat_800ExtraBold,
+    Montserrat_800ExtraBold, useFonts
 } from '@expo-google-fonts/montserrat';
+import { Provider as AssessmentProvider } from './src/contexts/AssessmentContext';
+import { Provider as AuthProvider } from './src/contexts/AuthContext';
+import { Provider as UserProvider } from './src/contexts/UserContext';
 import DrawerNavigation from "./src/navigations/DrawerNavigation";
-import {Provider as AuthProvider} from './src/contexts/AuthContext';
-import {Provider as UserProvider} from './src/contexts/UserContext';
-import {Provider as AssessmentProvider} from './src/contexts/AssessmentContext';
-
 
 const navTheme = {
     ...DefaultTheme, colors: {
