@@ -1,7 +1,14 @@
+import {
+    Montserrat_200ExtraLight, Montserrat_300Light, Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
+    Montserrat_800ExtraBold,
+    useFonts
+} from "@expo-google-fonts/montserrat";
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Colors, Spacings, Typography } from 'react-native-ui-lib';
 import { Provider as AssessmentProvider } from './src/contexts/AssessmentContext';
@@ -57,8 +64,6 @@ Spacings.loadSpacings({});
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-   // const [appIsReady, setAppIsReady] = useState(false);
-
     let [fontsLoaded] =  useFonts({
         Montserrat_300Light,
         Montserrat_200ExtraLight,
@@ -68,63 +73,16 @@ export default function App() {
         Montserrat_700Bold,
         Montserrat_800ExtraBold,
     });
-
-    // useEffect(() => {
-    //     async function prepare() {
-    //       try {
-    //         /* await Font.useFonts({
-    //             Montserrat_300Light,
-    //             Montserrat_200ExtraLight,
-    //             Montserrat_400Regular,
-    //             Montserrat_500Medium,
-    //             Montserrat_600SemiBold,
-    //             Montserrat_700Bold,
-    //             Montserrat_800ExtraBold,
-    //         }); */
-    //         // Pre-load fonts, make any API calls you need to do here
-    //          await Font.loadAsync(fontsLoaded);
-    //         // Artificially delay for two seconds to simulate a slow loading
-    //         // experience. Please remove this if you copy and paste the code!
-    //         await new Promise(resolve => setTimeout(resolve, 2000));
-    //       } catch (e) {
-    //         console.warn(e);
-    //       } finally {
-    //         // Tell the application to render
-    //         setAppIsReady(true);
-    //       }
-    //     }
-    //     prepare();
-    //   }, []);
-
-      const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded) {
-          await SplashScreen.hideAsync();
-        }
-      }, [fontsLoaded]);
-    
-      if (!fontsLoaded) {
-        return null;
-      }
-      
-
-    /* let [fontsLoaded] = useFonts({
-        Montserrat_300Light,
-        Montserrat_200ExtraLight,
-        Montserrat_400Regular,
-        Montserrat_500Medium,
-        Montserrat_600SemiBold,
-        Montserrat_700Bold,
-        Montserrat_800ExtraBold,
-    });
     if (!fontsLoaded) {
-        return <AppLoading/>;
-    } else { */
+         SplashScreen.hideAsync();
+        return null;
+    } else { 
         return (
             <AuthProvider>
                 <UserProvider>
                     <AssessmentProvider>
                         <SafeAreaProvider>
-                            <NavigationContainer theme={navTheme} onLayout={onLayoutRootView}>
+                            <NavigationContainer theme={navTheme}>
                                 <DrawerNavigation/>
                             </NavigationContainer>
                         </SafeAreaProvider>
@@ -132,6 +90,6 @@ export default function App() {
                 </UserProvider>
             </AuthProvider>
         );
-   // }
+    }
 
 }

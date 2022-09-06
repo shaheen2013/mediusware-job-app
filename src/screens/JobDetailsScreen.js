@@ -422,9 +422,9 @@ const JobDetails = ({route,navigation}) => {
                                         <JobDetailsInfo icon={"users"} title={"Experience:"}
                                                             text={singleJob?.job_summery?.experience}
                                                             IconLib={Feather}/>
-                                        <JobDetailsInfo icon={"currency-usd-circle-outline"} title={"Salary:"}
+                                        <JobDetailsInfo icon={"currency-usd"} title={"Salary:"}
                                                     text={singleJob?.job_summery?.salary_range}
-                                                    IconLib={MaterialCommunityIcons}/>
+                                                    />
                                     </View>
                         
                                    <Animated.View style={[styles.headerWrapper, {transform: [{translateY}]}]}>
@@ -445,9 +445,9 @@ const JobDetails = ({route,navigation}) => {
                                                             text={singleJob?.job_summery?.experience}
                                                             IconLib={Feather}/>
                                         </View>
-                                        <JobDetailsInfo icon={"currency-usd-circle-outline"} title={"Salary:"}
+                                        <JobDetailsInfo icon={"currency-usd"} title={"Salary:"}
                                                     text={singleJob?.job_summery?.salary_range}
-                                                    IconLib={MaterialCommunityIcons}/>
+                                                    />
                                         <JobDetailsInfo icon={"location-pin"} title={"Location:"}
                                                 text={"Ring Road, Mohammadpur, House 18/5, Floor 2nd, Dhaka, 1207"}
                                                 IconLib={SimpleLineIcons}/>
@@ -471,18 +471,10 @@ const JobDetails = ({route,navigation}) => {
                                         listener: (event) => {
                                              const offsetY = event.nativeEvent.contentOffset.y;
                                             if(offsetY >= 280){
-                                              //  console.log(offsetY,'offsety...')
-                                                // setHeader(true);
-                                                
                                             }else{
-                                               // setHeader(false);
                                                
-                                              //  console.log(offsetY,'less than 135 offsety...')
-                                              
-                                                
                                             }
-                                             
-                                            // do something special
+
                                         },
                                     },
                                    
