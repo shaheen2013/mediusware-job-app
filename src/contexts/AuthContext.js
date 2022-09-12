@@ -59,7 +59,6 @@ const register = dispatch => async (formDataObj,callback) => {
       }
        // dispatch({type:'clear_loader'});
     } catch (err) {
-        console.log(err.response.data);
       let emailError = (err.response.data?.email !== undefined);
       let phoneError = (err.response.data?.phone !== undefined);
       emailError && (emailError = "Candidate with this email already exists!");
@@ -73,16 +72,13 @@ const login = (dispatch) => async ({ email, password },callback) => {
     dispatch({type:'set_loader'});
     try {
       const response = await mediusware.post("/login/", { email, password });
-      console.log(response.data , 'login response');
         tokenValue = response.data._token;
         await AsyncStorage.setItem("token", tokenValue);
         dispatch({type:'login',payload:tokenValue});
         if(callback){
             callback();
         }
-        //dispatch({type:'clear_loader'});
     } catch (err) {
-        console.log("login error: ",err.response.data?.detail);
         dispatch({ type: "add_error", payload: {error:err.response.data?.detail} });
         dispatch({type:'clear_loader'});
     }
@@ -107,9 +103,8 @@ const apply = (dispatch) => async (token,obj,callback,initialHit= false) => {
         callback();
       }
       dispatch({type:'clear_loader'});
-        console.log('RESPONSE',response.data);
     } catch (err) {
-        console.log(err.response.data,'response error');
+        console.log(err.response.data.message);
         dispatch({ type: "add_error", payload: {message:err.response.data?.message} });
         dispatch({type:'clear_loader'});
     }

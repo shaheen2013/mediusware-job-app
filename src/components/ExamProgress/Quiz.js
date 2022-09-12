@@ -17,39 +17,27 @@ const Quiz = ({navigation, route,title,answers,answer1,answer2,answer3,answer4,s
     }
 
     useEffect(()=>{
-       // setSelectedAnswers(selection);
        setValue({value1:false,value2:false,value3:false,value4:false});
     },[title])
-
-    // const onSelectionsChange = (selectedAnswer) => {
-    //     setSelectedAnswers({ selectedAnswer})
-    // }
 
     useEffect(()=>{
 
     },[value])
 
 const isChecked = (val,id,valueName) =>{
-        console.log(valueName);
-    // console.log('id',id, value, "value")
 
     const newValue = {...value};
     newValue[valueName] = val;
     setValue(newValue)
-    console.log(newValue);
     const idExists = selectedAnswers.find(indexId => indexId === id);
     if(val === true){
-        console.log(idExists);
-        console.log(selectedAnswers);
         if(!idExists){
             setSelectedAnswers([...selectedAnswers,id])
-            console.log(selectedAnswers);
         }
     }
     if(val === false){
         if(idExists){
             setSelectedAnswers(selectedAnswers.filter(el=> el !== id));
-            console.log(selectedAnswers);
         }
     }
 

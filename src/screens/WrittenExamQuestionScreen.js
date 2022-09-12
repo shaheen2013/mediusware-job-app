@@ -1,19 +1,15 @@
-import React, {useContext, useEffect,useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import CommonHeader from "../components/CommonHeader";
-import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar, ScrollView, TextInput, StyleSheet} from "react-native";
-import Point from "../components/ExamProgress/Point";
-import ExamCard from "../components/ExamProgress/ExamCard";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {Context as AssessmentContext} from "../contexts/AssessmentContext";
-import HTMLView from 'react-native-htmlview';
-import InputField from "../components/formComponents/InputField";
-import {useFormik} from 'formik';
+import { Ionicons } from "@expo/vector-icons";
+import { useFormik } from 'formik';
+import React, { useContext, useEffect, useState } from 'react';
+import { ScrollView, StatusBar, StyleSheet, TextInput } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
-import Toast from 'react-native-toast-message';
-import {Ionicons} from "@expo/vector-icons";
+import FilledBtn from "../components/buttons/FilledBtn";
+import CommonHeader from "../components/CommonHeader";
+import InputField from "../components/formComponents/InputField";
+import { Context as AssessmentContext } from "../contexts/AssessmentContext";
+import { Context as AuthContext } from "../contexts/AuthContext";
 
 let validateGithub = /^([A-Za-z0-9]+@|http(|s)\:\/\/)([A-Za-z0-9.]+(:\d+)?)(?::|\/)([\d\/\w.-]+?)(\.git)?$/i;
 
@@ -46,8 +42,6 @@ const WrittenExamQuestionScreen = ({navigation, route}) => {
     const [selectedAnswers,setSelectedAnswers] = useState([]);
     const [selection,setSelection] = useState(null);
     const {state:{assessment,quiz},getAssessment,getQuizQuestion,startExam,clearErrorMsg,savedAnswer,savedEvaluation} = useContext(AssessmentContext);
-    console.log(quiz?.quiz);
-
     useEffect(()=>{
         getAssessment(token,id);
     },[token])
@@ -55,7 +49,6 @@ const WrittenExamQuestionScreen = ({navigation, route}) => {
     const submitAnswer = () =>{
         savedAnswer({uuid:id,question_id:quiz?.quiz?.id,answers:selectedAnswers},token,()=>{
             setSelectedAnswers([]);
-            //navigation.navigate('Result',{assessment:assessment});
             clearErrorMsg();
         })
     }
@@ -78,8 +71,6 @@ const WrittenExamQuestionScreen = ({navigation, route}) => {
         initialValues: {gitUrl: '',feedback: ''},
         onSubmit: (values) => {
             savedEvaluation({assessment_uuid:id,evaluation_url:values.gitUrl,candidate_feedback:values.feedback},()=>{
-               // setSelectedAnswers([]);
-                //navigation.navigate('Result',{assessment:assessment});
                 clearErrorMsg();
             })
         }
@@ -93,11 +84,6 @@ const WrittenExamQuestionScreen = ({navigation, route}) => {
             <StatusBar backgroundColor={Colors.white} barStyle='dark-content'/>
             <View paddingH-16 marginT-20 style={{flex:1}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <HTMLView
-                        value={quiz?.quiz?.title}
-                        // style={styles}
-                    />
-
                     <Text marginT-20 marginB-10 subtitle1 deepGray>Submit Your Answer</Text>
                     <InputField
                         title={"Your Github url*"}

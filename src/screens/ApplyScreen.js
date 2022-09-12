@@ -14,8 +14,7 @@ import { Context as AuthContext } from "../contexts/AuthContext";
 
 const ApplyScreen = ({ navigation, route }) => {
   const { state, register, login, apply, clearErrorMsg } =
-    useContext(AuthContext);
-  console.log("Apply: ",state.errorMessage);
+  useContext(AuthContext);
   const { title, job_slug } = route.params;
   const isIcon = false;
   const [cv, setCv] = useState({});
@@ -76,7 +75,6 @@ const ApplyScreen = ({ navigation, route }) => {
     initialValues: {full_name:'', email: '',phone:'', password: '',rePassword:'',file:null},
     onSubmit: (values) =>{
       formDataObj = totalFormDataObj;
-      console.log("file:",values.file);
       let formData = {
         full_name:values.full_name,
         phone:values.phone,
@@ -91,7 +89,6 @@ const ApplyScreen = ({ navigation, route }) => {
                 : formData[key]
         );
       }
-      console.log(formDataObj , 'formDataObj apply');
       navigation.navigate('ApplicantInformation',{title:title,job_slug:job_slug,registerData:formDataObj,loginData:{email:values.email, password:values.password}});
 
     }

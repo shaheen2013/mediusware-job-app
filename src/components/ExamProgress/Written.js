@@ -6,9 +6,9 @@ import AlertOutlineBtn from "../buttons/AlertOutlineBtn";
 import {Context as AssessmentContext} from "../../contexts/AssessmentContext";
 const Written = ({navigation,title,time,score,id}) => {
     const {state:{assessment,errorMsg}} = useContext(AssessmentContext);
-    const goNextPage = () =>{
+   /*  const goNextPage = () =>{
         navigation.navigate('ExamStackNavigation',{screen:'WrittenExam',params:{id:id}})
-    }
+    } */
     return (
         <View marginT-10>
             <Point title={"Exam Title"} text={`${title}- Written`}/>
@@ -24,7 +24,7 @@ const Written = ({navigation,title,time,score,id}) => {
 
             }
             <View marginT-40>
-                <TouchableOpacity onPress={goNextPage}>
+                <TouchableOpacity>
                     <FilledBtn title={"Go to Exam"}/>
                 </TouchableOpacity>
                 <AlertOutlineBtn title={"Exam instruction"}/>

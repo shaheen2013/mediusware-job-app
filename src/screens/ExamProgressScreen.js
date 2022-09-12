@@ -1,26 +1,19 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {ScrollView, StatusBar} from 'react-native';
-import CommonHeader from "../components/CommonHeader";
+import React, { useContext, useState } from 'react';
+import { StatusBar } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
-    Colors,
-    TouchableOpacity,
-    View,
-    Wizard,
-    Text,
-    RadioGroup,
-    RadioButton,
-    TextField,
-    ThemeManager
+    Colors, Text, ThemeManager, View,
+    Wizard
 } from "react-native-ui-lib";
-import {SafeAreaView} from "react-native-safe-area-context";
-import Pending from "../components/ExamProgress/Pending";
+import CommonHeader from "../components/CommonHeader";
 import Mcq from "../components/ExamProgress/Mcq";
-import Written from "../components/ExamProgress/Written";
-import Viva from "../components/ExamProgress/Viva";
+import Pending from "../components/ExamProgress/Pending";
 import Result from "../components/ExamProgress/Result";
-import {Context as UserContext} from "../contexts/UserContext";
+import Viva from "../components/ExamProgress/Viva";
+import Written from "../components/ExamProgress/Written";
+import { Context as AssessmentContext } from "../contexts/AssessmentContext";
+import { Context as UserContext } from "../contexts/UserContext";
 import useApply from "../hooks/useApply";
-import {Context as AssessmentContext} from "../contexts/AssessmentContext";
 
 
 const ExamProgress = ({route, navigation}) => {
@@ -91,9 +84,15 @@ const ExamProgress = ({route, navigation}) => {
                     id={singleApply?.candidate_assessment && singleApply?.candidate_assessment[1]?.unique_id}
                 />;
             case 3:
-                return <Viva navigation={navigation} title={apply?.job?.title}/>;
+                 return <Viva 
+                navigation={navigation} title={apply?.job?.title}
+
+                />;
             case 4:
-                return <Result  navigation={navigation} title={apply?.job?.title}/>;
+                return <Result  
+                navigation={navigation} title={apply?.job?.title}
+
+                />;
         }
     };
 

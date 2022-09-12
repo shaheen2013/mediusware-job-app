@@ -50,7 +50,6 @@ const updateUser = dispatch => async (formDataObj,token,callback) => {
                 "Content-Type": "multipart/form-data",
             }
         });
-        console.log(response.data);
         dispatch({ type: "editUser", payload: {user:response.data}});
         dispatch({type:'set_success'})
         if(callback){
@@ -59,7 +58,6 @@ const updateUser = dispatch => async (formDataObj,token,callback) => {
         dispatch({type:'clear_loader'});
         dispatch({type:'clear_error_msg'});
     } catch (err) {
-        console.log("context error for update: ",err?.response?.data);
         dispatch({type:'clear_success'});
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.current_password}});
         dispatch({type:'clear_loader'});
@@ -74,7 +72,6 @@ const getUser = dispatch => async (token, callback) => {
             }
         });
         dispatch({ type: "editUser", payload: {user:response.data}});
-        console.log("response data: ",response.data);
         if(callback){
             callback();
         }

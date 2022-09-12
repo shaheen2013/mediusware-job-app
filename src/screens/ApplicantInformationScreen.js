@@ -71,10 +71,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
     useEffect(()=>{
         singleJob?.additional_fields?.map(field=> setDErrors((prev)=> {
-            console.log(field,'filed....')
-            /* if(field?.required === true){
-                return {...prev,[field?.title?.split(" ").join("")]: true}
-            }  */ 
             return {...prev,[field?.title?.split(" ").join("")]: false}
             
         }));
@@ -91,13 +87,11 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     }
 
     const handleSubmit = () =>{
-        console.log(text,'text ...')
          let updatedError = {...dErrors};
         
         singleJob?.additional_fields?.forEach((field,i )=> {
             if(field?.required === true){
                 if(text.length === 0 || text[i] === undefined || text[i] === ''){
-                    console.log('undefined...')
                     updatedError = {...updatedError,[field.title.split(" ").join('')]:true};
                     setTempError(true);
                 }     
@@ -113,15 +107,12 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                
             setDErrors({...updatedError}) 
 
-            console.log(errors, 'errors...')
  
         });
-        console.log('derrors.....',dErrors);
         
         if(tempError === true){
             return;
         }
-        //console.log(errors,'updated error...');
         if(formData.expSalary === ""){
             setErrors({...errors,expSalary:"Required Expected Salary"})
             return
@@ -149,7 +140,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
 
 
     const applyProcess = (initailValue=false) => {
-        console.log(text,'text.....')
         apply(token,{
             job_slug,
             expected_salary: formData.expSalary,
@@ -292,7 +282,7 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                                 });
 
                                                let regxE = new RegExp(field?.validation_regx, "i");
-                                               console.log(regxE,'regx...')
+
                                                if(regxE.test(t) === true){
                                                         setDErrors({...dErrors,[field.title.split(" ").join('')]:false})
                                                         setTempError(false);
@@ -300,9 +290,6 @@ const ApplicantInformationScreen = ({navigation, route}) => {
                                                     setDErrors({...dErrors,[field.title.split(" ").join('')]:true})
                                                     setTempError(true);         
                                                 }
-
-                                                console.log('text',text)
-
                                                 if(field.required === true){
                                                     if(t === ""){
                                                         setDErrors({...dErrors,[field.title.split(" ").join('')]:true})

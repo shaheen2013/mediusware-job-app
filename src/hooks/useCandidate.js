@@ -12,10 +12,7 @@ const useCandidate = () => {
     }
         const showUser = async () => {
             setRefreshing(true)
-                console.log('on refresh');
-
             try {
-                console.log('refreshing',refreshing);
                 const response = await mediusware.get('/candidate/', {
                     headers: {
                         Authorization: `Bearer ${state.token}`
@@ -28,15 +25,12 @@ const useCandidate = () => {
                setRefreshing(false);
             }
         }
-    // },[refreshing])
-
 
     useEffect(()=>{
         tryLocalLogin().then()
     },[state.token])
 
     return [user,onRefresh,refreshing]
-    // return [user,refreshing,onRefresh]
 };
 
 export default useCandidate;

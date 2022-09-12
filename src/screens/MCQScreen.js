@@ -1,17 +1,15 @@
-import React, {useContext, useEffect} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import CommonHeader from "../components/CommonHeader";
-import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar, ScrollView, StyleSheet, ActivityIndicator} from "react-native";
-import Point from "../components/ExamProgress/Point";
-import ExamCard from "../components/ExamProgress/ExamCard";
-import useApply from "../hooks/useApply";
-import HTMLView from 'react-native-htmlview';
-import {Context as AssessmentContext} from "../contexts/AssessmentContext";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {AntDesign, Ionicons} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useContext, useEffect } from 'react';
+import { ActivityIndicator, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from "react-native-toast-message";
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { WebView } from 'react-native-webview';
+import FilledBtn from "../components/buttons/FilledBtn";
+import CommonHeader from "../components/CommonHeader";
+import ExamCard from "../components/ExamProgress/ExamCard";
+import { Context as AssessmentContext } from "../contexts/AssessmentContext";
+import { Context as AuthContext } from "../contexts/AuthContext";
 const toastConfig = {
     tomatoToast: ({ text1, props }) => (
         <View
@@ -35,20 +33,36 @@ const toastConfig = {
     )
 };
 
+const scalesPageToFit = Platform.OS === 'android';
+
+ const htmlContent = `<div>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+            <h1>This is for testing html view for checking how it works on app store console...</h1>
+    </div>`;
+ 
 
 const MCQScreen = ({navigation, route}) => {
     const {state:{token}} = useContext(AuthContext);
     const {id} = route.params;
-    //console.log("Quiz is in mcq screen, ",id);
-    //console.log(token);
+
     const {state:{assessment,errorMsg}, clearErrorMsg,getAssessment,getQuizQuestion,startExam,startReExam} = useContext(AssessmentContext);
     useEffect(()=>{
         getAssessment(token,id);
     },[token])
-
- /*   useEffect(()=>{
-        startingExamination();
-    },[assessment?.assessment?.exam_started_at])*/
     const startingExam = () =>{
            if(assessment?.assessment?.exam_started_at === null){
                startExam(token,id, ()=>{
@@ -101,16 +115,20 @@ const MCQScreen = ({navigation, route}) => {
                     duration={assessment?.assessment?.assessment?.duration}
                     passScore={assessment?.assessment?.assessment?.pass_score}
                 />
-                {/*<Text subtitle3 marginT-20 warningColor>STOP!!!</Text>
-                <Text text marginT-10 warningColor>You can start the exam at any time but we prefer ASAP. And once you start you have to finish within the given allocated maximum hours.</Text>
-                <Text subtitle1 deepGray marginT-10>Read before Starting Exam</Text>*/}
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {/*<HTMLView
-                        value={assessment?.assessment?.assessment?.description}
-                        // style={styles}
-                    />*/}
+                  {/* <ScrollView showsVerticalScrollIndicator={false}>  */}
+                 <WebView
+                    style={{marginTop:20,padding:8,flex:1,transform:[{ scale: 1 }]}}
+                    automaticallyAdjustContentInsets={false}
+                    scalesPageToFit={scalesPageToFit}
+                    // bounces={false}
+                    // scrollEnabled={false}
+                     showsVerticalScrollIndicator={false}
+                     showsHorizontalScrollIndicator={false}
+                    originWhitelist={['*']}
+                    source={{ html: assessment?.assessment?.assessment?.description}}
+                    />
 
-                </ScrollView>
+                {/* </ScrollView>  */}
                 <TouchableOpacity marginV-10 onPress={startingExam}>
                     <FilledBtn title={'Start Exam'}/>
                 </TouchableOpacity>
@@ -125,3 +143,11 @@ const MCQScreen = ({navigation, route}) => {
 };
 
 export default MCQScreen;
+
+const styles = StyleSheet.create({
+    p: {
+      backgroundColor:'lightblue',
+      fontWeight: '300',
+      color: '#FF3366', 
+    },
+  });

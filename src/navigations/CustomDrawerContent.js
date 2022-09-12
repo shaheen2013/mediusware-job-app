@@ -1,24 +1,20 @@
-import React, {useContext, useEffect} from 'react';
-import { Feather,MaterialCommunityIcons  } from '@expo/vector-icons';
-import {StyleSheet, RefreshControl} from 'react-native';
-import {Colors, Text, View, TouchableOpacity, Image} from 'react-native-ui-lib'
-import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
-import MediuswareIcon from "../../assets/svgIcon/MediuswareIcon";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {Context as UserContext} from "../contexts/UserContext";
-import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import React, { useContext, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import ApplicationIcon from "../../assets/svgIcon/ApplicationIcon";
+import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
 import ExaminationIcon from "../../assets/svgIcon/ExaminationIcon";
 import LogoutIcon from "../../assets/svgIcon/LogoutIcon";
-import logo from "../../assets/svgIcon/Logo";
-import { StackActions } from '@react-navigation/native';
+import MediuswareIcon from "../../assets/svgIcon/MediuswareIcon";
+import { Context as AuthContext } from "../contexts/AuthContext";
+import { Context as UserContext } from "../contexts/UserContext";
 
 
 const CustomDrawerContent = (props) => {
     const {state:{token},logout,tryLocalLogin} = useContext(AuthContext);
     const {state:{user},getUser} = useContext(UserContext);
-
-
     useEffect(()=>{
         getUser(token);
     },[user?.user?.avatar,user?.user?.full_name,user?.user?.cv])
@@ -94,7 +90,7 @@ const CustomDrawerContent = (props) => {
                                             icon={({focused}) => <ExaminationIcon/>}
                                             onPress={() => {
                                                // logout();
-                                                props.navigation.navigate('ExamStackNavigation',{screen:'Examination'});
+                                                // props.navigation.navigate('ExamStackNavigation',{screen:'Examination'});
                                                 props.navigation.closeDrawer();
                                             }}
                                 />

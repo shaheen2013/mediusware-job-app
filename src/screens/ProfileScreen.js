@@ -108,7 +108,6 @@ const ProfileScreen = ({navigation, route}) => {
                 email:values?.email,
                 current_password:values.password,
             };
-            //console.log(formDataObj , 'formDataObj')
             for (let key in formData) {
                 formDataObj.append(
                     key,
@@ -139,20 +138,17 @@ const ProfileScreen = ({navigation, route}) => {
         const uri = pickerResult.uri;
         const uriParts = uri.split('.');
         const fileType = uriParts[uriParts.length - 1];
-        console.log(formDataObj , 'formDataObj image')
         setImage({
             uri,
             name: `avatar.${fileType}`,
             type: `image/${fileType}`,
         })
-        console.log(formDataObj);
 
     };
 
     // Document Picker Expo
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
-        console.log(formDataObj , 'pickDocument image')
         if (result.type !== "cancel") {
             const { name, uri } = result;
             const uriParts = name.split(".");
@@ -164,7 +160,6 @@ const ProfileScreen = ({navigation, route}) => {
             })
             setCv(result);
         }
-        console.log(formDataObj);
     };
 
     useEffect(()=>{

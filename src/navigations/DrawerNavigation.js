@@ -1,9 +1,9 @@
-import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-const Drawer = createDrawerNavigator();
+import React from 'react';
 import CustomDrawerContent from "./CustomDrawerContent";
-import LoginStackNavigation from "./StackNavigators/LoginStackNavigation";
 import JobsStackNavigation from "./StackNavigators/JobsStackNavigation";
+import LoginStackNavigation from "./StackNavigators/LoginStackNavigation";
+const Drawer = createDrawerNavigator();
 
 
 const DrawerNavigation = () => {

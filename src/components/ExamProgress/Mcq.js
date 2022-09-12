@@ -6,8 +6,6 @@ import AlertOutlineBtn from "../buttons/AlertOutlineBtn";
 import {Context as AssessmentContext} from "../../contexts/AssessmentContext";
 const Mcq = ({navigation,title,time,score,id}) => {
     const {state:{assessment,errorMsg}} = useContext(AssessmentContext);
-    console.log(assessment?.assessment);
-    console.log(errorMsg?.error);
     useEffect(()=>{
         goNextPage();
     },[])

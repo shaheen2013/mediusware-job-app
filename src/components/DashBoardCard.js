@@ -3,11 +3,7 @@ import {ImageBackground} from 'react-native';
 import {Colors, Text, View, TouchableOpacity} from 'react-native-ui-lib';
 
 const DashBoardCard = ({singleApply,navigation}) => {
-    /*const openJobDetails = () =>{
-        setIsLoading(true);
-        navigation.navigate('JobsDetailsStackNavigation',{ screen: 'JobDetails',params:{slug:job.slug}});
-
-    }*/
+  //  onPress={() => navigation.navigate('ExamProgress',{id:singleApply?.unique_id})}
     return (
         <View
             marginV-8
@@ -17,6 +13,7 @@ const DashBoardCard = ({singleApply,navigation}) => {
                 borderRadius: 16,
                 overflow: 'hidden'
             }}>
+            
             <TouchableOpacity onPress={() => navigation.navigate('ExamProgress',{id:singleApply?.unique_id})}>
                 <ImageBackground source={require('../../assets/images/bgJobCard.jpg')} style={{
                     padding: 16,

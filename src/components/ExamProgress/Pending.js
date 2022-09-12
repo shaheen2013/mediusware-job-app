@@ -6,8 +6,6 @@ import useCandidate from "../../hooks/useCandidate";
 import useApply from "../../hooks/useApply";
 
 const Pending = ({navigation,title,appliedAt,expSalary}) => {
-    //const [apply,loader] = useApply();
-    //console.log("apply length: ",apply.length);
     const [isLoading,setIsLoading] = useState(true);
     useEffect(()=>{
         if(title && appliedAt && expSalary){
@@ -15,7 +13,6 @@ const Pending = ({navigation,title,appliedAt,expSalary}) => {
         }
 
     },[title,appliedAt,expSalary])
-    //loader? <ActivityIndicator size={30} color={Colors.blue} style={{height: 30}}/>
     return (
         <View marginT-20>
             {isLoading  ? <ActivityIndicator size={30} color={Colors.blue} style={{height: 30}}/>

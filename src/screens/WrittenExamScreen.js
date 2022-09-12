@@ -1,14 +1,12 @@
-import React, {useContext, useEffect} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import CommonHeader from "../components/CommonHeader";
+import React, { useContext, useEffect } from 'react';
+import { StatusBar } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar,ScrollView} from "react-native";
-import Point from "../components/ExamProgress/Point";
+import CommonHeader from "../components/CommonHeader";
 import ExamCard from "../components/ExamProgress/ExamCard";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {Context as AssessmentContext} from "../contexts/AssessmentContext";
-import HTMLView from 'react-native-htmlview';
+import { Context as AssessmentContext } from "../contexts/AssessmentContext";
+import { Context as AuthContext } from "../contexts/AuthContext";
 
 const WrittenExamScreen = ({navigation, route}) => {
     const {state:{token}} = useContext(AuthContext);
@@ -36,7 +34,7 @@ const WrittenExamScreen = ({navigation, route}) => {
                 clearErrorMsg();
                 navigation.navigate('WrittenExamQuestion',{id: id});
             },()=>{
-                //navigation.navigate('Result',{assessment:assessment});
+                
             });
         })
     }
@@ -52,13 +50,6 @@ const WrittenExamScreen = ({navigation, route}) => {
                     passScore={assessment?.assessment?.assessment?.pass_score}
                 />
 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <HTMLView
-                        value={assessment?.assessment?.assessment?.description}
-                        // style={styles}
-                    />
-
-                </ScrollView>
                 <TouchableOpacity marginV-10 onPress={startingExam}>
                     <FilledBtn title={'Start Exam'}/>
                 </TouchableOpacity>

@@ -106,14 +106,11 @@ const ChangePasswordScreen = ({navigation, route}) => {
                             Authorization: `Bearer ${state.token}`
                         }
                     });
-                console.log("success: ",response.data);
                 setLoading(false);
                 setErrorMsg("");
                 setISSuccess(true);
-                //setSuccess(response.data.message);
 
             }catch(err){
-                console.log(err.response.data);
                 setISSuccess(false);
                 setLoading(false);
                 let currentPasswordError = (err.response.data?.current_password !== undefined);

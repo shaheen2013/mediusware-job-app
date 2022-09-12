@@ -1,14 +1,14 @@
-import React, {useContext, useEffect, useState,useRef,useCallback} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
-import CommonHeader from "../components/CommonHeader";
-import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar,ScrollView} from "react-native";
-import Quiz from "../components/ExamProgress/Quiz";
-import OutlineBtn from "../components/buttons/OutlineBtn";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {Context as AssessmentContext} from "../contexts/AssessmentContext";
 import moment from 'moment';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { ScrollView, StatusBar } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import FilledBtn from "../components/buttons/FilledBtn";
+import OutlineBtn from "../components/buttons/OutlineBtn";
+import CommonHeader from "../components/CommonHeader";
+import Quiz from "../components/ExamProgress/Quiz";
+import { Context as AssessmentContext } from "../contexts/AssessmentContext";
+import { Context as AuthContext } from "../contexts/AuthContext";
 
 const McqQuizScreen = ({navigation, route}) => {
     const {id} = route.params;
@@ -20,7 +20,6 @@ const McqQuizScreen = ({navigation, route}) => {
     const [showStep,setShowStep] = useState(assessment?.assessment?.step?.current_step);
 
     useEffect(()=>{
-        console.log(token);
         getAssessment(token,id);
     },[token,assessment?.assessment?.exam_end_at])
 

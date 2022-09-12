@@ -32,12 +32,10 @@ const getAssessment = dispatch => async (token,assessmentId,callback) => {
             }
         });
         dispatch({ type: "assessment", payload: {assessment:response.data}});
-        //console.log("response data: ",response.data);
         if(callback){
             callback();
         }
     } catch (err) {
-        console.log(err?.response?.data);
 
     }
 };
@@ -49,13 +47,10 @@ const getAllAssessment = dispatch => async (token,callback) => {
             }
         });
         dispatch({ type: "allAssessments", payload: {allAssessments:response.data}});
-        //console.log("response data: ",response.data);
         if(callback){
             callback();
         }
     } catch (err) {
-        console.log(err?.response?.data);
-
     }
 };
 
@@ -69,10 +64,7 @@ const startExam = dispatch => async (token,assessmentId,callback) => {
         if(callback){
             callback();
         }
-        //console.log(response.data);
     } catch (err) {
-        console.log(err?.response?.data);
-        console.log(err?.response?.data?.admin_only,"start exam message...");
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
 };
@@ -87,9 +79,7 @@ const startReExam = dispatch => async (token,assessmentId,callback) => {
         if(callback){
             callback();
         }
-        //console.log(response.data);
     } catch (err) {
-        console.log(err?.response?.data," Re start message...");
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.admin_only}});
     }
 };
@@ -105,10 +95,8 @@ const getQuizQuestion = dispatch => async (token,assessmentId,callback,errCallba
         if(callback){
             callback();
         }
-       // console.log(response.data,"success ");
         dispatch({ type: "quiz_question", payload: {quiz:response.data}});
     } catch (err) {
-       // console.log(err?.response?.data,"error");
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.out_of_step}});
         dispatch({ type: "add_error", payload: {error:err?.response?.data?.time_up}});
         if(err?.response?.data?.out_of_step || err?.response?.data?.time_up){
@@ -128,10 +116,8 @@ const savedAnswer = dispatch => async ({uuid,question_id,answers},token,callback
         if(callback){
             callback();
         }
-        console.log(response.data);
         dispatch({type:'clear_quiz'});
     } catch (err) {
-        console.log(err?.response?.data);
 
     }
 };
@@ -142,10 +128,8 @@ const savedEvaluation = dispatch => async ({assessment_uuid,evaluation_url,candi
         if(callback){
             callback();
         }
-        console.log(response.data);
         dispatch({type:'clear_quiz'});
     } catch (err) {
-        console.log(err?.response?.data);
 
     }
 };

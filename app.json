@@ -2,7 +2,7 @@
   "expo": {
     "name": "MW Job App",
     "slug": "MW-Job-App",
-    "version": "1.0.1",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 2,
+      "versionCode": 7,
       "package": "com.mw.job"
     },
     "web": {

@@ -63,14 +63,12 @@ const ForgotPasswordScreen = ({navigation,route}) => {
                         Authorization: `Bearer ${state.token}`
                     }
                 });
-                console.log(response.data);
                 navigation.navigate('ResetPassword');
                 setLoading(false);
                 setErrorMsg("");
                 values.email('');
 
             }catch(err){
-                console.log(err.response.data);
                let emailError = (err.response.data?.email !== undefined);
                 emailError && setErrorMsg("Email address not Found in candidate list.");
                 setLoading(false);
@@ -103,7 +101,6 @@ const ForgotPasswordScreen = ({navigation,route}) => {
                     visibilityTime={3000}
                     position='top'
                 />
-                {/*{error === "email" && <ErrorMsg msg={errorMsg}/>}*/}
                 <InputField
                     autoCapitalize={'none'}
                     autoCompleteType={'email'}
