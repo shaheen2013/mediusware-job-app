@@ -1,18 +1,17 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Colors} from 'react-native-ui-lib';
+import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused } from "@react-navigation/native";
+import { useFormik } from 'formik';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { ScrollView, StatusBar } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import * as Yup from 'yup';
 import LoginImg from "../../assets/svgIcon/LoginImg";
+import FilledBtn from "../components/buttons/FilledBtn";
 import CommonHeader from "../components/CommonHeader";
 import InputField from "../components/formComponents/InputField";
-import FilledBtn from "../components/buttons/FilledBtn";
-import {StatusBar,ScrollView,ActivityIndicator} from "react-native";
-import {Context as AuthContext} from "../contexts/AuthContext";
-import {useIsFocused} from "@react-navigation/native";
-import {Screen} from "react-native-screens";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import Toast from 'react-native-toast-message';
-import { Ionicons } from '@expo/vector-icons';
+import { Context as AuthContext } from "../contexts/AuthContext";
 const toastConfig = {
     tomatoToast: ({ text1, props }) => (
         <View
@@ -89,7 +88,7 @@ const LoginScreen = ({navigation, route}) => {
         <CommonHeader name={route.name} navigation={navigation}/>
         <FocusAwareStatusBar barStyle='dark-content' backgroundColor={Colors.white}/>
         <View paddingH-16 marginT-20 flex-1>
-            <View flex-5>
+            <View flex-6>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <LoginImg/>
                     <Text h5 deepGray marginT-20>Hello,{'\n'}
@@ -138,14 +137,15 @@ const LoginScreen = ({navigation, route}) => {
 
             </View>
 
-            <View flex-2 marginB-40>
-                <Text text gray marginT-40>If don't apply any mediusware job,then apply one <Text
-                    onPress={() => navigation.navigate('BottomNavigation',{screen:'Home'})} blue>Job</Text></Text>
+            <View flex-3 marginB-40>
                 <TouchableOpacity marginV-20 disabled={loader}  onPress={()=>{
                    handleSubmit()
                 }}>
                     <FilledBtn title={'Login'} isLoading={loader}/>
                 </TouchableOpacity>
+
+                <Text text gray marginT-16>If don't apply any mediusware job,then apply one <Text
+                    onPress={() => navigation.navigate('JobsDetailsStackNavigation',{screen:'Home'})} blue>Job</Text></Text>
 
             </View>
         </View>

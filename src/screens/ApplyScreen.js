@@ -94,13 +94,13 @@ const ApplyScreen = ({ navigation, route }) => {
     }
   });
 
-  useEffect(() => {
+ /*  useEffect(() => {
     showToast()
     clearErrorMsg();
   }, [state?.errorMessage?.email,state?.errorMessage?.phone])
+ */
 
-
-  const showToast = () => {
+  /* const showToast = () => {
     if(state?.errorMessage?.email && state?.errorMessage?.phone){
       Toast.show({
         type: 'tomatoToast',
@@ -120,13 +120,18 @@ const ApplyScreen = ({ navigation, route }) => {
       })
     }
 
-  }
+  } */
 
   const phoneValidateColor = !touched ? Colors.borderColor : errors?.phone ? '#FF5A5F' : Colors.borderColor;
   const cvValidateColor = !touched ? Colors.borderColor : errors?.file ? '#FF5A5F' : Colors.borderColor;
   // Document Picker Expo
   const pickDocument = async (handleChange) => {
-    let result = await DocumentPicker.getDocumentAsync({type: "application/*" });
+    let result = await DocumentPicker.getDocumentAsync(
+      {type:[ 
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ]});
     if (result.type !== "cancel") {
       handleChange(result.uri);
       const { name, uri } = result;

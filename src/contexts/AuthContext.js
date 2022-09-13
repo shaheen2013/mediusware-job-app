@@ -57,10 +57,12 @@ const register = dispatch => async (formDataObj,callback) => {
       if(callback){
           callback();
       }
-       // dispatch({type:'clear_loader'});
+      // dispatch({type:'clear_loader'});
     } catch (err) {
-      let emailError = (err.response.data?.email !== undefined);
-      let phoneError = (err.response.data?.phone !== undefined);
+      console.log(err?.response,'errror response...')
+      console.log(err?.response?.data, 'registration error response data...')
+      let emailError = (err?.response?.data?.email !== undefined);
+      let phoneError = (err?.response?.data?.phone !== undefined);
       emailError && (emailError = "Candidate with this email already exists!");
       phoneError &&  (phoneError = "Candidate with this phone number already exists!");
       dispatch({ type: "add_error", payload: {email:emailError,phone:phoneError} });
@@ -78,6 +80,7 @@ const login = (dispatch) => async ({ email, password },callback) => {
         if(callback){
             callback();
         }
+        // dispatch({type:'clear_loader'});
     } catch (err) {
         dispatch({ type: "add_error", payload: {error:err.response.data?.detail} });
         dispatch({type:'clear_loader'});
@@ -86,6 +89,7 @@ const login = (dispatch) => async ({ email, password },callback) => {
 
 const apply = (dispatch) => async (token,obj,callback,initialHit= false) => {
     if(!token || initialHit){
+      console.log('initail hit....')
         dispatch({type:'set_loader'});
     }
     try {
@@ -104,14 +108,19 @@ const apply = (dispatch) => async (token,obj,callback,initialHit= false) => {
       }
       dispatch({type:'clear_loader'});
     } catch (err) {
+      //  dispatch({type:'set_loader'});
+        console.log('errorhit...')
         console.log(err.response.data.message);
         dispatch({ type: "add_error", payload: {message:err.response.data?.message} });
         dispatch({type:'clear_loader'});
     }
 };
-const logout = dispatch => async ()=>{
+const logout = dispatch => async (callback)=>{
     await AsyncStorage.removeItem('token');
     dispatch({type:'logout'});
+    if(callback){
+      callback();
+    }
 };
 export const { Provider, Context } = createDataContext(
   authReducer,

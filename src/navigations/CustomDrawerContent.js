@@ -1,4 +1,4 @@
-import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import React, { useContext, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
@@ -6,6 +6,7 @@ import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib
 import ApplicationIcon from "../../assets/svgIcon/ApplicationIcon";
 import DashBoardOutlineIcon from "../../assets/svgIcon/DashBoardOutlineIcon";
 import ExaminationIcon from "../../assets/svgIcon/ExaminationIcon";
+import LoginIcon from '../../assets/svgIcon/LoginIcon';
 import LogoutIcon from "../../assets/svgIcon/LogoutIcon";
 import MediuswareIcon from "../../assets/svgIcon/MediuswareIcon";
 import { Context as AuthContext } from "../contexts/AuthContext";
@@ -39,12 +40,12 @@ const CustomDrawerContent = (props) => {
                             {
                                 (token && user?.user?.avatar) ? <Image source={{ uri: user?.user?.avatar}} style={{height:60,width:60,borderRadius:10}}/>:
                                     <View style={styles.userIconStyle}>
-                                        <Feather name="user" size={36} color="black"/>
+                                        <Feather name="user" size={36} color={Colors.deepGray}/>
                                     </View>
                             }
                             <View marginL-10 style={{flexShrink: 1}}>
                                 <View style={{flexDirection:'row'}}>
-                                    <Text style={{fontSize: 20, fontFamily: 'Montserrat_500Medium',flexShrink: 1}}>{token ? user?.user?.full_name:"Guest User"}</Text>
+                                    <Text style={{fontSize: 20, fontFamily: 'Montserrat_500Medium',flexShrink: 1,color:Colors.deepGray}}>{token ? user?.user?.full_name:"Guest User"}</Text>
                                 </View>
 
                                 {
@@ -54,13 +55,13 @@ const CustomDrawerContent = (props) => {
                                         :
                                         <TouchableOpacity
                                             onPress={() => props.navigation.navigate('LoginStackNavigation', {screen: 'Login'})}>
-                                            <View style={{paddingVertical: 5, flexDirection: 'row'}}>
+                                            <View style={{paddingVertical: 5, flexDirection: 'row',alignItems:"center"}}>
                                                 <Text style={{
-                                                    color: 'blue',
+                                                    color: Colors.blue,
                                                     fontFamily: 'Montserrat_500Medium',
                                                     marginRight: 5
                                                 }}>Login</Text>
-                                                <MaterialCommunityIcons name="login" size={24} color="blue"/>
+                                                <LoginIcon/>
                                             </View>
                                         </TouchableOpacity>
                                 }
@@ -107,8 +108,9 @@ const CustomDrawerContent = (props) => {
                                     icon={({focused}) => <LogoutIcon/>}
                                     onPress={()=>{
                                         props.navigation.closeDrawer();
-                                        props.navigation.navigate('Home');
-                                        logout()
+                                        logout(()=>{
+                                            props.navigation.navigate('JobsDetailsStackNavigation',{screen:'Home'});
+                                        })
                                     }}
                         />
                     </View>

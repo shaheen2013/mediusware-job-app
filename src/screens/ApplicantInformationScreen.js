@@ -62,6 +62,8 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     });
     const [tempError,setTempError] = useState(false);
 
+    console.log('errormessage in the ui', errorMessage)
+
     useEffect(()=>{
         if(token?.length > 0){
             applyProcess();
@@ -158,15 +160,53 @@ const ApplicantInformationScreen = ({navigation, route}) => {
     useEffect(() => {
         showToast()
         clearErrorMsg();
-    }, [errorMessage?.message])
+    }, [errorMessage?.message,errorMessage?.email,errorMessage?.phone])
 
     const showToast = () => {
+        if(errorMessage?.message){
+            Toast.show({
+                type: 'tomatoToast',
+                text1: ` ${errorMessage?.message}`
+              })
+        }
+        if(errorMessage?.email && errorMessage?.phone){
+          Toast.show({
+            type: 'tomatoToast',
+            text1: 'Candidate with this email address and phone number Already Exists',
+          })
+        }
+        else if(errorMessage?.email && !errorMessage?.phone){
+          Toast.show({
+            type: 'tomatoToast',
+            text1: 'Candidate with this email address Already Exists',
+          })
+        }
+        else if(errorMessage?.phone && !errorMessage?.email){
+          Toast.show({
+            type: 'tomatoToast',
+            text1: ` Candidate with this phone number  Already Exists`,
+          })
+        }
+        
+      }
+
+   /*  const showToast = () => {
         errorMessage?.message && Toast.show({
             type: 'tomatoToast',
             text1: ` ${errorMessage?.message}`
         })
-    }
 
+        errorMessage?.email && Toast.show({
+            type: 'tomatoToast',
+            text1: ` ${errorMessage?.email}`
+        })
+
+        errorMessage?.phone && Toast.show({
+            type: 'tomatoToast',
+            text1: ` ${errorMessage?.phone}`
+        })
+    }
+ */
     return (
         <SafeAreaView style={{flex: 1}}>
             <View flex-1>

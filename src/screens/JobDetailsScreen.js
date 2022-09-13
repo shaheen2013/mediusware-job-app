@@ -408,7 +408,7 @@ const JobDetails = ({route,navigation}) => {
                 )
                 :
                     (
-                        <View style={{flex:1}}>
+                        <View style={{flex:1,marginBottom:16}}>
                             {
                                 singleJob?.job_summery && 
                                 <View>
@@ -509,7 +509,7 @@ const JobDetails = ({route,navigation}) => {
 
                             {singleJob?.job_summery &&
                                     <View style={styles.applyBtnStyle} >
-                                        <TouchableOpacity marginB-16  onPress={navigateApply}>
+                                        <TouchableOpacity marginB-20  onPress={navigateApply}>
                                                 <FilledBtn title={"Apply Now"}/>
                                         </TouchableOpacity>
                                     </View>
@@ -526,11 +526,11 @@ export default JobDetails;
 
 const styles = StyleSheet.create({
     applyBtnStyle:{
-        marginTop:40,
+        marginTop:50,
         position: 'absolute',
         alignSelf:'center',
         width: screenWidth - 32,
-        top: '87.5%',
+        top: '86%',
         backgroundColor:'white',
         borderTopEndRadius:16,
         borderTopLeftRadius: 16,
